@@ -4,3 +4,48 @@
 */cache/*
 !*/cache/index.html
 !*/cache/.htaccess
+
+application/cache/*
+!application/cache/index.html
+!application/cache/.htaccess
+
+application/logs/*
+!application/logs/index.html
+!application/logs/.htaccess
+
+user_guide_src/build/*
+user_guide_src/cilexer/build/*
+user_guide_src/cilexer/dist/*
+user_guide_src/cilexer/pycilexer.egg-info/*
+/vendor/
+
+# IDE Files
+#—————————
+/nbproject/
+.idea/*
+
+# Sublime Text cache files
+# —————————
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+*.sublime-workspace
+*.sublime-project
+
+# ARCHIVOS DE CONFIGURACIÓN
+#—————————
+# application/config/database.php
+# application/config/config.php
+/sftp-config.json
+
+# OS generated files
+#—————————
+*/.DS_Store
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
