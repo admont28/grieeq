@@ -58,7 +58,7 @@ class Usuario_model extends CI_Model {
 		$usuario = $this->db->get_where(self::TABLE_NAME, array('identificacion_usuario' => $identificacion));
 		if($usuario->num_rows() == 1){
 			$usuario = $usuario->row();
-			if(hash_equals($usuario->password_usuario, crypt($password, self::SALT))){
+			if($usuario->estado_usuario == true &&hash_equals($usuario->password_usuario, crypt($password, self::SALT))){
 				return $usuario;
 			}else{
 				return null;

@@ -32,7 +32,6 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 							<?php $datos = array(
 						        'name'          => 'identificacion',
 						        'id'            => 'identificacion',
-						        'maxlength'     => '45',
 						        'class' 		=> 'form-control',
 						        'required'		=> 'required',
 						        'autofocus'		=> 'autofocus',
@@ -50,8 +49,6 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 							<?php $datos = array(
 						        'name'          => 'password',
 						        'id'            => 'password',
-						        'maxlength'     => '40',
-						        'minlength'		=> '8',
 						        'class' 		=> 'form-control',
 						        'required'		=> 'required',
 						        'value' 		=> set_value('password'),
