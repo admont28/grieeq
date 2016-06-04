@@ -34,12 +34,13 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 
 # ARCHIVOS DE CONFIGURACIÓN
 #—————————
-# application/config/database.php
-# application/config/config.php
-/sftp-config.json
+sftp-config.json
+application/config/config.php
+application/config/database.php
 
 # OS generated files
 #—————————
+__MACOSX
 */.DS_Store
 .DS_Store
 .DS_Store?
