@@ -17,13 +17,16 @@ class UsuarioNoAutenticado{
 		$this->ci                       =& get_instance();
 		$this->controladores_permitidos = ['Usuario','SituacionEnfermeria','Inicio'];
 		$this->metodos_permitidos       = [''];
-		$this->metodos_no_permitidos    = ['cerrar_sesion'];
+		$this->metodos_no_permitidos    = [
+			'cerrar_sesion',
+			'perfil'
+		];
 	}
 
 	public function verificar_acceso(){
 		$clase   = $this->ci->router->class;
 		$metodo  = $this->ci->router->method;
-		$session = $this->ci->session->userdata('usuario');
+		$session = $this->ci->session->usuario;
 		// Si el usuario no ha iniciado sesión y el controlador al que está accediendo
 		// no está dentro de los controladores permitidos.
 		if(empty($session) && !in_array($clase,$this->controladores_permitidos)){
