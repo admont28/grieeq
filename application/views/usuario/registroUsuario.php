@@ -50,7 +50,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 							<?php $datos = array(
 						        'name'          => 'password',
 						        'id'            => 'password',
-						        'maxlength'     => '40',
+						        'maxlength'     => '50',
 						        'minlength'		=> '8',
 						        'class' 		=> 'form-control',
 						        'required'		=> 'required',
@@ -68,7 +68,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 							<?php $datos = array(
 						        'name'          => 'repetirpassword',
 						        'id'            => 'repetirpassword',
-						        'maxlength'     => '40',
+						        'maxlength'     => '50',
 						        'minlength'		=> '8',
 						        'class' 		=> 'form-control',
 						        'required'		=> 'required',
