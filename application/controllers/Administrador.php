@@ -225,27 +225,41 @@ class Administrador extends MY_ControladorGeneral {
     	}
     }
 
-    public function habilitar_usuario(){
+    public function cambiar_estado_usuario(){
     	if ($this->input->post('seleccion')) {
     		$idUsuario = $this->input->post('seleccion');
+    		$operacion = $this->input->post('operacion');
     		$id_usuario_session = $this->session->usuario['identificacion_usuario'];
     		$this->load->model('Usuario_model');
     		$usuario = $this->Usuario_model->obtener_por_id($idUsuario);
-    		if ($usuario != null && $usuario->identificacion_usuario != $id_usuario_session) {
-    			if($usuario->estado_usuario == true){
-    				echo json_encode(array("state" => "error", "message" => "El usuario ya se encuentra habilitado."));
+    		if ($usuario != null && $usuario->identificacion_usuario != $id_usuario_session && trim($operacion) != "" && ($operacion == "habilitar" || $operacion == "inhabilitar")) {
+    			
+    			if($operacion == "habilitar" && $usuario->estado_usuario == true){
+    				echo json_encode(array("state" => "error", "message" => "El usuario ya se encuentra habilitado.<br>Al pulsar en el botón OK se recargará la página actual."));
+    				die();
+    			}else if($operacion == "inhabilitar" && $usuario->estado_usuario == false){
+    				echo json_encode(array("state" => "error", "message" => "El usuario ya se encuentra inhabilitado.<br>Al pulsar en el botón OK se recargará la página actual."));
     				die();
     			}
-    			$respuesta = $this->Usuario_model->habilitar_usuario($usuario->idUsuario);
+    			$respuesta = $this->Usuario_model->cambiar_estado_usuario($operacion, $usuario->idUsuario);
     			if($respuesta){
-    				echo json_encode(array("state" => "success", "title"=> "¡Usuario habilitado con éxito!", "message" => "El usuario ha sido habilitado con éxito"));
+    				$titulo = "";
+    				$mensaje = "";
+    				if($operacion == "habilitar"){
+    					$titulo = "¡Usuario habilitado con éxito!";
+    					$mensaje  = "El usuario ha sido habilitado con éxito.<br>Al pulsar en el botón OK se recargará la página actual.";
+    				}else if($operacion == "inhabilitar"){
+    					$titulo = "¡Usuario inhabilitado con éxito!";
+    					$mensaje  = "El usuario ha sido inhabilitado con éxito.<br>Al pulsar en el botón OK se recargará la página actual.";
+    				}
+    				echo json_encode(array("state" => "success", "title"=> $titulo, "message" => $mensaje));	
     				die();
     			}else{
-    				echo json_encode(array("state" => "error", "message" => "Ha ocurrido un error inesperado, por favor inténtelo de nuevo."));
+    				echo json_encode(array("state" => "error", "message" => "Ha ocurrido un error inesperado, por favor inténtelo de nuevo.<br>Al pulsar en el botón OK se recargará la página actual."));
     				die();
     			}
     		} else {
-    			echo json_encode(array("state" => "error", "message" => "Identificador del usuario no válido."));
+    			echo json_encode(array("state" => "error", "message" => "Identificador del usuario no válido.<br>Al pulsar en el botón OK se recargará la página actual."));
     			die();
     		}
     	} else {

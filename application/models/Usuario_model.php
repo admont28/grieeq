@@ -132,21 +132,26 @@ class Usuario_model extends CI_Model {
 		return null;
     }
 
-    public function habilitar_usuario($idUsuario){
+    public function cambiar_estado_usuario($operacion, $idUsuario){
     	date_default_timezone_set("America/bogota");
 		$time = time();
 		$datestring = "%Y-%m-%d";
 		$fecha = mdate($datestring,$time);
-    	$data = array(
+		if($operacion == "habilitar"){
+			$data = array(
 			    'estado_usuario' => true,
 			    'fecha_aceptacion_usuario' => $fecha,
 			);
+		}else if($operacion == "inhabilitar"){
+			$data = array(
+			    'estado_usuario' => false,
+			    'fecha_denegacion_usuario' => $fecha,
+			);
+		}
 		$this->db->where('idUsuario', $idUsuario);
 		$this->db->update(self::TABLE_NAME, $data);
 		return true;
     }
-    
-
 
 } // Fin clase Usuario_model
 ?>
