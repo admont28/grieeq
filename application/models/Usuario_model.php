@@ -131,6 +131,20 @@ class Usuario_model extends CI_Model {
 		}
 		return null;
     }
+
+    public function habilitar_usuario($idUsuario){
+    	date_default_timezone_set("America/bogota");
+		$time = time();
+		$datestring = "%Y-%m-%d";
+		$fecha = mdate($datestring,$time);
+    	$data = array(
+			    'estado_usuario' => true,
+			    'fecha_aceptacion_usuario' => $fecha,
+			);
+		$this->db->where('idUsuario', $idUsuario);
+		$this->db->update(self::TABLE_NAME, $data);
+		return true;
+    }
     
 
 

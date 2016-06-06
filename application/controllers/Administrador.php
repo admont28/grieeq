@@ -225,6 +225,34 @@ class Administrador extends MY_ControladorGeneral {
     	}
     }
 
+    public function habilitar_usuario(){
+    	if ($this->input->post('seleccion')) {
+    		$idUsuario = $this->input->post('seleccion');
+    		$id_usuario_session = $this->session->usuario['identificacion_usuario'];
+    		$this->load->model('Usuario_model');
+    		$usuario = $this->Usuario_model->obtener_por_id($idUsuario);
+    		if ($usuario != null && $usuario->identificacion_usuario != $id_usuario_session) {
+    			if($usuario->estado_usuario == true){
+    				echo json_encode(array("state" => "error", "message" => "El usuario ya se encuentra habilitado."));
+    				die();
+    			}
+    			$respuesta = $this->Usuario_model->habilitar_usuario($usuario->idUsuario);
+    			if($respuesta){
+    				echo json_encode(array("state" => "success", "title"=> "¡Usuario habilitado con éxito!", "message" => "El usuario ha sido habilitado con éxito"));
+    				die();
+    			}else{
+    				echo json_encode(array("state" => "error", "message" => "Ha ocurrido un error inesperado, por favor inténtelo de nuevo."));
+    				die();
+    			}
+    		} else {
+    			echo json_encode(array("state" => "error", "message" => "Identificador del usuario no válido."));
+    			die();
+    		}
+    	} else {
+    		redirect('Administrador/administracion-de-usuarios','refresh');
+    	}
+    }
+
 }
 
 /* End of file Administrador.php */
