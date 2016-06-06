@@ -19,7 +19,7 @@ class Usuario extends MY_ControladorGeneral {
 	 * Función __construct del controlador Usuario.
 	 *
 	 * Esta función se ejecuta cuando se crea una instancia de este controlador (Usuario).
-	 * La función ejecuta el constructor de la clase padre (CI_Controller).
+	 * La función ejecuta el constructor de la clase padre (MY_ControladorGeneral).
 	 *
 	 * @access public
 	 * @return void 
@@ -38,19 +38,12 @@ class Usuario extends MY_ControladorGeneral {
 	 * @return void No se retorna, se muestra la página.
 	 */
 	public function index(){
-		switch ($this->session->usuario['rol_usuario']) {
-			case '':
-				redirect('Usuario/formulario-inicio-de-sesion','refresh');
-				break;
-			case 'admin':
-				$this->formulario_de_registro_de_usuario();
-				break;
-			case 'normal':
-				redirect('Usuario/perfil','refresh');
-				break;
-			default:
-				redirect('Usuario/formulario-inicio-de-sesion','refresh');
-				break;
+		$session = $this->session->usuario;
+		if (isset($session)) {
+			redirect('Usuario/perfil','refresh');
+		}
+		else{
+			redirect('Usuario/formulario-inicio-de-sesion','refresh');
 		}
 	}
 
@@ -66,7 +59,6 @@ class Usuario extends MY_ControladorGeneral {
 	}
 
 	public function registro_de_usuario(){
-		
 		if($this->input->post('submit')){
 			//hacemos las comprobaciones que deseemos en nuestro formulario
 			$this->form_validation->set_rules('identificacion','Identificacion','trim|required|max_length[50]|min_length[8]|is_unique[Usuario.identificacion_usuario]');
@@ -137,7 +129,7 @@ class Usuario extends MY_ControladorGeneral {
 					$mensaje['tipo']    = "success";
 					$mensaje['mensaje'] = "Ha iniciado sesión exitosamente.".$resultado->identificacion_usuario;
 					$data = array(
-		                'is_logued' 				=> 		TRUE,
+		                'logueado' 				=> 		TRUE,
 		                'identificacion_usuario' 	=> 		$resultado->identificacion_usuario,
 		                'rol_usuario'					=>		($resultado->administrador_usuario == true)? "admin" : "normal",
 	            		);		
@@ -146,7 +138,7 @@ class Usuario extends MY_ControladorGeneral {
 				}
 				else{
 					$mensaje['tipo']    = "error";
-					$mensaje['mensaje'] = "La Identificación o la contraseña no corresponden a un usuario registrado en el sistema.";
+					$mensaje['mensaje'] = "La Identificación o la contraseña no corresponden a un usuario registrado en el sistema o usted no tiene permisos para realizar esta acción.";
 				}
 				$this->session->set_flashdata('mensaje', $mensaje);
 				redirect('Usuario/formulario-inicio-de-sesion','refresh');
@@ -161,14 +153,37 @@ class Usuario extends MY_ControladorGeneral {
 		redirect('Usuario','refresh');
 	}
 
+	public function perfil(){
+		$this->breadcrumb->populate(array(
+		    'Inicio' => '',
+		   	'Perfil'
+		));
+		
+		$data = array();
+		$data['titulo'] = "Perfil - Lista de pacientes";
+		$data['rol'] = $this->obtener_rol_sesion();
+		$data['url_gestiontiposherida'] = "";
+		$data['url_gestionfactoresriesgo'] = "";
+		$data['url_gestionactividades'] = "";
+		$data['url_gestionusuarios'] = "Administrador/administracion-de-usuarios";
+		$this->mostrar_pagina('usuario/perfil', $data);	
+	}
+
+	private function obtener_rol_sesion(){
+		$session = $this->session->usuario;
+		if(isset($session, $session['logueado'], $session['identificacion_usuario'], $session['rol_usuario'])){
+			if($session['rol_usuario'] == "admin")
+				return "admin";
+			if($session['rol_usuario'] == "normal")
+				return "normal";
+		}
+		return null;
+	}
+
 	public function passwords_iguales($repetirpassword, $password){
 		if($repetirpassword === $password)
 			return true;
 		return false;
-	}
-
-	public function perfil(){
-		echo "Perfil";
 	}
 
 } // Fin Clase Inicio
