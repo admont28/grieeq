@@ -18,6 +18,8 @@ class Usuario_model extends CI_Model {
 
 	const TABLE_NAME = "Usuario";
 
+	const TABLE_PK_NAME = "idUsuario";
+
 	const SALT = '$6$rounds=5000$H3r1D4sD4v1d¿.!GgrR113Q?%$)(&!uQmnh*:¿,,.1AsasHtRQsqwyDNF$';
 	/**
 	 * Función __construct del modelo Usuario_model.
@@ -54,11 +56,30 @@ class Usuario_model extends CI_Model {
 		return true;
 	}
 
+	public function editar_usuario($idUsuario, $identificacion,$password,$correo){
+		if(trim($password) == ""){
+			$data = array(
+			    'identificacion_usuario' => $identificacion,
+			    'correo_usuario' => $correo,
+			);
+		}else{
+			$password = crypt($password, self::SALT);
+			$data = array(
+			    'identificacion_usuario' => $identificacion,
+			    'correo_usuario' => $correo,
+			    'password_usuario' => $password
+			);
+		}
+		$this->db->where('idUsuario', $idUsuario);
+		$this->db->update(self::TABLE_NAME, $data);
+		return true;
+	}
+
 	public function login($identificacion, $password){
 		$usuario = $this->db->get_where(self::TABLE_NAME, array('identificacion_usuario' => $identificacion));
 		if($usuario->num_rows() == 1){
 			$usuario = $usuario->row();
-			if($usuario->estado_usuario == true &&hash_equals($usuario->password_usuario, crypt($password, self::SALT))){
+			if($usuario->estado_usuario == true && hash_equals($usuario->password_usuario, crypt($password, self::SALT))){
 				return $usuario;
 			}else{
 				return null;
@@ -66,6 +87,51 @@ class Usuario_model extends CI_Model {
 		}
 		return null;
 	}
+
+	public function contar_registros(){
+        $this->db->select('*');    
+        $this->db->from(self::TABLE_NAME);
+        return $this->db->count_all_results();
+    }
+    
+    public function obtener_resultados($limit=100,$start=0){
+        $this->db->select('*');        
+        $this->db->from(self::TABLE_NAME);
+        $this->db->order_by(self::TABLE_PK_NAME, 'ASC');
+        $this->db->limit($limit, $start);    
+        $query = $this->db->get();    
+       
+        return $query->result();
+    }
+
+    public function obtener_por_identificacion($identificacion){
+    	$usuario = $this->db->get_where(self::TABLE_NAME, array('identificacion_usuario' => $identificacion));
+    	if($usuario->num_rows() == 1){
+			return $usuario->row();
+		}
+		return null;
+    }
+
+    public function eliminar_por_identificacion($identificacion){
+    	return $this->db->delete(self::TABLE_NAME, array('identificacion_usuario' => $identificacion));
+    }
+
+    public function obtener_por_id($idUsuario){
+    	$usuario = $this->db->get_where(self::TABLE_NAME, array('idUsuario' => $idUsuario));
+    	if($usuario->num_rows() == 1){
+			return $usuario->row();
+		}
+		return null;
+    }
+
+    public function obtener_por_correo($correo_usuario){
+    	$usuario = $this->db->get_where(self::TABLE_NAME, array('correo_usuario' => $correo_usuario));
+    	if($usuario->num_rows() == 1){
+			return $usuario->row();
+		}
+		return null;
+    }
+    
 
 
 } // Fin clase Usuario_model
