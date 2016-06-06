@@ -18,11 +18,16 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Titulo de nuestra aplicación web -->
 	<title>GRIEEQ</title>
+	<!-- Archivo JS de JQuery -->
+	<script type="text/javascript" src="<?php echo asset_url('js/jquery.js'); ?>"></script>
 	<!-- Archivo CSS de Bootstrap -->
 	<link rel="stylesheet" href="<?php echo asset_url('css/bootstrap.css'); ?>" />
 	<!-- Archivo CSS de estilos personales -->
 	<link rel="stylesheet" href="<?php echo asset_url('css/main.css'); ?>" />
-
+	<!-- Archivo JS de SwwetAlert2 -->
+	<script type="text/javascript" src="<?php echo asset_url('js/sweetalert2.min.js'); ?>"></script>
+	<!-- Archivo CSS de SwwetAlert2 -->
+	<link rel="stylesheet" href="<?php echo asset_url('css/sweetalert2.min.css'); ?>" />
 	<!-- Etiquetas para FAVICON en distintos dispositivos, generado en http://www.favicon-generator.org/ -->
 	<link rel="apple-touch-icon" sizes="57x57" href="<?php echo asset_url('img/web/apple-icon-57x57.png'); ?>">
 	<link rel="apple-touch-icon" sizes="60x60" href="<?php echo asset_url('img/web/apple-icon-60x60.png'); ?>">

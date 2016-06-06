@@ -31,7 +31,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 	    <ul class="nav navbar-nav navbar-right" style="margin-right: 0 !important;">
 			<?php if($this->session->has_userdata('usuario')): ?>
 		      		<li>
-		      			<a href="<?php echo base_url('Usuario'); ?>">
+		      			<a href="<?php echo base_url('Usuario/perfil'); ?>">
 		      				<span class="glyphicon glyphicon-user" aria-hidden="true"></span> Usuario: <?php echo $this->session->usuario['identificacion_usuario'] ?>
 		      			</a>
 		      		</li>

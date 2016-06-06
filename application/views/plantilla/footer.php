@@ -16,11 +16,8 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 	<div id="footer">
 		<div class="container">
 	    	<p class="text-muted credit">Diseñado por <a href="https://github.com/admont28">Andrés David Montoya Aguirre</a>.</p>
-			
 		</div>
 	</div>
-	<!-- Archivo JS de JQuery -->
-	<script type="text/javascript" src="<?php echo base_url('assets/js/jquery.js'); ?>"></script>
 	<!-- Archivo JS de Bootstrap -->
 	<script type="text/javascript" src="<?php echo base_url('assets/js/bootstrap.js'); ?>"></script>
 </body>
