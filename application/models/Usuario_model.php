@@ -184,7 +184,7 @@ class Usuario_model extends CI_Model {
 	 *
 	 * @access public
      * @param  integer $identificacion Identificación única del usuario.
-     * @return boolean                 Retorna tru si se pudo eliminar, sino retorna false.
+     * @return boolean                 Retorna true si se pudo eliminar, sino retorna false.
      */
     public function eliminar_por_identificacion($identificacion){
     	return $this->db->delete(self::TABLE_NAME, array('identificacion_usuario' => $identificacion));
