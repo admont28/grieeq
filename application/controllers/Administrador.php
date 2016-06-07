@@ -330,6 +330,62 @@ class Administrador extends MY_ControladorGeneral {
     		redirect('Administrador/administracion-de-usuarios','refresh');
     	}
     }
+
+    public function administracion_de_tipos_de_heridas($pagina='',$page_number = 1){
+        $this->breadcrumb->populate(array(
+            'Inicio' => '',
+            'Perfil' => 'Usuario',
+            'Administración de tipos de heridas'
+        ));
+        $this->load->model('TipoHerida_model');        
+        // Cargo la librería pagination de codeigniter.
+        $this->load->library("pagination");
+        // configuro la cantidad de registros por página.
+        $config["per_page"] = 4;
+        $config['use_page_numbers'] = TRUE;
+        // Enlace para usar la paginación         
+        $config['base_url'] = base_url()."Administrador/administracion-de-tipos-de-heridas/pagina/";
+        // Adición del html de bootstrap a la variable de configuración
+        $config = $this->bs_paginacion($config);
+        $page_number = intval(($page_number  == 1 || $page_number  == 0) ? 0 : ($page_number * $config['per_page']) - $config['per_page']);
+        $config['total_rows'] = $this->TipoHerida_model->contar_registros();        
+        $tiposHeridas = $this->TipoHerida_model->obtener_resultados($config["per_page"], $page_number);
+        $this->pagination->initialize($config);                
+        $data['pagination'] = $this->pagination->create_links();
+        $this->load->library('table');
+        $this->table->set_empty("---");
+        $this->table->set_heading(
+            'Seleccionar',
+            'Nombre',
+            'Descripción',                
+            'Imagen asociada'
+        );
+        if(count($tiposHeridas)>0){
+            foreach ($tiposHeridas as $tipoHerida){
+                $datos = array(
+                    'name'  => 'seleccionar',
+                    'id'    => 'seleccionar',
+                    'class' => 'seleccion',
+                    'value' => $tipoHerida->idTipoHerida,
+                    'type'  => 'radio',
+                );
+                $input = form_input($datos);
+                $this->table->add_row(
+                    array('data' => $input),
+                    array('data' => $tipoHerida->nombre_tipoherida),
+                    array('data' => $tipoHerida->descripcion_tipoherida),          
+                    array('data' => "<img width='70px' src='".asset_url('img/'.$tipoHerida->imagen_tipoherida)."' alt='".$tipoHerida->nombre_tipoherida."' />")
+                );
+            }
+            $tmpl = array ( 'table_open'  => '<table class="table table-striped table-bordered table-hover">' );
+            $this->table->set_template($tmpl);
+            $data['table'] = $this->table->generate();
+        }else{
+            redirect('Administrador/Administrador/administracion-de-tipos-de-heridas','refresh');
+        }
+        $data['titulo'] ="Administración - Tipos de heridas";
+        $this->mostrar_pagina('admin/tipoherida/administracionTipoHerida', $data);
+    }
 } // Fin de la clase Administrador.
 /* End of file Administrador.php */
 /* Location: ./application/controllers/Administrador.php */

@@ -15,6 +15,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @version 1.0 Versión inicial de la clase.
  */
 class TipoHerida_model extends CI_Model {
+	/**
+	 * Constante que almacenará el nombre de la tabla Usuario.
+	 */
+	const TABLE_NAME = "TipoHerida";
+	/**
+	 * Constante que almacenará el nombre de la llave primaria de la tabla Usuario.
+	 */
+	const TABLE_PK_NAME = "idTipoHerida";
 
 	/**
 	 * Función __construct del modelo TipoHerida_model.
@@ -49,6 +57,39 @@ class TipoHerida_model extends CI_Model {
 		if($query->num_rows() > 0) return $query;
 		else return false;
 	}
+
+	/**
+	 * Función contar_registros del modelo TipoHerida_model.
+	 *
+	 * Esta función se encarga de contar la cantidad de registros en la tabla TipoHerida.
+	 *
+	 * @access public
+	 * @return integer Retorna la cantidad de resultados obtenidos.
+	 */
+	public function contar_registros(){
+        $this->db->select('*');    
+        $this->db->from(self::TABLE_NAME);
+        return $this->db->count_all_results();
+    }
+    
+    /**
+     * Función obtener_resultados del modelo TipoHerida_model.
+	 *
+	 * Esta función se encarga de obtener los tipos de heridas dado cierto limite e inicio.
+	 *
+	 * @access public
+     * @param  integer $limit limite de la consulta.
+     * @param  integer $start inicio de la consulta.
+     * @return Array          Retorna un arreglo de objetos con los tipos de heridas encontrados.
+     */
+    public function obtener_resultados($limit=100,$start=0){
+        $this->db->select('*');        
+        $this->db->from(self::TABLE_NAME);
+        $this->db->order_by(self::TABLE_PK_NAME, 'ASC');
+        $this->db->limit($limit, $start);    
+        $query = $this->db->get();    
+        return $query->result();
+    }
 }// Fin de la clase TipoHerida_model
 /* End of file TipoHerida_model.php */
 /* Location: ./application/models/TipoHerida_model.php */

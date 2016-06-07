@@ -203,7 +203,7 @@ class Usuario extends MY_ControladorGeneral {
 		$data                              = array();
 		$data['titulo']                    = "Perfil - Lista de pacientes";
 		$data['rol']                       = $this->obtener_rol_sesion();
-		$data['url_gestiontiposherida']    = "";
+		$data['url_gestiontiposherida']    = "Administrador/administracion-de-tipos-de-heridas";
 		$data['url_gestionfactoresriesgo'] = "";
 		$data['url_gestionactividades']    = "";
 		$data['url_gestionusuarios']       = "Administrador/administracion-de-usuarios";
