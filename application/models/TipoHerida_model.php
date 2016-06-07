@@ -90,6 +90,36 @@ class TipoHerida_model extends CI_Model {
         $query = $this->db->get();    
         return $query->result();
     }
+
+    /**
+     * Función obtener_por_id del modelo TipoHerida_model.
+	 *
+	 * Esta función se encarga de obtener un tipo de herida dado su id.
+	 *
+	 * @access public
+     * @param  integer $idTipoHerida Id único del tipo de herida.
+     * @return mixed              Retorna el tipo de herida si lo encuentra, de lo contrario retorna null.
+     */
+    public function obtener_por_id($idTipoHerida){
+    	$tipoHerida = $this->db->get_where(self::TABLE_NAME, array('idTipoHerida' => $idTipoHerida));
+    	if($tipoHerida->num_rows() == 1){
+			return $tipoHerida->row();
+		}
+		return null;
+    }
+
+    /**
+     * Función eliminar_por_id del modelo TipoHerida_model.
+	 *
+	 * Esta función se encarga de eliminar un tipo de herida dado su id.
+	 *
+	 * @access public
+     * @param  integer $idTipoHerida Identificación única del tipo de herida.
+     * @return boolean                 Retorna true si se pudo eliminar, sino retorna false.
+     */
+    public function eliminar_por_id($idTipoHerida){
+    	return $this->db->delete(self::TABLE_NAME, array('idTipoHerida' => $idTipoHerida));
+    }
 }// Fin de la clase TipoHerida_model
 /* End of file TipoHerida_model.php */
 /* Location: ./application/models/TipoHerida_model.php */

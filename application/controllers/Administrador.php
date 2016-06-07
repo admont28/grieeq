@@ -331,6 +331,16 @@ class Administrador extends MY_ControladorGeneral {
     	}
     }
 
+    /**
+     * Función administracion_de_tipos_de_heridas del controlador Administrador.
+     *
+     * Esta función se encarga de obtener los tipos de herida y mostrarlos en forma de tabla y paginarlos.
+     *
+     * @access public
+     * @param  string  $pagina      Es usada para mostrar en la url el string: pagina 
+     * @param  integer $page_number Número de la página a mostrar.
+     * @return void                 Muestra la página con los tipos de herida paginados.
+     */
     public function administracion_de_tipos_de_heridas($pagina='',$page_number = 1){
         $this->breadcrumb->populate(array(
             'Inicio' => '',
@@ -385,6 +395,37 @@ class Administrador extends MY_ControladorGeneral {
         }
         $data['titulo'] ="Administración - Tipos de heridas";
         $this->mostrar_pagina('admin/tipoherida/administracionTipoHerida', $data);
+    }
+
+    /**
+     * Función eliminar_tipo_herida del controlador Administrador.
+     *
+     * Esta función se encarga de eliminar un tipo de herida de la base de datos.
+     *
+     * @access public
+     * @return void Imprime un objeto JSON dependiendo de lo que se pudo hacer, si no existe nada por post, se redirige a: administracion-de-tipos-de-herida. 
+     */
+    public function eliminar_tipo_herida(){
+        if ($this->input->post('seleccion')) {
+            $idTipoHerida = $this->input->post('seleccion');
+            $this->load->model('TipoHerida_model');
+            $tipoHerida = $this->TipoHerida_model->obtener_por_id($idTipoHerida);
+            if ($tipoHerida != null) {
+                $respuesta = $this->TipoHerida_model->eliminar_por_id($tipoHerida->idTipoHerida);
+                if($respuesta){
+                    echo json_encode(array("state" => "success", "title" => "¡Tipo de herida eliminado con éxito!", "message" => "El tipo de herida ha sido eliminado con éxito."));
+                    die();
+                }else{
+                    echo json_encode(array("state" => "error", "message" => "Ha ocurrido un error inesperado, por favor inténtelo de nuevo."));
+                    die();
+                }
+            } else {
+                echo json_encode(array("state" => "error", "message" => "Identificador del tipo de herida no válido."));
+                die();
+            }
+        } else {
+            redirect('Administrador/administracion-de-tipos-de-heridas','refresh');
+        }
     }
 } // Fin de la clase Administrador.
 /* End of file Administrador.php */

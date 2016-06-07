@@ -45,3 +45,67 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+	$("#eliminar").click(function(e) {
+		e.preventDefault();
+		var seleccion = $('input:radio[name=seleccionar]:checked').val();
+		if(typeof seleccion == "undefined"){
+			swal({
+				title: "Oops... ¡Ha ocurrido un error!",
+				text: "Debe seleccionar un tipo de herida para poderlo eliminar.",
+				type: "error"
+			});
+		}else{
+			swal({
+			  	title: '¿Eliminar tipo de herida?',
+			  	text: "No podrás deshacer esta acción, ¿Desea continuar?",
+			  	type: 'warning',
+			  	showCancelButton: true,
+			  	confirmButtonColor: '#3085d6',
+			  	cancelButtonColor: '#d33',
+			  	confirmButtonText: 'Si, eliminar',
+			  	cancelButtonText: 'No, cancelar',
+			}).then(function(isConfirm) {
+			  	if (isConfirm) {
+			  		$.ajax({
+			  			url: '<?php echo base_url('Administrador/eliminar-tipo-herida'); ?>',
+			  			data: {
+							'<?php echo $this->security->get_csrf_token_name(); ?>': '<?php echo $this->security->get_csrf_hash(); ?>',
+			  				'seleccion': seleccion
+			  			},
+			  			type: 'POST',
+			  			dataType: 'JSON',
+			  			success: function(data){
+			  				if(data.state == "success"){
+			  					swal({
+						    		title: data.title,
+						      		text: data.message,
+						      		type: 'success'
+						    	}).then(function(isConfirm) {
+						    		location.reload();
+						    	});
+			  				}else if(data.state == "error"){
+			  					swal({
+									title: "Oops... ¡Ha ocurrido un error!",
+									text: data.message,
+									type: "error"
+								}).then(function(isConfirm) {
+						    		location.reload();
+						    	});
+			  				}
+			  			},
+			  			error: function(xhr, status){
+			  				swal({
+								title: "Oops... ¡Ha ocurrido un error!",
+								text: "Ha sucedido un error inesperado, compruebe los datos e inténtelo de nuevo.",
+								type: "error"
+							}).then(function(isConfirm) {
+						    		location.reload();
+						    });
+			  			}
+			  		});
+			  	}
+			});
+		}
+	});
+</script>
