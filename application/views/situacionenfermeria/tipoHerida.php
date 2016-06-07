@@ -3,12 +3,11 @@
  * Vista type_wound, es la encargada de mostrar todos los tipos de herida organizados, además,
  * crea el select para que el usuario seleccione uno y continue.
  *
- * @package aplication/views
+ * @package aplication/views/situacionenfermeria
  * @author Andrés David Montoya Aguirre <admont28@gmail.com>
  * @link https://github.com/admont28 Perfil del autor.
  * @version 1.0 Versión inicial del fichero.
  */
-
 defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="container">
 	<div class="row">
@@ -78,7 +77,5 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 					?>
 				</div>
 			</div>
-			<?php
-		endif; // Endif isset
-	?>
+	<?php endif; ?>
 </div>

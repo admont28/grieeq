@@ -2,7 +2,6 @@
 /**
  * Archivo Actividad_model, contiene la clase para manejar la tabla Actividad de la base de datos.
  */
-
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
@@ -69,5 +68,6 @@ class Actividad_model extends CI_Model {
 		if($resultado->num_rows() > 0 )return $resultado->result();
         else return false;
 	}
-}
-?>
+}// Fin de la clase Actividad_model
+/* End of file Actividad_model.php */
+/* Location: ./application/models/Actividad_model.php */

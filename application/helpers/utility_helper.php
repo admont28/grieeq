@@ -2,6 +2,7 @@
 	/**
 	 * Archivo usado como helper para acceder al directorio assets que contiene las imagenes, css,
 	 * js y demás archivos de poyo.
+	 * @package aplication/helpers
 	 * @author Andrés David Montoya Aguirre <admont28@gmail.com>
 	 * @link https://github.com/admont28 Perfil del autor.
 	 * @version 1.0 Versión inicial de la clase.
@@ -15,4 +16,5 @@
 	function asset_url($url = ''){
 	   return base_url().'assets/'.$url;
 	}
-?>
+/* End of file utility_helper.php */
+/* Location: ./application/ontrollers/utility_helper.php */

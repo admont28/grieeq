@@ -1,6 +1,16 @@
 <?php
+/**
+ * Archivo Administrador, contiene la clase para manejar la administración de la aplicación
+ */
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+/**
+ * Controlador Administrador el cual contendrá las funciones para administrar la aplicación web.
+ * 
+ * @package aplication/controllers
+ * @author Andrés David Montoya Aguirre <admont28@gmail.com>
+ * @link https://github.com/admont28 Perfil del autor.
+ * @version 1.0 Versión inicial de la clase.
+ */
 class Administrador extends MY_ControladorGeneral {
 
 	/**
@@ -16,21 +26,27 @@ class Administrador extends MY_ControladorGeneral {
 		parent::__construct();
 	}
 
-	public function index()
-	{
-		
+	/**
+	 * Función index del controlador Administrador.
+	 * 
+	 * Esta función se encarga de redireccionar a: administración de usuarios.
+	 * 
+	 * @access public
+	 * @return void Redirecciona al método administracion_de_usuarios.
+	 */
+	public function index(){
+		redirect('Administrador/administracion-de-usuarios','refresh');
 	}
 
-	/*public function administracion_de_usuarios(){
-		$this->breadcrumb->populate(array(
-		    'Inicio' => '',
-		   	'Perfil' => 'Usuario',
-		   	'Administración de usuarios'
-		));
-		$data = array();
-		$this->mostrar_pagina('admin/usuario/administracionUsuario', $data);	
-	}*/
-
+	/**
+	 * Función bs_paginación del controlador Administrador.
+	 *
+	 * Esta función se encarga de adicionar al parámetro config las etiquetas para la paginación en bootstrap.
+	 *
+	 * @access private
+	 * @param  Array $config Arreglo a adicionar las etiquetas para la paginación de bootstrap.
+	 * @return Array         Retorna un arreglo con las etiquetas usadas en la paginación de bootstrap.
+	 */
 	private function bs_paginacion($config){
         /* This Application Must Be Used With BootStrap 3 *  */
 		$config['full_tag_open']    = "<ul class='pagination'>";
@@ -49,7 +65,17 @@ class Administrador extends MY_ControladorGeneral {
 		$config['last_tagl_close']  = "</li>";
         return $config;
     }
- 
+
+ 	/**
+ 	 * Función administracion_de_usuarios del controlador Administrador.
+	 *
+	 * Esta función se encarga de obtener los usuarios y mostrarlos en forma de tabla y paginarlos.
+	 *
+	 * @access public
+ 	 * @param  string  $pagina      Es usada para mostrar en la url el string: pagina 
+ 	 * @param  integer $page_number Número de la página a mostrar.
+ 	 * @return void               	Muestra la página con los usuarios paginados.
+ 	 */
     public function administracion_de_usuarios($pagina='',$page_number = 1){
     	$this->breadcrumb->populate(array(
 		    'Inicio' => '',
@@ -57,21 +83,19 @@ class Administrador extends MY_ControladorGeneral {
 		   	'Administración de usuarios'
 		));
         $this->load->model('Usuario_model');        
-            
-        //Pagination
+        // Cargo la librería pagination de codeigniter.
         $this->load->library("pagination");
-        //Set config options
+        // configuro la cantidad de registros por página.
         $config["per_page"] = 4;
-        $config['use_page_numbers'] = TRUE;            
-        $config['base_url'] = base_url()."Administrador/administracion-de-usuarios/pagina/";//Link to use for pagination
-        //Add bootstrap html to config
+        $config['use_page_numbers'] = TRUE;
+        // Enlace para usar la paginación         
+        $config['base_url'] = base_url()."Administrador/administracion-de-usuarios/pagina/";
+        // Adición del html de bootstrap a la variable de configuración
         $config = $this->bs_paginacion($config);
-        //fix request for usuarios for page number use
         $page_number = intval(($page_number  == 1 || $page_number  == 0) ? 0 : ($page_number * $config['per_page']) - $config['per_page']);
         $identificacion_usuario = $this->session->usuario['identificacion_usuario'];
         $config['total_rows'] = $this->Usuario_model->contar_registros();        
-        $usuarios = $this->Usuario_model->obtener_resultados($config["per_page"], $page_number, $identificacion_usuario);
-
+        $usuarios = $this->Usuario_model->obtener_resultados($config["per_page"], $page_number);
         $this->pagination->initialize($config);                
         $data['pagination'] = $this->pagination->create_links();
         $this->load->library('table');
@@ -114,6 +138,14 @@ class Administrador extends MY_ControladorGeneral {
         $this->mostrar_pagina('admin/usuario/administracionUsuario', $data);
     }
 
+    /**
+     * Función eliminar_usuario del controlador Administrador.
+	 *
+	 * Esta función se encarga de eliminar un usuario de la base de datos.
+	 *
+	 * @access public
+     * @return void Imprime un objeto JSON dependiendo de lo que se pudo hacer, si no existe nada por post, se redirige a: administracion-de-usuarios. 
+     */
     public function eliminar_usuario(){
     	if ($this->input->post('seleccion')) {
     		$idUsuario = $this->input->post('seleccion');
@@ -138,6 +170,15 @@ class Administrador extends MY_ControladorGeneral {
     	}
     }
 
+    /**
+     * Función formulario_edicion_de_usuario del controlador Administrador.
+	 *
+	 * Esta función se encarga de mostrar el formulario de edición de un usuario.
+	 *
+	 * @access public
+     * @param  integer $idUsuario identificador único del usuario a editar.
+     * @return void            	  Muestra el formulario de edición si existe el usuario, sino, redirecciona a: administracion-de-usuarios.
+     */
     public function formulario_edicion_de_usuario($idUsuario){
     	$this->breadcrumb->populate(array(
 			'Inicio'                     => '',
@@ -157,26 +198,30 @@ class Administrador extends MY_ControladorGeneral {
 		$this->mostrar_pagina('admin/usuario/editarUsuario', $data);
     }
 
+    /**
+     * Función editar_usuario del controlador Administrador.
+	 *
+	 * Esta función se encarga de realizar las validaciones antes de editar un usuario en la base de datos
+	 *
+	 * @access public
+     * @return void  Redirecciona a administracion-de-usuarios si encuentra algún error o si ha sido exitosa la actualización.
+     */
     public function editar_usuario(){
     	if($this->input->post('submit')){
-    		//hacemos las comprobaciones que deseemos en nuestro formulario
+    		//hacemos las comprobaciones que de nuestro formulario
     		$this->form_validation->set_rules('idUsuario', 'Id usuario', 'trim|required');
 			$this->form_validation->set_rules('identificacion','Identificacion','trim|required|max_length[50]|min_length[8]|callback_es_unico[identificacion]');
 			$this->form_validation->set_rules('password','Contraseña','trim|max_length[50]|min_length[8]');
 			$this->form_validation->set_rules('repetirpassword','Repetir contraseña','matches[password]');
 			$this->form_validation->set_rules('correo','Correo electrónico','trim|valid_email|required|callback_es_unico[correo]');
-			
-			//validamos que se introduzcan los campos requeridos con la función de ci required
 			$this->form_validation->set_message('required', 'El campo %s es obligatorio');
-			//validamos el email con la función de ci valid_email
 			$this->form_validation->set_message('valid_email', 'El campo %s no es v&aacute;lido');
-			//comprobamos que se cumpla el mínimo de caracteres introducidos
 			$this->form_validation->set_message('min_length', 'El campo %s debe tener al menos %s carácteres');
-			//comprobamos que se cumpla el máximo de caracteres introducidos
 			$this->form_validation->set_message('max_length', 'El campo %s debe tener menos %s car&aacute;cteres');
 			$this->form_validation->set_message('matches', 'Las contraseñas deben ser iguales.');
 			$this->form_validation->set_message('es_unico', 'El valor del campo %s ya existe en el sistema.');
 			$idUsuario = $this->security->xss_clean($this->input->post('idUsuario'));
+			// Validamos el formulario, si retorna falso cargamos el método formulario_edicion_de_usuario para mostrar los errores ocurridos.
 			if (!$this->form_validation->run()){
 				$this->formulario_edicion_de_usuario($idUsuario);
 			}else{
@@ -202,6 +247,18 @@ class Administrador extends MY_ControladorGeneral {
     	}
     }
 
+    /**
+     * Función es_unico del controlador Administrador.
+	 *
+	 * Esta función se encarga de realizar la validación en base de datos sobre un campo, si la operación es 'identificación' validará que la identificación introducida no se encuentre ya registrada en la base de datos, si la operación es 'correo' validará que el correo electrónico introducido no se encuentra ya registrado en la base de datos.
+	 *
+	 * Función usada por el callback de form validation, en la edición de un usuario.
+	 *
+	 * @access public
+     * @param  mixed $campo     Campo que se desea validar (identificación o correo)
+     * @param  string $operacion Operación que se desea hacer (validar identificación o validar correo electrónico)
+     * @return boolean            Retorna true si es unico el campo a validar, de lo contrario retorna false.
+     */
     public function es_unico($campo, $operacion){
     	$idUsuario = $this->input->post('idUsuario');
     	$this->load->model('Usuario_model');
@@ -225,6 +282,14 @@ class Administrador extends MY_ControladorGeneral {
     	}
     }
 
+    /**
+     * Función cambiar_estado_usuario del controlador Administrador.
+	 *
+	 * Esta función se encarga de cambiar el estado de un usuario en la base de datos, el cambio de estado es de: inhabilitado o habilitado.
+	 *
+	 * @access public
+     * @return void 	Imprime un JSON con la respuesta o redirige si no existe nada en post
+     */
     public function cambiar_estado_usuario(){
     	if ($this->input->post('seleccion')) {
     		$idUsuario = $this->input->post('seleccion');
@@ -233,7 +298,6 @@ class Administrador extends MY_ControladorGeneral {
     		$this->load->model('Usuario_model');
     		$usuario = $this->Usuario_model->obtener_por_id($idUsuario);
     		if ($usuario != null && $usuario->identificacion_usuario != $id_usuario_session && trim($operacion) != "" && ($operacion == "habilitar" || $operacion == "inhabilitar")) {
-    			
     			if($operacion == "habilitar" && $usuario->estado_usuario == true){
     				echo json_encode(array("state" => "error", "message" => "El usuario ya se encuentra habilitado.<br>Al pulsar en el botón OK se recargará la página actual."));
     				die();
@@ -266,8 +330,6 @@ class Administrador extends MY_ControladorGeneral {
     		redirect('Administrador/administracion-de-usuarios','refresh');
     	}
     }
-
-}
-
+} // Fin de la clase Administrador.
 /* End of file Administrador.php */
 /* Location: ./application/controllers/Administrador.php */

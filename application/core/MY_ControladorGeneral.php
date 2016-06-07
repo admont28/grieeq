@@ -2,13 +2,12 @@
 /**
  * Archivo ControladorGeneral, contiene la clase para manejar los controladores.
  */
-
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * Controlador ControladorGeneral el cual contendrá las funciones y elementos comunes a todos los controladores.
  *
- * @package aplication/controllers
+ * @package aplication/core
  * @author Andrés David Montoya Aguirre <admont28@gmail.com>
  * @link https://github.com/admont28 Perfil del autor.
  * @version 1.0 Versión inicial de la clase.
@@ -29,9 +28,8 @@ class MY_ControladorGeneral extends CI_Controller {
 	}
 
 	/**
-	 * Funcion mostrar_pagina para el controlador ControladorGeneral.
+	 * Función mostrar_pagina para el controlador ControladorGeneral.
 	 *
-	 * Esta función solo puede ser accedida desde este mismo controlador (ControladorGeneral).
 	 * La función carga los archivos necesarios para mostrar una página (carga la plantilla), y muestra la página.
 	 * @param  String $vista Nombre de la vista a cargar, por defecto se cargará la vista: information
 	 * @param  Array $datos Array asociativo opcional por si se desea enviar datos a la vista, por defecto es un arreglo vacío.
@@ -117,5 +115,6 @@ class MY_ControladorGeneral extends CI_Controller {
 	  }
 	  return $retval;
 	} 
-}
-?>
+}// Fin de la clase MY_ControladorGeneral
+/* End of file MY_ControladorGeneral.php */
+/* Location: ./application/core/MY_ControladorGeneral.php */

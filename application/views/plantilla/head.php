@@ -1,13 +1,12 @@
 <?php
 /**
- * Vista head, es la encargada de crear el documento html 5 con su head y abrir el body.
+ * Vista head, es la encargada de crear el documento html 5 con su head, cargar los js y css a usar en la aplicación y abrir el body.
  *
- * @package aplication/views
+ * @package aplication/views/plantilla
  * @author Andrés David Montoya Aguirre <admont28@gmail.com>
  * @link https://github.com/admont28 Perfil del autor.
  * @version 1.0 Versión inicial del fichero.
  */
-
 defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <!DOCTYPE html>
 <html lang="es">

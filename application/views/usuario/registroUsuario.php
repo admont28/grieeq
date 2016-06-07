@@ -6,8 +6,7 @@
  * @author Andrés David Montoya Aguirre <admont28@gmail.com>
  * @link https://github.com/admont28 Perfil del autor.
  * @version 1.0 Versión inicial del fichero.
- */
-
+ */s
 defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="container">
 	<div class="row">

@@ -2,8 +2,6 @@
 /**
  * Archivo Error_404, contiene la clase para manejar el error 404.
  */
-
-
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
@@ -42,5 +40,6 @@ class Error_404 extends CI_Controller {
 	public function index(){
 		show_404();
 	}
-}
-?>
+} // Fin de la clase Error_404
+/* End of file Error_404.php */
+/* Location: ./application/controllers/Error_404.php */

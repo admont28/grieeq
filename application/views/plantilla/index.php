@@ -1,13 +1,12 @@
 <?php 
 /**
- * Vista content, es la encargada de mostrar el inicio o home de la aplicaicón.
+ * Vista index, es la encargada de mostrar el inicio o home de la aplicaicón.
  *
- * @package aplication/views
+ * @package aplication/views/plantilla
  * @author Andrés David Montoya Aguirre <admont28@gmail.com>
  * @link https://github.com/admont28 Perfil del autor.
  * @version 1.0 Versión inicial del fichero.
  */
-
 defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="container">
 	<div class="row margin-bottom-2em">

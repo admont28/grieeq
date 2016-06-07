@@ -2,12 +2,11 @@
 /**
  * Vista iniciosesion, es la encargada de mostrar los campos necesarios para el registro de nuevos usuarios.
  *
- * @package aplication/views
+ * @package aplication/views/usuario
  * @author Andrés David Montoya Aguirre <admont28@gmail.com>
  * @link https://github.com/admont28 Perfil del autor.
  * @version 1.0 Versión inicial del fichero.
  */
-
 defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="container">
 	<div class="row">

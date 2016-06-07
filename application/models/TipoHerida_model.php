@@ -49,5 +49,6 @@ class TipoHerida_model extends CI_Model {
 		if($query->num_rows() > 0) return $query;
 		else return false;
 	}
-}
-?>
+}// Fin de la clase TipoHerida_model
+/* End of file TipoHerida_model.php */
+/* Location: ./application/models/TipoHerida_model.php */

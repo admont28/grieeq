@@ -1,8 +1,7 @@
 <?php
 /**
- * Archivo SituacionEnfermeria, contiene la clase para manejar la aplicación.
+ * Archivo SituacionEnfermeria, contiene la clase para manejar las situaciones de enfermería de la aplicación.
  */
-
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
@@ -16,23 +15,50 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class SituacionEnfermeria extends MY_ControladorGeneral {
 
+	/**
+	 * Constante que almacena el nombre de la situación de enfermería.
+	 */
 	const SITUACIONENFERMERIA_NOMBRE = "Situación de Enfermería";
+	/**
+	 * Constante que almacena la url de la clase actual.
+	 */
 	const SITUACIONENFERMERIA_URL = "SituacionEnfermeria/";
-
+	/**
+	 * Constante que almacena el nombre de la localización anatómica.
+	 */
 	const LOCALIZACION_NOMBRE = "Localización anatómica";
+	/**
+	 * Constante que almacena la url de la localización anatómica.
+	 */
 	const LOCALIZACION_URL = "localizacion-anatomica/";
-
+	/**
+	 * Constante que almacena el nombre del tipo de herida.
+	 */
  	const TIPOHERIDA_NOMBRE = "Tipo de herida";
+ 	/**
+ 	 * Constante que almacena la url del tipo de herida.
+ 	 */
  	const TIPOHERIDA_URL = "tipo-de-herida";
-
+ 	/**
+ 	 * Constante que almacena el nombre del factor de riesgo.
+ 	 */
 	const FACTORRIESGO_NOMBRE = "Factores de riesgo";
+	/**
+	 * Constante que almacena la url del factor de riesgo.
+	 */
 	const FACTORRIESGO_URL = "factores-de-riesgo/";
-
+	/**
+	 * Constante que almacena el nombre de las actividades sugeridas.
+	 */
 	const ACTIVIDAD_NOMBRE = "Actividades sugeridas";
+	/**
+	 * Constante que alamacena la url de las actividades sugeridas.
+	 */
 	const ACTIVIDAD_URL = "actividades-sugeridas/";
-
+	/**
+	 * Constante que almacena la url para el reinicio de la aplicación
+	 */
 	const REINICIO_URL = "reiniciar-situacion-de-enfermeria";
-
 
 	/**
 	 * Función __construct del controlador SituacionEnfermeria.
@@ -270,7 +296,6 @@ class SituacionEnfermeria extends MY_ControladorGeneral {
 						$actividades_factor_riesgo[] = $actividad;
 				}
 			}
-			
 			// inicalmente las actividades generales contendrán las actividades dadas por el tipo de herida
 			$actividades_generales = (is_array($actividades_tipo_herida)) ? $actividades_tipo_herida: array();
 			// Si seleccionó algún factor de riesgo procedo a incluir y excluir las actividades
@@ -352,5 +377,6 @@ class SituacionEnfermeria extends MY_ControladorGeneral {
 		}
 		return false;
 	}
-}
-?>
+}// Fin de la clase SituacionEnfermeria
+/* End of file SituacionEnfermeria.php */
+/* Location: ./application/controllers/SituacionEnfermeria.php */

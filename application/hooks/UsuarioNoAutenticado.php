@@ -1,18 +1,51 @@
 <?php
+/**
+ * Archivo UsuarioNoAutenticado, contiene la clase para validar el acceso a los controladores y métodos cuando el usuario no está autenticado.
+ */
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Hook que verifica el acceso a los controladores cuando el usuario no está autenticado.
+ * Clase UsuarioNoAutenticado.
+ *
+ * Esta clase es un hook que verifica el acceso a los controladores y los métodos de toda la aplicación si el usuario es un usuario no autenticado o anónimo.
+ *
+ * @package aplication/hooks
+ * @author Andrés David Montoya Aguirre <admont28@gmail.com>
+ * @link https://github.com/admont28 Perfil del autor.
+ * @version 1.0 Versión inicial de la clase.
  */
 class UsuarioNoAutenticado{
-
+	/**
+	 * Variable CI que contendrá una instancia del núcleo de codeigniter
+	 * @var Object
+	 */
 	private $ci;
-
+	/**
+	 * Variable controladores permitidos que contendrá la lista de controladores a los que un usuario no autenticado podrá acceder.
+	 * @var Array
+	 */
 	private $controladores_permitidos;
-
+	/**
+	 * Variable metodos permitidos que contendrá la lista de métodos a los que un usuario no autenticado puede acceder.
+	 * @var Array
+	 */
 	private $metodos_permitidos;
-
+	/**
+	 * Variable metodos no permitidos que contendrá la lista de métodos a los que un usuario no autenticado no podrá acceder.
+	 * @var [type]
+	 */
 	private $metodos_no_permitidos;
 
+	/**
+	 * Función __construct del hook UsuarioNoAutenticado.
+	 *
+	 * Esta función se ejecuta cuando se crea una instancia de este hook (UsuarioNoAutenticado).
+	 *
+	 * La función inicializa las variables de la clase UsuarioNoAutenticado para el manejo de ellas.
+	 * 
+	 * @access public
+	 * @return void  
+	 */
 	public function __construct(){
 		$this->ci                       =& get_instance();
 		$this->controladores_permitidos = ['Usuario','SituacionEnfermeria','Inicio'];
@@ -23,6 +56,14 @@ class UsuarioNoAutenticado{
 		];
 	}
 
+	/**
+	 * Función verificar_acceso para el hook UsuarioNoAutenticado.
+	 * 
+	 * Esta función se encarga de verificar que el usuario no autenticado tenga permisos de acceso sobre los controladores y métodos a los que está accediendo.
+	 *
+	 * @access public
+	 * @return void Redirige al inicio de sesión del usuario si no tiene permisos para acceder.
+	 */
 	public function verificar_acceso(){
 		$clase   = $this->ci->router->class;
 		$metodo  = $this->ci->router->method;
@@ -48,4 +89,6 @@ class UsuarioNoAutenticado{
 			}
 		}
 	}
-} // Cierre clase UsuarioNoAutenticado
+} // Fin de la clase UsuarioNoAutenticado
+/* End of file UsuarioNoAutenticado.php */
+/* Location: ./application/hooks/UsuarioNoAutenticado.php */

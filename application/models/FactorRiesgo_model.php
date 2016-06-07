@@ -2,7 +2,6 @@
 /**
  * Archivo FactorRiesgo_model, contiene la clase para manejar la tabla FactorRiesgo de la base de datos.
  */
-
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
@@ -44,5 +43,6 @@ class FactorRiesgo_model extends CI_Model {
 		if($query->num_rows() > 0) return $query;
 		else return false;
 	}
-}
-?>
+}// Fin de la clase FactorRiesgo_model
+/* End of file FactorRiesgo_model.php */
+/* Location: ./application/models/FactorRiesgo_model.php */

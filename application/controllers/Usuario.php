@@ -2,7 +2,6 @@
 /**
  * Archivo Usuario, contiene la clase para manejar los Usuarios de la aplicación.
  */
-
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
@@ -32,7 +31,7 @@ class Usuario extends MY_ControladorGeneral {
 	 * Función index para el controlador Usuario.
 	 * 
 	 * Esta función será ejecutada si no se especifica nada en la URL (ej: URL_APP/Usuario).
-	 * La función muestra la página inicial de la aplicación.
+	 * La función redirige al metodo perfil si el usuario ha iniciado sesión, sino, es redireccionado al metodo: formulario-inicio-de-sesion
 	 *
 	 * @access public
 	 * @return void No se retorna, se muestra la página.
@@ -47,6 +46,14 @@ class Usuario extends MY_ControladorGeneral {
 		}
 	}
 
+	/**
+	 * Función formulario_de_registro_de_usuario para el controlador Usuario.
+	 * 
+	 * Esta función se encarga de mostrar la página para el registro de un nuevo usuario.
+	 *
+	 * @access public
+	 * @return void 	Se muestra la página para el registro de un nuevo usuario.
+	 */
 	public function formulario_de_registro_de_usuario(){
 		$this->breadcrumb->populate(array(
 		    'Inicio' => '',
@@ -54,10 +61,18 @@ class Usuario extends MY_ControladorGeneral {
 		));
 		$data                        = array();
 		$data['url_registrousuario'] = "Usuario/registro-de-usuario";
-		$data['titulo'] = "Registro de usuario";
+		$data['titulo']              = "Registro de usuario";
 		$this->mostrar_pagina('usuario/registroUsuario', $data);
 	}
 
+	/**
+	 * Función registro_de_usuario para el controlador Usuario.
+	 * 
+	 * Esta función se encarga de registrar un nuevo usuario en la base de datos, haciendo las validaciones de los campos y mostrando errores si los encuentra.
+	 *
+	 * @access public
+	 * @return void Redirige a formulario-de-registro-de-usuario si todo sale bien o si existe algun error, si los campos no pasan la validación se carga el método: formulario_de_registro_de_usuario mostrando los mensajes asociados.
+	 */
 	public function registro_de_usuario(){
 		if($this->input->post('submit')){
 			//hacemos las comprobaciones que deseemos en nuestro formulario
@@ -65,26 +80,21 @@ class Usuario extends MY_ControladorGeneral {
 			$this->form_validation->set_rules('password','Contraseña','trim|required|max_length[50]|min_length[8]');
 			$this->form_validation->set_rules('repetirpassword','Repetir contraseña','trim|required|max_length[50]|min_length[8]|callback_passwords_iguales['.$this->input->post('password').']');
 			$this->form_validation->set_rules('correo','Correo electrónico','trim|valid_email|required|is_unique[Usuario.correo_usuario]');
-			
-			//validamos que se introduzcan los campos requeridos con la función de ci required
 			$this->form_validation->set_message('required', 'El campo %s es obligatorio');
-			//validamos el email con la función de ci valid_email
 			$this->form_validation->set_message('valid_email', 'El campo %s no es v&aacute;lido');
-			//comprobamos que se cumpla el mínimo de caracteres introducidos
 			$this->form_validation->set_message('min_length', 'El campo %s debe tener al menos %s carácteres');
-			//comprobamos que se cumpla el máximo de caracteres introducidos
 			$this->form_validation->set_message('max_length', 'El campo %s debe tener menos %s car&aacute;cteres');
 			$this->form_validation->set_message('passwords_iguales', 'Las contraseñas deben ser iguales.');
 			$this->form_validation->set_message('is_unique', 'El valor del campo %s ya existe en el sistema.');
 			if (!$this->form_validation->run()){
 				$this->formulario_de_registro_de_usuario();
 			}else{
-				$identificacion  = $this->security->xss_clean($this->input->post('identificacion'));
-				$password        = $this->security->xss_clean($this->input->post('password'));
-				$correo          = $this->security->xss_clean($this->input->post('correo'));
+				$identificacion = $this->security->xss_clean($this->input->post('identificacion'));
+				$password       = $this->security->xss_clean($this->input->post('password'));
+				$correo         = $this->security->xss_clean($this->input->post('correo'));
 				$this->load->model('Usuario_model');
-				$resultado = $this->Usuario_model->crear_usuario($identificacion, $password, $correo);
-				$mensaje         = array();
+				$resultado      = $this->Usuario_model->crear_usuario($identificacion, $password, $correo);
+				$mensaje        = array();
 				if($resultado){
 					$mensaje['tipo']    = "success";
 					$mensaje['mensaje'] = "Usuario registrado exitosamente.";
@@ -101,17 +111,33 @@ class Usuario extends MY_ControladorGeneral {
 		}
 	}
 
+	/**
+	 * Función formulario_inicio_de_sesion para el controlador Usuario.
+	 * 
+	 * Esta función se encarga de mostrar el formulario para iniciar sesión en la aplicación.
+	 *
+	 * @access public
+	 * @return void 	Muestra la página para iniciar sesión.
+	 */
 	public function formulario_inicio_de_sesion(){
 		$this->breadcrumb->populate(array(
 		    'Inicio' => '',
 		   	'Inicio de sesión'
 		));
-		$data                        = array();
-		$data['titulo'] = "Inicio de sesión";
+		$data                     = array();
+		$data['titulo']           = "Inicio de sesión";
 		$data['url_iniciosesion'] = "Usuario/inicio-de-sesion";
 		$this->mostrar_pagina('usuario/inicioSesion', $data);
 	}
 
+	/**
+	 * Función inicio_de_sesion para el controlador Usuario.
+	 * 
+	 * Esta función se encarga de iniciar sesión en la aplicación.
+	 *
+	 * @access public
+	 * @return void 	Redirige o muestra mensajes al usuario.
+	 */
 	public function inicio_de_sesion(){
 		if($this->input->post('submit')){
 			$this->form_validation->set_rules('identificacion','Identificacion','trim|required');
@@ -120,18 +146,18 @@ class Usuario extends MY_ControladorGeneral {
 			if (!$this->form_validation->run()){
 				$this->formulario_inicio_de_sesion();
 			}else{
-				$identificacion  = $this->input->post('identificacion');
-				$password        = $this->input->post('password');
+				$identificacion = $this->input->post('identificacion');
+				$password       = $this->input->post('password');
 				$this->load->model('Usuario_model');
-				$resultado = $this->Usuario_model->login($identificacion, $password);
-				$mensaje         = array();
+				$resultado      = $this->Usuario_model->login($identificacion, $password);
+				$mensaje        = array();
 				if(!is_null($resultado)){
 					$mensaje['tipo']    = "success";
 					$mensaje['mensaje'] = "Ha iniciado sesión exitosamente.".$resultado->identificacion_usuario;
 					$data = array(
-		                'logueado' 				=> 		TRUE,
-		                'identificacion_usuario' 	=> 		$resultado->identificacion_usuario,
-		                'rol_usuario'					=>		($resultado->administrador_usuario == true)? "admin" : "normal",
+						'logueado'               => TRUE,
+						'identificacion_usuario' => $resultado->identificacion_usuario,
+						'rol_usuario'            =>	($resultado->administrador_usuario == true)? "admin" : "normal",
 	            		);		
 					$this->session->set_userdata('usuario',$data);
 					$this->index();
@@ -148,27 +174,50 @@ class Usuario extends MY_ControladorGeneral {
 		}
 	}
 
+	/**
+	 * Función cerrar_sesion para el controlador Usuario.
+	 * 
+	 * Esta función se encarga de destruir la sesión del usuario para cerrar sesión.
+	 *
+	 * @access public
+	 * @return void 	Redirige al index del controlador Usuario.
+	 */
 	public function cerrar_sesion(){
 		$this->session->sess_destroy();
 		redirect('Usuario','refresh');
 	}
 
+	/**
+	 * Función perfil para el controlador Usuario.
+	 * 
+	 * Esta función se encarga de mostrar la página perfil para el usuario.
+	 *
+	 * @access public
+	 * @return void 	Muestra la página de perfil para el usuario.
+	 */
 	public function perfil(){
 		$this->breadcrumb->populate(array(
 		    'Inicio' => '',
 		   	'Perfil'
 		));
-		
-		$data = array();
-		$data['titulo'] = "Perfil - Lista de pacientes";
-		$data['rol'] = $this->obtener_rol_sesion();
-		$data['url_gestiontiposherida'] = "";
+		$data                              = array();
+		$data['titulo']                    = "Perfil - Lista de pacientes";
+		$data['rol']                       = $this->obtener_rol_sesion();
+		$data['url_gestiontiposherida']    = "";
 		$data['url_gestionfactoresriesgo'] = "";
-		$data['url_gestionactividades'] = "";
-		$data['url_gestionusuarios'] = "Administrador/administracion-de-usuarios";
+		$data['url_gestionactividades']    = "";
+		$data['url_gestionusuarios']       = "Administrador/administracion-de-usuarios";
 		$this->mostrar_pagina('usuario/perfil', $data);	
 	}
 
+	/**
+	 * Función obtener_rol_sesion para el controlador Usuario.
+	 * 
+	 * Esta función se encarga de obtener el rol del usuario que ha iniciado sesión en la aplicación.
+	 *
+	 * @access private
+	 * @return mixed Retorna un string admin si el usuario es un administrador, retorna normal si el usuario es convencional, retorna null si no existe la sesión.
+	 */
 	private function obtener_rol_sesion(){
 		$session = $this->session->usuario;
 		if(isset($session, $session['logueado'], $session['identificacion_usuario'], $session['rol_usuario'])){
@@ -180,11 +229,24 @@ class Usuario extends MY_ControladorGeneral {
 		return null;
 	}
 
+	/**
+	 * Función passwords_iguales para el controlador Usuario.
+	 * 
+	 * Esta función se encarga de verificar que dos contraseñas sean iguales.
+	 *
+	 * Esta función es llamada por el callback de form validation al momento de registrar un usuario nuevo.
+	 *
+	 * @access public
+	 * @param  string $repetirpassword contraseña que se repite al registrar un usuario.
+	 * @param  string $password        constraseña que ingresa al registrar un usuario.
+	 * @return boolean                 Retorna true si las contraseñas son iguales, de lo contrario retorna false.
+	 */
 	public function passwords_iguales($repetirpassword, $password){
 		if($repetirpassword === $password)
 			return true;
 		return false;
 	}
 
-} // Fin Clase Inicio
-?>
+} // Fin de la clase Usuario
+/* End of file Usuario.php */
+/* Location: ./application/controllers/Usuario.php */

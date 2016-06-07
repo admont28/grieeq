@@ -1,13 +1,12 @@
 <?php 
 /**
- * Vista nav, es la encargada de mostrar el menú de navegación así como el breadcrumb
+ * Vista nav, es la encargada de mostrar el menú de navegación así como el breadcrumb y mostrar los mensajes que provengan desde los controladores por medio de la sesión.
  *
- * @package aplication/views
+ * @package aplication/views/plantilla
  * @author Andrés David Montoya Aguirre <admont28@gmail.com>
  * @link https://github.com/admont28 Perfil del autor.
  * @version 1.0 Versión inicial del fichero.
  */
-
 defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div id="menu">
 	  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">

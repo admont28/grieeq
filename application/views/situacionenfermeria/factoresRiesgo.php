@@ -1,14 +1,13 @@
 <?php 
 /**
- * Vista risk_factor, es la encargada de mostrar todos los factores de riesgo organizados y crear el select multiple
+ * Vista factorRiesgo, es la encargada de mostrar todos los factores de riesgo organizados y crear el select multiple
  * para que el usuario pueda seleccionar varios.
  *
- * @package aplication/views
+ * @package aplication/views/situacionenfermeria
  * @author Andrés David Montoya Aguirre <admont28@gmail.com>
  * @link https://github.com/admont28 Perfil del autor.
  * @version 1.0 Versión inicial del fichero.
  */
-
 defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="container">
 	<div class="row">

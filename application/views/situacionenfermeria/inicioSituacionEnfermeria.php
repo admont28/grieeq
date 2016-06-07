@@ -2,12 +2,11 @@
 /**
  * Vista inicioSituacionEnfermeria, es la encargada de mostrar la información principal sobre el uso de la aplicación.
  *
- * @package aplication/views
+ * @package aplication/views/situacionenfermeria
  * @author Andrés David Montoya Aguirre <admont28@gmail.com>
  * @link https://github.com/admont28 Perfil del autor.
  * @version 1.0 Versión inicial del fichero.
  */
-
 defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="container">
 	<div class="row">
@@ -23,6 +22,6 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 				<li><strong>Actividades a Realizar: </strong>Se presenta una lista de actividades ordenadas lógicamente para que el usuario las siga de forma secuencial.</li>
 			</ol>
 		</div>
-		<a class="btn btn-primary margin-bottom-2em col-lg-2 col-md-2 col-sm-4 col-xs-10 col-lg-offset-5 col-md-offset-5 col-sm-offset-4 col-xs-offset-1" href="<?php if(isset($url_localizacion)) echo $url_localizacion?>" title="Iniciar la aplicación">Iniciar la Aplicación	</a>
+		<a class="btn btn-primary margin-bottom-2em col-lg-2 col-md-2 col-sm-4 col-xs-10 col-lg-offset-5 col-md-offset-5 col-sm-offset-4 col-xs-offset-1" href="<?php if(isset($url_localizacion)) echo $url_localizacion?>" title="Iniciar la aplicación">Iniciar la Aplicación</a>
 	</div>
 </div>

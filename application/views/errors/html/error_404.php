@@ -1,8 +1,8 @@
 <?php 
 /**
- * Vista page_missing, es la encargada de mostrar al usuario que la página a la que intentó acceder no existe en la aplicación.
+ * Vista error_404, es la encargada de mostrar al usuario que la página a la que intentó acceder no existe en la aplicación.
  *
- * @package aplication/views
+ * @package aplication/views/errors/html
  * @author Andrés David Montoya Aguirre <admont28@gmail.com>
  * @link https://github.com/admont28 Perfil del autor.
  * @version 1.0 Versión inicial del fichero.

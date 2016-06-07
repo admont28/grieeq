@@ -2,7 +2,6 @@
 /**
  * Archivo Localizacion_model, contiene la clase para manejar la tabla Localizacion de la base de datos.
  */
-
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
@@ -44,5 +43,6 @@ class Localizacion_model extends CI_Model {
 		if($query->num_rows() > 0) return $query;
 		else return false;
 	}
-}
-?>
+}// Fin de la clase Localizacion_model
+/* End of file Localizacion_model.php */
+/* Location: ./application/models/Localizacion_model.php */

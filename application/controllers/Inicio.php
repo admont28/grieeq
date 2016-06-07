@@ -2,7 +2,6 @@
 /**
  * Archivo Inicio, contiene la clase para manejar el home o inicio de la aplicación.
  */
-
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
@@ -43,5 +42,6 @@ class Inicio extends MY_ControladorGeneral {
 		$this->mostrar_pagina('plantilla/index');
 	}
 
-} // Fin Clase Inicio
-?>
+} // Fin de la clase Inicio
+/* End of file Inicio.php */
+/* Location: ./application/controllers/Inicio.php */
