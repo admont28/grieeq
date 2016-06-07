@@ -144,7 +144,7 @@ class Usuario_model extends CI_Model {
     /**
      * Función obtener_resultados del modelo Usuario_model.
 	 *
-	 * Esta función se encarga de obtener los usuairos dado cierto limite e inicio.
+	 * Esta función se encarga de obtener los usuarios dado cierto limite e inicio.
 	 *
 	 * @access public
      * @param  integer $limit limite de la consulta.
