@@ -17,4 +17,4 @@
 	   return base_url().'assets/'.$url;
 	}
 /* End of file utility_helper.php */
-/* Location: ./application/ontrollers/utility_helper.php */
+/* Location: ./application/helpers/utility_helper.php */
