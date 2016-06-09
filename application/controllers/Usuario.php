@@ -25,6 +25,15 @@ class Usuario extends MY_ControladorGeneral {
 	 */
 	public function __construct(){
 		parent::__construct();
+		// Se carga el helper captcha
+		$this->load->helper('captcha');
+		// Se carga el helper string para poder hacer uso de los métodos random_string entre otros.
+		$this->load->helper('string');
+		// Se carga el modelo Captcha model
+		$this->load->model('Captcha_model');
+		//creamos un random alfanumerico de longitud 6 
+		//para nuestro captcha y sesión captcha
+		$this->rand = random_string('alnum', 6);
 	}
 
 	/**
@@ -62,6 +71,11 @@ class Usuario extends MY_ControladorGeneral {
 		$data                        = array();
 		$data['url_registrousuario'] = "Usuario/registro-de-usuario";
 		$data['titulo']              = "Registro de usuario";
+		// Pasamos a la vista el captcha que se ha creado.
+		$data['captcha'] = $this->captcha();
+		//creamos una sesión con el string del captcha que hemos creado
+		//para utilizarlo en la función callback
+		$this->session->set_userdata('captcha', $this->rand);
 		$this->mostrar_pagina('usuario/registroUsuario', $data);
 	}
 
@@ -76,6 +90,7 @@ class Usuario extends MY_ControladorGeneral {
 	public function registro_de_usuario(){
 		if($this->input->post('submit')){
 			//hacemos las comprobaciones que deseemos en nuestro formulario
+			$this->form_validation->set_rules('captcha', 'Captcha', 'callback_validar_captcha');
 			$this->form_validation->set_rules('identificacion','Identificacion','trim|required|max_length[50]|min_length[8]|is_unique[Usuario.identificacion_usuario]');
 			$this->form_validation->set_rules('password','Contraseña','trim|required|max_length[50]|min_length[8]');
 			$this->form_validation->set_rules('repetirpassword','Repetir contraseña','trim|required|max_length[50]|min_length[8]|callback_passwords_iguales['.$this->input->post('password').']');
@@ -89,22 +104,43 @@ class Usuario extends MY_ControladorGeneral {
 			if (!$this->form_validation->run()){
 				$this->formulario_de_registro_de_usuario();
 			}else{
-				$identificacion = $this->security->xss_clean($this->input->post('identificacion'));
-				$password       = $this->security->xss_clean($this->input->post('password'));
-				$correo         = $this->security->xss_clean($this->input->post('correo'));
-				$this->load->model('Usuario_model');
-				$resultado      = $this->Usuario_model->crear_usuario($identificacion, $password, $correo);
-				$mensaje        = array();
-				if($resultado){
-					$mensaje['tipo']    = "success";
-					$mensaje['mensaje'] = "Usuario registrado exitosamente.";
-				}
-				else{
+				$expiracion = time()-600; // Límite de 10 minutos 
+				$ip = $this->input->ip_address();//ip del usuario
+				$captcha = $this->input->post('captcha');//captcha introducido por el usuario
+				//eliminamos los captcha con más de 2 minutos de vida
+				$this->Captcha_model->eliminar_captcha_antiguo($expiracion);
+				//comprobamos si es correcta la imagen introducida
+				$validacion = $this->Captcha_model->comprobar($ip,$expiracion,$captcha);
+				/*
+				|si el número de filas devuelto por la consulta es igual a 1
+				|es decir, si el captcha ingresado en el campo de texto es igual
+				|al que hay en la base de datos, junto con la ip del usuario 
+				|entonces dejamos continuar porque todo es correcto
+				*/
+				if($validacion == 1)
+				{
+					$identificacion = $this->security->xss_clean($this->input->post('identificacion'));
+					$password       = $this->security->xss_clean($this->input->post('password'));
+					$correo         = $this->security->xss_clean($this->input->post('correo'));
+					$this->load->model('Usuario_model');
+					$resultado      = $this->Usuario_model->crear_usuario($identificacion, $password, $correo);
+					$mensaje        = array();
+					if($resultado){
+						$mensaje['tipo']    = "success";
+						$mensaje['mensaje'] = "Usuario registrado exitosamente. El administrador del sistema habilitará o inhabilitará su inicio de sesión.";
+					}
+					else{
+						$mensaje['tipo']    = "error";
+						$mensaje['mensaje'] = "Ha ocurrido un error inesperado, porfavor inténtelo de nuevo.";
+					}
+					$this->session->set_flashdata('mensaje', $mensaje);
+					redirect('Usuario/formulario-de-registro-de-usuario','refresh');
+				}else{
 					$mensaje['tipo']    = "error";
-					$mensaje['mensaje'] = "Ha ocurrido un error inesperado, porfavor inténtelo de nuevo.";
+					$mensaje['mensaje'] = "La imagen ha expirado, debe escribir el texto que aparece en la nueva imagen y presionar el botón Registrarme.";
+					$this->session->set_flashdata('mensaje', $mensaje);
+					$this->formulario_de_registro_de_usuario();
 				}
-				$this->session->set_flashdata('mensaje', $mensaje);
-				redirect('Usuario/formulario-de-registro-de-usuario','refresh');
 			}
 		}else{
 			redirect('Usuario/formulario-de-registro-de-usuario', 'refresh');
@@ -245,6 +281,55 @@ class Usuario extends MY_ControladorGeneral {
 		if($repetirpassword === $password)
 			return true;
 		return false;
+	}
+
+	/**
+	 * Función captcha para el controlador Usuario.
+	 *
+	 * Esta función se encarga de crear el captcha con el helper Captcha de CodeIgniter, además
+	 * llama al modelo Captcha_model para insertar el captcha creado en la base de datos.
+	 *
+	 * @access private
+	 * @return array Retorna un array con el captcha creado.
+	 */
+	private function captcha(){
+		//configuramos el captcha
+		$conf_captcha = array(
+			'word'   => $this->rand,
+			'img_path' => './assets/img/captcha/',
+			'img_url' =>  asset_url('img/captcha/'),
+			'font_path' =>'./assets/fonts/AlfaSlabOne-Regular.ttf',
+			'img_width' => '250',
+			'img_height' => '50', 
+			//decimos que pasados 10 minutos elimine todas las imágenes
+			//que sobrepasen ese tiempo
+			'expiration' => 600 
+		);
+		//guardamos la info del captcha en $cap
+		$cap = create_captcha($conf_captcha);
+		//pasamos la info del captcha al modelo para 
+		//insertarlo en la base de datos
+		$this->Captcha_model->crear_captcha($cap);
+		//devolvemos el captcha para utilizarlo en la vista
+		return $cap;
+	}
+
+	/**
+	 * Función validar_captcha para el controlador Usuario.
+	 *
+	 * Esta función se encarga de validar la palabra del captcha introducida por el usuario contra el captcha almacenado en la sesión.
+	 * Esta función es llamada por el callback al momento de registrar un nuevo usuario en el sistema.
+	 *
+	 * @access public
+	 * @return boolean Retorna true si el captcha es igual al captcha guardado en la sesión.
+	 */
+	public function validar_captcha(){
+	    if($this->input->post('captcha') != $this->session->userdata('captcha')){
+	        $this->form_validation->set_message('validar_captcha', 'El texto de la imagen no coincide con el ingresado.');
+	        return false;
+	    }else{
+	        return true;
+	    }
 	}
 
 } // Fin de la clase Usuario

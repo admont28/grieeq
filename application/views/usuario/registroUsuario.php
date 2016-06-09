@@ -6,7 +6,7 @@
  * @author Andrés David Montoya Aguirre <admont28@gmail.com>
  * @link https://github.com/admont28 Perfil del autor.
  * @version 1.0 Versión inicial del fichero.
- */s
+ */
 defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="container">
 	<div class="row">
@@ -92,6 +92,24 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 						        'required'		=> 'required',
 						        'value' 		=> set_value('correo'),
 							);	?>
+							<?php echo form_input($datos); ?>
+						</div>
+					</div>
+					<div class="form-group">
+						<?php $atributos = array(
+								'class'			=> 'col-lg-4 control-label',
+						); ?>
+						<?php echo form_label('Escribe el texto de la imagen','captcha',$atributos) ?>
+						<div class="col-lg-8">
+							<?php echo $captcha['image']; ?>
+							<?php $datos = array(
+									'type'			=> 'text',
+							        'name'          => 'captcha',
+							        'id'            => 'captcha',
+							        'class' 		=> 'form-control',
+							        'required'		=> 'required',
+							        'placeholder'	=> 'Sensibilidad a mayúsculas y minúsculas',
+								);	?>
 							<?php echo form_input($datos); ?>
 						</div>
 					</div>
