@@ -108,4 +108,18 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 			});
 		}
 	});
+
+	$("#editar").click(function(e){
+		e.preventDefault();
+		var seleccion = $('input:radio[name=seleccionar]:checked').val();
+		if(typeof seleccion == "undefined"){
+			swal({
+				title: "Oops... ¡Ha ocurrido un error!",
+				text: "Debe seleccionar un tipo de herida para poderlo editar.",
+				type: "error"
+			});
+		}else{
+			window.location = "<?php echo base_url('Administrador/formulario-edicion-de-tipo-de-herida');?>/"+seleccion;
+		}
+	});
 </script>

@@ -86,18 +86,18 @@ class Administrador extends MY_ControladorGeneral {
         // Cargo la librería pagination de codeigniter.
         $this->load->library("pagination");
         // configuro la cantidad de registros por página.
-        $config["per_page"] = 4;
+        $config["per_page"]         = 4;
         $config['use_page_numbers'] = TRUE;
         // Enlace para usar la paginación         
-        $config['base_url'] = base_url()."Administrador/administracion-de-usuarios/pagina/";
+        $config['base_url']         = base_url()."Administrador/administracion-de-usuarios/pagina/";
         // Adición del html de bootstrap a la variable de configuración
-        $config = $this->bs_paginacion($config);
-        $page_number = intval(($page_number  == 1 || $page_number  == 0) ? 0 : ($page_number * $config['per_page']) - $config['per_page']);
-        $identificacion_usuario = $this->session->usuario['identificacion_usuario'];
-        $config['total_rows'] = $this->Usuario_model->contar_registros();        
-        $usuarios = $this->Usuario_model->obtener_resultados($config["per_page"], $page_number);
+        $config                     = $this->bs_paginacion($config);
+        $page_number                = intval(($page_number  == 1 || $page_number  == 0) ? 0 : ($page_number * $config['per_page']) - $config['per_page']);
+        $identificacion_usuario     = $this->session->usuario['identificacion_usuario'];
+        $config['total_rows']       = $this->Usuario_model->contar_registros();        
+        $usuarios                   = $this->Usuario_model->obtener_resultados($config["per_page"], $page_number);
         $this->pagination->initialize($config);                
-        $data['pagination'] = $this->pagination->create_links();
+        $data['pagination']         = $this->pagination->create_links();
         $this->load->library('table');
         $this->table->set_empty("---");
         $this->table->set_heading(
@@ -148,10 +148,10 @@ class Administrador extends MY_ControladorGeneral {
      */
     public function eliminar_usuario(){
     	if ($this->input->post('seleccion')) {
-    		$idUsuario = $this->input->post('seleccion');
-    		$id_usuario_session = $this->session->usuario['identificacion_usuario'];
-    		$this->load->model('Usuario_model');
-    		$usuario = $this->Usuario_model->obtener_por_id($idUsuario);
+            $idUsuario          = $this->input->post('seleccion');
+            $id_usuario_session = $this->session->usuario['identificacion_usuario'];
+            $this->load->model('Usuario_model');
+            $usuario            = $this->Usuario_model->obtener_por_id($idUsuario);
     		if ($usuario != null && $usuario->identificacion_usuario != $id_usuario_session) {
     			$respuesta = $this->Usuario_model->eliminar_por_identificacion($usuario->identificacion_usuario);
     			if($respuesta){
@@ -183,7 +183,7 @@ class Administrador extends MY_ControladorGeneral {
     	$this->breadcrumb->populate(array(
 			'Inicio'                     => '',
 			'Perfil'                     => 'Usuario',
-			'Administración de usuarios' => 'Administrador/administracion_de_usuarios',
+			'Administración de usuarios' => 'Administrador/administracion-de-usuarios',
 			'Editar usuario'
 		));
 		$data                      = array();
@@ -292,11 +292,11 @@ class Administrador extends MY_ControladorGeneral {
      */
     public function cambiar_estado_usuario(){
     	if ($this->input->post('seleccion')) {
-    		$idUsuario = $this->input->post('seleccion');
-    		$operacion = $this->input->post('operacion');
-    		$id_usuario_session = $this->session->usuario['identificacion_usuario'];
-    		$this->load->model('Usuario_model');
-    		$usuario = $this->Usuario_model->obtener_por_id($idUsuario);
+            $idUsuario          = $this->input->post('seleccion');
+            $operacion          = $this->input->post('operacion');
+            $id_usuario_session = $this->session->usuario['identificacion_usuario'];
+            $this->load->model('Usuario_model');
+            $usuario            = $this->Usuario_model->obtener_por_id($idUsuario);
     		if ($usuario != null && $usuario->identificacion_usuario != $id_usuario_session && trim($operacion) != "" && ($operacion == "habilitar" || $operacion == "inhabilitar")) {
     			if($operacion == "habilitar" && $usuario->estado_usuario == true){
     				echo json_encode(array("state" => "error", "message" => "El usuario ya se encuentra habilitado.<br>Al pulsar en el botón OK se recargará la página actual."));
@@ -310,11 +310,11 @@ class Administrador extends MY_ControladorGeneral {
     				$titulo = "";
     				$mensaje = "";
     				if($operacion == "habilitar"){
-    					$titulo = "¡Usuario habilitado con éxito!";
-    					$mensaje  = "El usuario ha sido habilitado con éxito.<br>Al pulsar en el botón OK se recargará la página actual.";
+                        $titulo  = "¡Usuario habilitado con éxito!";
+                        $mensaje = "El usuario ha sido habilitado con éxito.<br>Al pulsar en el botón OK se recargará la página actual.";
     				}else if($operacion == "inhabilitar"){
-    					$titulo = "¡Usuario inhabilitado con éxito!";
-    					$mensaje  = "El usuario ha sido inhabilitado con éxito.<br>Al pulsar en el botón OK se recargará la página actual.";
+                        $titulo  = "¡Usuario inhabilitado con éxito!";
+                        $mensaje = "El usuario ha sido inhabilitado con éxito.<br>Al pulsar en el botón OK se recargará la página actual.";
     				}
     				echo json_encode(array("state" => "success", "title"=> $titulo, "message" => $mensaje));	
     				die();
@@ -351,17 +351,17 @@ class Administrador extends MY_ControladorGeneral {
         // Cargo la librería pagination de codeigniter.
         $this->load->library("pagination");
         // configuro la cantidad de registros por página.
-        $config["per_page"] = 4;
+        $config["per_page"]         = 4;
         $config['use_page_numbers'] = TRUE;
         // Enlace para usar la paginación         
-        $config['base_url'] = base_url()."Administrador/administracion-de-tipos-de-heridas/pagina/";
+        $config['base_url']         = base_url()."Administrador/administracion-de-tipos-de-heridas/pagina/";
         // Adición del html de bootstrap a la variable de configuración
-        $config = $this->bs_paginacion($config);
-        $page_number = intval(($page_number  == 1 || $page_number  == 0) ? 0 : ($page_number * $config['per_page']) - $config['per_page']);
-        $config['total_rows'] = $this->TipoHerida_model->contar_registros();        
-        $tiposHeridas = $this->TipoHerida_model->obtener_resultados($config["per_page"], $page_number);
+        $config                     = $this->bs_paginacion($config);
+        $page_number                = intval(($page_number  == 1 || $page_number  == 0) ? 0 : ($page_number * $config['per_page']) - $config['per_page']);
+        $config['total_rows']       = $this->TipoHerida_model->contar_registros();        
+        $tiposHeridas               = $this->TipoHerida_model->obtener_resultados($config["per_page"], $page_number);
         $this->pagination->initialize($config);                
-        $data['pagination'] = $this->pagination->create_links();
+        $data['pagination']         = $this->pagination->create_links();
         $this->load->library('table');
         $this->table->set_empty("---");
         $this->table->set_heading(
@@ -384,7 +384,7 @@ class Administrador extends MY_ControladorGeneral {
                     array('data' => $input),
                     array('data' => $tipoHerida->nombre_tipoherida),
                     array('data' => $tipoHerida->descripcion_tipoherida),          
-                    array('data' => "<img width='70px' src='".asset_url('img/'.$tipoHerida->imagen_tipoherida)."' alt='".$tipoHerida->nombre_tipoherida."' />")
+                    array('data' => "<div class='text-center'><img width='70px' src='".asset_url('img/'.$tipoHerida->imagen_tipoherida)."' alt='".$tipoHerida->nombre_tipoherida."' /></div>")
                 );
             }
             $tmpl = array ( 'table_open'  => '<table class="table table-striped table-bordered table-hover">' );
@@ -403,13 +403,13 @@ class Administrador extends MY_ControladorGeneral {
      * Esta función se encarga de eliminar un tipo de herida de la base de datos.
      *
      * @access public
-     * @return void Imprime un objeto JSON dependiendo de lo que se pudo hacer, si no existe nada por post, se redirige a: administracion-de-tipos-de-herida. 
+     * @return void Imprime un objeto JSON dependiendo de lo que se pudo hacer, si no existe nada por post, se redirige a: administracion-de-tipos-de-heridas. 
      */
     public function eliminar_tipo_herida(){
         if ($this->input->post('seleccion')) {
             $idTipoHerida = $this->input->post('seleccion');
             $this->load->model('TipoHerida_model');
-            $tipoHerida = $this->TipoHerida_model->obtener_por_id($idTipoHerida);
+            $tipoHerida   = $this->TipoHerida_model->obtener_por_id($idTipoHerida);
             if ($tipoHerida != null) {
                 $respuesta = $this->TipoHerida_model->eliminar_por_id($tipoHerida->idTipoHerida);
                 if($respuesta){
@@ -424,6 +424,94 @@ class Administrador extends MY_ControladorGeneral {
                 die();
             }
         } else {
+            redirect('Administrador/administracion-de-tipos-de-heridas','refresh');
+        }
+    }
+
+    /**
+     * Función formulario_edicion_de_tipo_de_herida del controlador Administrador.
+     *
+     * Esta función se encarga de mostrar el formulario de edición de un tipo de herida.
+     *
+     * @access public
+     * @param  integer $idTipoHerida identificador único del tipo de herida a editar.
+     * @return void               Muestra el formulario de edición si existe el tipo de herida, sino, redirecciona a: 
+     */
+    public function formulario_edicion_de_tipo_de_herida($idTipoHerida){
+        $this->breadcrumb->populate(array(
+            'Inicio'                     => '',
+            'Perfil'                     => 'Usuario',
+            'Administración de tipos de herida' => 'Administrador/administracion-de-tipos-de-heridas',
+            'Editar tipo de herida'
+        ));
+        $data       = array();
+        $this->load->model('TipoHerida_model');
+        $tipoherida = $this->TipoHerida_model->obtener_por_id($idTipoHerida);
+        if($tipoherida == null){
+            redirect('Administrador/administracion-de-tipos-de-heridas','refresh');
+        }
+        $data['tipoherida']           = $tipoherida;
+        $data['titulo']               = "Administración - Editar tipo de herida";
+        $data['url_editartipoherida'] = "Administrador/editar-tipo-herida";
+        $this->mostrar_pagina('admin/tipoherida/editarTipoHerida', $data);
+    }
+
+    /**
+     * Función editar_tipo_herida del controlador Administrador.
+     *
+     * Esta función se encarga de realizar las validaciones antes de editar un tipo de herida en la base de datos
+     *
+     * @access public
+     * @return void  Redirecciona a administracion-de-tipos-de-heridas si encuentra algún error o si ha sido exitosa la actualización.
+     */
+    public function editar_tipo_herida(){
+        if($this->input->post('submit')){
+            $this->load->library('upload');
+            //hacemos las comprobaciones que de nuestro formulario
+            $this->form_validation->set_rules('idTipoHerida', 'Id Tipo de Herida', 'trim|required');
+            $this->form_validation->set_rules('nombre','Nombre','trim|required|max_length[100]|min_length[5]');
+            $this->form_validation->set_rules('descripcion','Descripción','trim|max_length[500]|min_length[5]');
+            $idTipoHerida = $this->security->xss_clean($this->input->post('idTipoHerida'));
+            // Validamos el formulario, si retorna falso cargamos el método formulario_edicion_de_usuario para mostrar los errores ocurridos.
+            if (!$this->form_validation->run()){
+                $this->formulario_edicion_de_usuario($idTipoHerida);
+            }else{
+                $exito = true;
+                if(isset($_FILES) && !empty($_FILES) && $_FILES['imagen']['error'] != 4 ){
+                    $config['upload_path']          = './assets/img/tipoherida/'.$idTipoHerida;
+                    $config['allowed_types']        = 'gif|jpg|png';
+                    $config['max_size']             = 2048;
+                    $config['max_width']            = 1024;
+                    $config['max_height']           = 768;
+                    $this->upload->initialize($config);
+                    if ( ! $this->upload->do_upload('imagen')){
+                        $exito = false;
+                        $mensaje['tipo']    = "error";
+                        $mensaje['mensaje'] = $this->upload->display_errors();
+                        $this->session->set_flashdata('mensaje', $mensaje);
+                        $this->formulario_edicion_de_tipo_de_herida($idTipoHerida);
+                    }
+                }
+                if($exito){
+                    $nombre_imagen = $this->upload->data();
+                    $nombre  = $this->security->xss_clean($this->input->post('nombre'));
+                    $descripcion = $this->security->xss_clean($this->input->post('descripcion'));
+                    $this->load->model('TipoHerida_model');
+                    $resultado = $this->TipoHerida_model->editar_tipo_herida($idTipoHerida, $nombre, $descripcion, $nombre_imagen['orig_name']);
+                    $mensaje         = array();
+                    if($resultado){
+                        $mensaje['tipo']    = "success";
+                        $mensaje['mensaje'] = "Tipo de herida actualizado exitosamente. Nombre: ".$nombre;
+                    }
+                    else{
+                        $mensaje['tipo']    = "error";
+                        $mensaje['mensaje'] = "Ha ocurrido un error inesperado, porfavor inténtelo de nuevo.";
+                    }
+                    $this->session->set_flashdata('mensaje', $mensaje);
+                    redirect('Administrador/administracion-de-tipos-de-heridas','refresh');
+                }
+            }
+        }else{
             redirect('Administrador/administracion-de-tipos-de-heridas','refresh');
         }
     }

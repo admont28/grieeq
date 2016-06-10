@@ -118,8 +118,67 @@ class TipoHerida_model extends CI_Model {
      * @return boolean                 Retorna true si se pudo eliminar, sino retorna false.
      */
     public function eliminar_por_id($idTipoHerida){
-    	return $this->db->delete(self::TABLE_NAME, array('idTipoHerida' => $idTipoHerida));
+		$resultado = $this->db->delete(self::TABLE_NAME, array('idTipoHerida' => $idTipoHerida));
+		$this->eliminar_directorio("./assets/img/tipoherida/".$idTipoHerida);
+		return true;
+	}
+    /**
+     * Función editar_tipo_herida del modelo TipoHerida_model.
+     *
+     * Esta función se encarga de editar un tipo de herida en la base datos, así como la eliminación de la imagen anterior, si es que ha editado la imagen.
+     *
+     * @access public
+     * @param  integer $idTipoHerida  Identificación única del tipo de herida.
+     * @param  string $nombre        Nombre del tipo de herida editado.
+     * @param  string $descripcion   Descripción del tipo de herida editado.
+     * @param  string $nombre_imagen Nombre de la nueva imagen del tipo de herida, si viene vació no se editará el nombre de la imagen.
+     * @return boolean                Retorna true si pudo editar el tipo de herida.
+     */
+    public function editar_tipo_herida($idTipoHerida, $nombre, $descripcion, $nombre_imagen){
+    	if(trim($nombre_imagen) == ""){
+    		$data = array(
+				'nombre_tipoherida'      => $nombre,
+				'descripcion_tipoherida' => $descripcion
+    		);
+    	}else{
+    		$tipoHerida = $this->db->get_where(self::TABLE_NAME, array('idTipoHerida' => $idTipoHerida));
+	    	if($tipoHerida->num_rows() == 1){
+				$tipoHerida = $tipoHerida->row();
+    			unlink("./assets/img/".$tipoHerida->imagen_tipoherida);
+    			$data = array(
+					'nombre_tipoherida'      => $nombre,
+					'descripcion_tipoherida' => $descripcion,
+					'imagen_tipoherida'      => "tipoherida/".$idTipoHerida."/".$nombre_imagen
+	    		);
+			}
+    	}
+    	$this->db->where(self::TABLE_PK_NAME, $idTipoHerida);
+		$this->db->update(self::TABLE_NAME, $data);
+		return true;
     }
+    
+    /**
+     * Función eliminar_directorio del modelo TipoHerida_model.
+     *
+     * Esta función se encarga de eliminar un directorio y todo su contenido del servidor.
+     *
+     * @access private
+     * @param  string $dir Path del directorio que se desea eliminar, pj: ./assets/img
+     * @return void      No retorna nada, solo elimina el directorio y sus archivos.
+     */
+    private function eliminar_directorio($dir) {
+	    if(!$dh = @opendir($dir)) return;
+	    while (false !== ($current = readdir($dh))) {
+	        if($current != '.' && $current != '..') {
+	            //echo 'Se ha borrado el archivo '.$dir.'/'.$current.'<br/>';
+	            if (!@unlink($dir.'/'.$current)) 
+	                $this->eliminar_directorio($dir.'/'.$current);
+	        }       
+	    }
+	    closedir($dh);
+	    //echo 'Se ha borrado el directorio '.$dir.'<br/>';
+	    @rmdir($dir);
+	}
 }// Fin de la clase TipoHerida_model
 /* End of file TipoHerida_model.php */
 /* Location: ./application/models/TipoHerida_model.php */
