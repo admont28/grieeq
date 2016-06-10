@@ -99,7 +99,7 @@ class Usuario_model extends CI_Model {
 			    'password_usuario' => $password
 			);
 		}
-		$this->db->where('idUsuario', $idUsuario);
+		$this->db->where(sef::TABLE_PK_NAME, $idUsuario);
 		$this->db->update(self::TABLE_NAME, $data);
 		return true;
 	}
@@ -250,7 +250,7 @@ class Usuario_model extends CI_Model {
 			    'fecha_denegacion_usuario' => $fecha,
 			);
 		}
-		$this->db->where('idUsuario', $idUsuario);
+		$this->db->where(self::TABLE_PK_NAME, $idUsuario);
 		$this->db->update(self::TABLE_NAME, $data);
 		return true;
     }
