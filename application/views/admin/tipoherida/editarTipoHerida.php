@@ -1,8 +1,8 @@
 <?php 
 /**
- * Vista editarUsuario, es la encargada de mostrar los campos necesarios para la edición de usuarios.
+ * Vista editarTipoHerida, es la encargada de mostrar los campos necesarios para la edición de un tipo de herida del sistema..
  *
- * @package aplication/views/admin/usuario
+ * @package aplication/views/admin/tipoherida
  * @author Andrés David Montoya Aguirre <admont28@gmail.com>
  * @link https://github.com/admont28 Perfil del autor.
  * @version 1.0 Versión inicial del fichero.
