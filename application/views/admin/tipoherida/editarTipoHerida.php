@@ -1,6 +1,6 @@
 <?php 
 /**
- * Vista editarTipoHerida, es la encargada de mostrar los campos necesarios para la edición de un tipo de herida del sistema..
+ * Vista editarTipoHerida, es la encargada de mostrar los campos necesarios para la edición de un tipo de herida del sistema.
  *
  * @package aplication/views/admin/tipoherida
  * @author Andrés David Montoya Aguirre <admont28@gmail.com>
@@ -82,7 +82,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 						<div class="col-lg-offset-6 col-lg-3">
 							<?php $datos = array(
 								'name' 			=> 'submit',
-								'value' 		=> 'Actualizar usuario',
+								'value' 		=> 'Actualizar tipo de herida',
 								'class' 		=> 'btn btn-primary col-xs-12'
 										); ?>
 							<?php echo form_submit($datos); ?>
