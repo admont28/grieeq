@@ -70,6 +70,8 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 			  	cancelButtonColor: '#d33',
 			  	confirmButtonText: 'Si, eliminar',
 			  	cancelButtonText: 'No, cancelar',
+			  	confirmButtonClass: 'margin-bottom-2px',
+			  	cancelButtonClass: 'margin-bottom-2px',
 			}).then(function(isConfirm) {
 			  	if (isConfirm) {
 			  		$.ajax({
@@ -147,6 +149,8 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 			  	cancelButtonColor: '#d33',
 			  	confirmButtonText: 'Si, habilitar',
 			  	cancelButtonText: 'No, cancelar',
+			  	confirmButtonClass: 'margin-bottom-2px',
+			  	cancelButtonClass: 'margin-bottom-2px',
 			}).then(function(isConfirm) {
 			  	if (isConfirm) {
 			  		$.ajax({
@@ -211,6 +215,8 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 			  	cancelButtonColor: '#d33',
 			  	confirmButtonText: 'Si, inhabilitar',
 			  	cancelButtonText: 'No, cancelar',
+			  	confirmButtonClass: 'margin-bottom-2px',
+			  	cancelButtonClass: 'margin-bottom-2px',
 			}).then(function(isConfirm) {
 			  	if (isConfirm) {
 			  		$.ajax({
