@@ -678,10 +678,41 @@ class Administrador extends MY_ControladorGeneral {
             $this->table->set_template($tmpl);
             $data['table'] = $this->table->generate();
         }else{
-            redirect('Administrador/administracion-de-tipos-de-heridas','refresh');
+            redirect('Administrador/administracion-de-factores-de-riesgo','refresh');
         }
         $data['titulo'] ="Administración - Factores de riesgo";
         $this->mostrar_pagina('admin/factorriesgo/administracionFactorRiesgo', $data);
+    }
+
+    /**
+     * Función eliminar_factor_riesgo del controlador Administrador.
+     *
+     * Esta función se encarga de eliminar un Factor de Riesgo de la base de datos.
+     *
+     * @access public
+     * @return void Imprime un objeto JSON dependiendo de lo que se pudo hacer, si no existe nada por post, se redirige a: administracion-de-factores-de-riesgo. 
+     */
+    public function eliminar_factor_riesgo(){
+        if ($this->input->post('seleccion')) {
+            $idFactorRiesgo = $this->input->post('seleccion');
+            $this->load->model('FactorRiesgo_model');
+            $factorRiesgo   = $this->FactorRiesgo_model->obtener_por_id($idFactorRiesgo);
+            if ($factorRiesgo != null) {
+                $respuesta = $this->FactorRiesgo_model->eliminar_por_id($factorRiesgo->idFactorRiesgo);
+                if($respuesta){
+                    echo json_encode(array("state" => "success", "title" => "¡Factor de riesgo eliminado con éxito!", "message" => "El factor de riesgo ha sido eliminado con éxito."));
+                    die();
+                }else{
+                    echo json_encode(array("state" => "error", "message" => "Ha ocurrido un error inesperado, por favor inténtelo de nuevo."));
+                    die();
+                }
+            } else {
+                echo json_encode(array("state" => "error", "message" => "Identificador del factor de riesgo no válido."));
+                die();
+            }
+        } else {
+            redirect('Administrador/administracion-de-factores-de-riesgo','refresh');
+        }
     }
 } // Fin de la clase Administrador.
 /* End of file Administrador.php */
