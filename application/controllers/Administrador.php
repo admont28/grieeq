@@ -391,7 +391,7 @@ class Administrador extends MY_ControladorGeneral {
             $this->table->set_template($tmpl);
             $data['table'] = $this->table->generate();
         }else{
-            redirect('Administrador/Administrador/administracion-de-tipos-de-heridas','refresh');
+            redirect('Administrador/administracion-de-tipos-de-heridas','refresh');
         }
         $data['titulo'] ="Administración - Tipos de heridas";
         $this->mostrar_pagina('admin/tipoherida/administracionTipoHerida', $data);
@@ -614,6 +614,74 @@ class Administrador extends MY_ControladorGeneral {
         }else{
             redirect('Administrador/administracion-de-tipos-de-heridas','refresh');
         }
+    }
+
+    /**
+     * Función administracion_de_factores_de_riesgo del controlador Administrador.
+     *
+     * Esta función se encarga de obtener los factores de riesgo y mostrarlos en forma de tabla y paginarlos.
+     *
+     * @access public
+     * @param  string  $pagina      Es usada para mostrar en la url el string: pagina 
+     * @param  integer $page_number Número de la página a mostrar.
+     * @return void                 Muestra la página con los factores de riesgo paginados.
+     */
+    public function administracion_de_factores_de_riesgo($pagina='',$page_number = 1){
+        $this->breadcrumb->populate(array(
+            'Inicio' => '',
+            'Perfil' => 'Usuario',
+            'Administración de factores de riesgo'
+        ));
+        $this->load->model('FactorRiesgo_model');        
+        // Cargo la librería pagination de codeigniter.
+        $this->load->library("pagination");
+        // configuro la cantidad de registros por página.
+        $config["per_page"]         = 4;
+        $config['use_page_numbers'] = TRUE;
+        // Enlace para usar la paginación         
+        $config['base_url']         = base_url()."Administrador/administracion-de-factores-de-riesgo/pagina/";
+        // Adición del html de bootstrap a la variable de configuración
+        $config                     = $this->bs_paginacion($config);
+        $page_number                = intval(($page_number  == 1 || $page_number  == 0) ? 0 : ($page_number * $config['per_page']) - $config['per_page']);
+        $config['total_rows']       = $this->FactorRiesgo_model->contar_registros();        
+        $factoresRiesgo               = $this->FactorRiesgo_model->obtener_resultados($config["per_page"], $page_number);
+        $this->pagination->initialize($config);                
+        $data['pagination']         = $this->pagination->create_links();
+        $this->load->library('table');
+        $this->table->set_empty("---");
+        $this->table->set_heading(
+            'Seleccionar',
+            'Nombre',
+            'Descripción',  
+            'Ejemplo',              
+            'Imagen asociada'
+        );
+        if(count($factoresRiesgo)>0){
+            foreach ($factoresRiesgo as $factorRiesgo){
+                $datos = array(
+                    'name'  => 'seleccionar',
+                    'id'    => 'seleccionar',
+                    'class' => 'seleccion',
+                    'value' => $factorRiesgo->idFactorRiesgo,
+                    'type'  => 'radio',
+                );
+                $input = form_input($datos);
+                $this->table->add_row(
+                    array('data' => $input),
+                    array('data' => $factorRiesgo->nombre_factorriesgo),
+                    array('data' => $factorRiesgo->descripcion_factorriesgo), 
+                    array('data' => $factorRiesgo->ejemplo_factorriesgo),          
+                    array('data' => "<div class='text-center'><img width='70px' src='".asset_url('img/'.$factorRiesgo->imagen_factorriesgo)."' alt='".$factorRiesgo->nombre_factorriesgo."' /></div>")
+                );
+            }
+            $tmpl = array ( 'table_open'  => '<table class="table table-striped table-bordered table-hover">' );
+            $this->table->set_template($tmpl);
+            $data['table'] = $this->table->generate();
+        }else{
+            redirect('Administrador/administracion-de-tipos-de-heridas','refresh');
+        }
+        $data['titulo'] ="Administración - Factores de riesgo";
+        $this->mostrar_pagina('admin/factorriesgo/administracionFactorRiesgo', $data);
     }
 } // Fin de la clase Administrador.
 /* End of file Administrador.php */
