@@ -74,7 +74,7 @@ class FactorRiesgo_model extends CI_Model {
 	 * @access public
      * @param  integer $limit limite de la consulta.
      * @param  integer $start inicio de la consulta.
-     * @return Array          Retorna un arreglo de objetos con los tipos de heridas encontrados.
+     * @return Array          Retorna un arreglo de objetos con los factores de riesgo encontrados.
      */
     public function obtener_resultados($limit=100,$start=0){
         $this->db->select('*');        
