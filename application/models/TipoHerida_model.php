@@ -39,11 +39,6 @@ class TipoHerida_model extends CI_Model {
 	}
 
 	/**
-	 * Método para obtener todas los tipos de herida almacenadas en la base de datos.
-	 * @return [Array|boolean] Retorna un arrelgo con el resultado de la consulta
-	 * si existe almenos 1 fila, si no existe alguna fila retorna false.
-	 */
-	/**
 	 * Función obtenerTiposHerida del modelo TipoHerida_model.
 	 *
 	 * La función realiza una consulta a la base de datos para obtener todos los tipos de herida almacenados.
@@ -52,7 +47,7 @@ class TipoHerida_model extends CI_Model {
 	 * @return array|boolean     Retorna un arreglo con el resultado de la consulta si existe al menos 1 registro, de lo contrario retorna false.
 	 */
 	public function obtenerTiposHerida(){
-		$query = $this->db->get("TipoHerida");
+		$query = $this->db->get(self::TABLE_NAME);
 		if($query->num_rows() > 0) return $query;
 		else return false;
 	}
@@ -100,7 +95,7 @@ class TipoHerida_model extends CI_Model {
      * @return mixed              Retorna el tipo de herida si lo encuentra, de lo contrario retorna null.
      */
     public function obtener_por_id($idTipoHerida){
-    	$tipoHerida = $this->db->get_where(self::TABLE_NAME, array('idTipoHerida' => $idTipoHerida));
+    	$tipoHerida = $this->db->get_where(self::TABLE_NAME, array(self::TABLE_PK_NAME => $idTipoHerida));
     	if($tipoHerida->num_rows() == 1){
 			return $tipoHerida->row();
 		}
@@ -119,12 +114,13 @@ class TipoHerida_model extends CI_Model {
      * @return boolean                 Retorna true si se pudo eliminar, sino retorna false.
      */
     public function eliminar_por_id($idTipoHerida, $eliminar_imagen = true){
-		$resultado = $this->db->delete(self::TABLE_NAME, array('idTipoHerida' => $idTipoHerida));
+		$resultado = $this->db->delete(self::TABLE_NAME, array(self::TABLE_PK_NAME => $idTipoHerida));
 		if($eliminar_imagen){
 			$this->eliminar_directorio("./assets/img/tipoherida/".$idTipoHerida);
 		}
 		return true;
 	}
+
     /**
      * Función editar_tipo_herida del modelo TipoHerida_model.
      *
@@ -144,7 +140,7 @@ class TipoHerida_model extends CI_Model {
 				'descripcion_tipoherida' => $descripcion
     		);
     	}else{
-    		$tipoHerida = $this->db->get_where(self::TABLE_NAME, array('idTipoHerida' => $idTipoHerida));
+    		$tipoHerida = $this->db->get_where(self::TABLE_NAME, array(self::TABLE_PK_NAME => $idTipoHerida));
 	    	if($tipoHerida->num_rows() == 1){
 				$tipoHerida = $tipoHerida->row();
     			unlink("./assets/img/".$tipoHerida->imagen_tipoherida);
