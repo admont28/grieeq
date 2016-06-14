@@ -2,7 +2,6 @@
 /**
  * Archivo TipoHerida_model, contiene la clase para manejar la tabla TipoHerida de la base de datos.
  */
-
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
@@ -112,14 +111,18 @@ class TipoHerida_model extends CI_Model {
      * Función eliminar_por_id del modelo TipoHerida_model.
 	 *
 	 * Esta función se encarga de eliminar un tipo de herida dado su id.
+	 * La función recibe un parámetro para indicar si sebe eliminar la imagen asociada al tipo de herida del servidor o si solo debe ser eliminada de la base de datos.
 	 *
 	 * @access public
      * @param  integer $idTipoHerida Identificación única del tipo de herida.
+     * @param boolean $eliminar_imagen Valor booleano para indicar si se debe intentar eliminar la imagen asociada al tipo de herida o solo eliminar el tipo de herida de la base de datos.
      * @return boolean                 Retorna true si se pudo eliminar, sino retorna false.
      */
-    public function eliminar_por_id($idTipoHerida){
+    public function eliminar_por_id($idTipoHerida, $eliminar_imagen = true){
 		$resultado = $this->db->delete(self::TABLE_NAME, array('idTipoHerida' => $idTipoHerida));
-		$this->eliminar_directorio("./assets/img/tipoherida/".$idTipoHerida);
+		if($eliminar_imagen){
+			$this->eliminar_directorio("./assets/img/tipoherida/".$idTipoHerida);
+		}
 		return true;
 	}
     /**
@@ -156,7 +159,7 @@ class TipoHerida_model extends CI_Model {
 		$this->db->update(self::TABLE_NAME, $data);
 		return true;
     }
-    
+
     /**
      * Función eliminar_directorio del modelo TipoHerida_model.
      *
@@ -178,6 +181,29 @@ class TipoHerida_model extends CI_Model {
 	    closedir($dh);
 	    //echo 'Se ha borrado el directorio '.$dir.'<br/>';
 	    @rmdir($dir);
+	}
+
+	/**
+	 * [crear_tipo_herida description]
+	 * @param  string $nombre      Nombre del nuevo tipo de herida.
+	 * @param  string $descripcion Descripción del nuevo tipo de herida.
+	 * @param  string $imagen      Nombre de la imagen asociada al tipo de herida.
+	 * @return integer             Retorna el id del tipo de herida insertado.
+	 */
+	public function crear_tipo_herida($nombre, $descripcion, $imagen){
+		$datos = array(
+			'nombre_tipoherida'      => $nombre,
+			'descripcion_tipoherida' => $descripcion,
+			'imagen_tipoherida'      => $imagen
+		);
+		$this->db->insert(self::TABLE_NAME, $datos);
+		$idTipoHerida = $this->db->insert_id();
+		$datos = array(
+			'imagen_tipoherida'      => "tipoherida/".$idTipoHerida."/".$imagen
+		);
+		$this->db->where(self::TABLE_PK_NAME, $idTipoHerida);
+		$this->db->update(self::TABLE_NAME, $datos);
+		return $idTipoHerida;
 	}
 }// Fin de la clase TipoHerida_model
 /* End of file TipoHerida_model.php */

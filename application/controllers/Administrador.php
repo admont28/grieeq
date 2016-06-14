@@ -471,6 +471,9 @@ class Administrador extends MY_ControladorGeneral {
             $this->form_validation->set_rules('idTipoHerida', 'Id Tipo de Herida', 'trim|required');
             $this->form_validation->set_rules('nombre','Nombre','trim|required|max_length[100]|min_length[5]');
             $this->form_validation->set_rules('descripcion','Descripción','trim|max_length[500]|min_length[5]');
+            $this->form_validation->set_message('required', 'El campo %s es obligatorio');
+            $this->form_validation->set_message('min_length', 'El campo %s debe tener al menos %s carácteres');
+            $this->form_validation->set_message('max_length', 'El campo %s debe tener menos %s car&aacute;cteres');
             $idTipoHerida = $this->security->xss_clean($this->input->post('idTipoHerida'));
             // Validamos el formulario, si retorna falso cargamos el método formulario_edicion_de_usuario para mostrar los errores ocurridos.
             if (!$this->form_validation->run()){
@@ -502,6 +505,103 @@ class Administrador extends MY_ControladorGeneral {
                     if($resultado){
                         $mensaje['tipo']    = "success";
                         $mensaje['mensaje'] = "Tipo de herida actualizado exitosamente. Nombre: ".$nombre;
+                    }
+                    else{
+                        $mensaje['tipo']    = "error";
+                        $mensaje['mensaje'] = "Ha ocurrido un error inesperado, porfavor inténtelo de nuevo.";
+                    }
+                    $this->session->set_flashdata('mensaje', $mensaje);
+                    redirect('Administrador/administracion-de-tipos-de-heridas','refresh');
+                }
+            }
+        }else{
+            redirect('Administrador/administracion-de-tipos-de-heridas','refresh');
+        }
+    }
+
+    /**
+     * Función formulario_adicionar_tipo_de_herida del controlador Administrador.
+     *
+     * Esta función se encarga de mostrar el formulario para adicionar un nuevo tipo de herida al sistema.
+     *
+     * @access public
+     * @return void No retorna nada, muestra la página para adicionar un tipo de herida.
+     */
+    public function formulario_adicionar_tipo_de_herida(){
+        $this->breadcrumb->populate(array(
+            'Inicio'                     => '',
+            'Perfil'                     => 'Usuario',
+            'Administración de tipos de herida' => 'Administrador/administracion-de-tipos-de-heridas',
+            'Adicionar tipo de herida'
+        ));
+        $data                        = array();
+        $data['url_adicionartipoherida'] = "Administrador/adicionar-tipo-de-herida";
+        $data['titulo']              = "Administración - Adicionar tipo de herida";
+        $this->mostrar_pagina('admin/tipoherida/adicionarTipoHerida', $data);
+    }
+
+    /**
+     * Función adicionar_tipo_de_herida del controlador Administrador.
+     *
+     * Esta función se encarga de realizar las validaciones antes de adicionar un tipo de herida en la base de datos para luego adicionarla y subir la imagen asociada a su respectiva localización.   
+     *
+     * @access public
+     * @return void no retorna nada, valida los campos e inserta en la base de datos.
+     */
+    public function adicionar_tipo_de_herida(){
+        if($this->input->post('submit')){
+            $this->load->library('upload');
+            //hacemos las comprobaciones que de nuestro formulario;
+            $this->form_validation->set_rules('nombre','Nombre','trim|required|max_length[100]|min_length[5]');
+            $this->form_validation->set_rules('descripcion','Descripción','trim|max_length[500]|min_length[5]');
+            $this->form_validation->set_message('required', 'El campo %s es obligatorio');
+            $this->form_validation->set_message('min_length', 'El campo %s debe tener al menos %s carácteres');
+            $this->form_validation->set_message('max_length', 'El campo %s debe tener menos %s car&aacute;cteres');
+            // Validamos el formulario, si retorna falso cargamos el método formulario_edicion_de_usuario para mostrar los errores ocurridos.
+            if (!$this->form_validation->run()){
+                $this->formulario_edicion_de_usuario($idTipoHerida);
+            }else{
+                $config['upload_path']          = './assets/tmp/';
+                $config['allowed_types']        = 'gif|jpg|png';
+                $config['max_size']             = 2048;
+                $config['max_width']            = 1024;
+                $config['max_height']           = 768;
+                $this->upload->initialize($config);
+                if ( ! $this->upload->do_upload('imagen')){
+                    $exito = false;
+                    $mensaje['tipo']    = "error";
+                    $mensaje['mensaje'] = $this->upload->display_errors();
+                    $this->session->set_flashdata('mensaje', $mensaje);
+                    $this->formulario_adicionar_tipo_de_herida();
+                }else{
+                    $nombre_imagen = $this->upload->data();
+                    $nombre  = $this->security->xss_clean($this->input->post('nombre'));
+                    $descripcion = $this->security->xss_clean($this->input->post('descripcion'));
+                    $this->load->model('TipoHerida_model');
+                    $idTipoHerida = $this->TipoHerida_model->crear_tipo_herida($nombre, $descripcion, $nombre_imagen['orig_name']);
+                    $mensaje         = array();
+                    if($idTipoHerida){
+                        $errores = false;
+                        $creacion_directorio = mkdir("./assets/img/tipoherida/".$idTipoHerida, 0755);
+                        if($creacion_directorio){
+                            $mover = rename("./assets/tmp/".$nombre_imagen['orig_name'], "./assets/img/tipoherida/".$idTipoHerida."/".$nombre_imagen['orig_name']);
+                            if($mover){
+                                $mensaje['tipo']    = "success";
+                                $mensaje['mensaje'] = "Tipo de herida adicionado exitosamente. Nombre: ".$nombre;
+                            }else{
+                                $errores = true;
+                            }
+                        }else{
+                            $errores = true;
+                        }
+                        if($errores){
+                            $mensaje['tipo']    = "error";
+                            $mensaje['mensaje'] = "No se ha podido cargar la imagen debido a un error inesperado, por favor inténtelo de nuevo.";
+                            // Elimino el tipo de herida de la base de datos y con el parámetro false le indico que no intente eliminar la imagen ya que no se ha subido correctamente y no existe. Esto se hace para evitar errores.
+                            $this->TipoHerida_model->eliminar_por_id($idTipoHerida, false);
+                            $this->session->set_flashdata('mensaje', $mensaje);
+                            $this->formulario_adicionar_tipo_de_herida();
+                        }
                     }
                     else{
                         $mensaje['tipo']    = "error";

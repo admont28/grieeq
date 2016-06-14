@@ -34,7 +34,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-bottom-1em">
 			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-				<a class="btn btn-primary btn-block" href="" id="adicionar" title="Adicionar un nuevo tipo de herida">Adicionar un nuevo tipo de herida</a>
+				<a class="btn btn-primary btn-block" href="<?php echo base_url('Administrador/formulario-adicionar-tipo-de-herida'); ?>" id="adicionar" title="Adicionar un nuevo tipo de herida">Adicionar un nuevo tipo de herida</a>
 			</div>
 			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
 				<a class="btn btn-primary btn-block" href="" id="editar" title="Editar tipo de herida seleccionado">Editar tipo de herida seleccionado</a>
