@@ -180,7 +180,11 @@ class TipoHerida_model extends CI_Model {
 	}
 
 	/**
-	 * [crear_tipo_herida description]
+	 * Función crear_tipo_herida del modelo TipoHerida_model.
+	 *
+	 * Esta función se encarga de insertar en la base de datos un nuevo tipo de herida.
+	 *
+	 * @access public
 	 * @param  string $nombre      Nombre del nuevo tipo de herida.
 	 * @param  string $descripcion Descripción del nuevo tipo de herida.
 	 * @param  string $imagen      Nombre de la imagen asociada al tipo de herida.
