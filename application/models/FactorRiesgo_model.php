@@ -15,11 +15,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class FactorRiesgo_model extends CI_Model {
 	/**
-	 * Constante que almacenará el nombre de la tabla Usuario.
+	 * Constante que almacenará el nombre de la tabla FactorRiesgo.
 	 */
 	const TABLE_NAME = "FactorRiesgo";
 	/**
-	 * Constante que almacenará el nombre de la llave primaria de la tabla Usuario.
+	 * Constante que almacenará el nombre de la llave primaria de la tabla FactorRiesgo.
 	 */
 	const TABLE_PK_NAME = "idFactorRiesgo";
 
