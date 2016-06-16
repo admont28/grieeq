@@ -122,6 +122,44 @@ class FactorRiesgo_model extends CI_Model {
 	}
 
 	/**
+     * Función editar_factor_riesgo del modelo FactorRiesgo_model.
+     *
+     * Esta función se encarga de editar un factor de riesgo en la base datos, así como la eliminación de la imagen anterior, si es que ha editado la imagen.
+     *
+     * @access public
+     * @param  integer $idFactorRiesgo  Identificación única del factor de riesgo.
+     * @param  string $nombre        	Nombre del factor de riesgo editado.
+     * @param  string $descripcion   	Descripción del factor de riesgo editado.
+     * @param  string $ejemplo 		 	Ejemplo del factor de riesgo editado.
+     * @param  string $nombre_imagen 	Nombre de la nueva imagen del factor de riesgo, si viene vació no se editará el nombre de la imagen.
+     * @return boolean                Retorna true si pudo editar el factor de riesgo.
+     */
+    public function editar_factor_riesgo($idFactorRiesgo, $nombre, $descripcion, $ejemplo, $nombre_imagen){
+    	if(trim($nombre_imagen) == ""){
+    		$data = array(
+				'nombre_factorriesgo'      => $nombre,
+				'descripcion_factorriesgo' => $descripcion,
+				'ejemplo_factorriesgo'     => $ejemplo
+    		);
+    	}else{
+    		$factorRiesgo = $this->db->get_where(self::TABLE_NAME, array(self::TABLE_PK_NAME => $idFactorRiesgo));
+	    	if($factorRiesgo->num_rows() == 1){
+				$factorRiesgo = $factorRiesgo->row();
+    			unlink("./assets/img/".$factorRiesgo->imagen_factorriesgo);
+    			$data = array(
+					'nombre_factorriesgo'      => $nombre,
+					'descripcion_factorriesgo' => $descripcion,
+					'ejemplo_factorriesgo'     => $ejemplo,
+					'imagen_factorRiesgo'      => "factorriesgo/".$idFactorRiesgo."/".$nombre_imagen
+	    		);
+			}
+    	}
+    	$this->db->where(self::TABLE_PK_NAME, $idFactorRiesgo);
+		$this->db->update(self::TABLE_NAME, $data);
+		return true;
+    }
+
+	/**
      * Función eliminar_directorio del modelo FactorRiesgo_model.
      *
      * Esta función se encarga de eliminar un directorio y todo su contenido del servidor.
@@ -142,6 +180,35 @@ class FactorRiesgo_model extends CI_Model {
 	    closedir($dh);
 	    //echo 'Se ha borrado el directorio '.$dir.'<br/>';
 	    @rmdir($dir);
+	}
+
+	/**
+	 * Función crear_factor_riesgo del modelo FactorRiesgo_model.
+	 *
+	 * Esta función se encarga de insertar en la base de datos un nuevo factor de riesgo.
+	 *
+	 * @access public
+	 * @param  string $nombre      Nombre del nuevo factor de riesgo.
+	 * @param  string $descripcion Descripción del nuevo factor de riesgo.
+	 * @param  string $ejemplo	   Ejemplo del nuevo factor de riesgo.
+	 * @param  string $imagen      Nombre de la imagen asociada al factor de riesgo.
+	 * @return integer             Retorna el id del factor de riesgo insertado.
+	 */
+	public function crear_factor_riesgo($nombre, $descripcion, $ejemplo, $imagen){
+		$datos = array(
+			'nombre_factorriesgo'      => $nombre,
+			'descripcion_factorriesgo' => $descripcion,
+			'ejemplo_factorriesgo'     => $ejemplo,
+			'imagen_factorriesgo'      => $imagen
+		);
+		$this->db->insert(self::TABLE_NAME, $datos);
+		$idFactorRiesgo = $this->db->insert_id();
+		$datos = array(
+			'imagen_factorriesgo'      => "factorriesgo/".$idFactorRiesgo."/".$imagen
+		);
+		$this->db->where(self::TABLE_PK_NAME, $idFactorRiesgo);
+		$this->db->update(self::TABLE_NAME, $datos);
+		return $idFactorRiesgo;
 	}
 }// Fin de la clase FactorRiesgo_model
 /* End of file FactorRiesgo_model.php */

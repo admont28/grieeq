@@ -435,7 +435,7 @@ class Administrador extends MY_ControladorGeneral {
      *
      * @access public
      * @param  integer $idTipoHerida identificador único del tipo de herida a editar.
-     * @return void               Muestra el formulario de edición si existe el tipo de herida, sino, redirecciona a: 
+     * @return void               Muestra el formulario de edición si existe el tipo de herida, sino, redirecciona a: Administrador/administracion-de-tipos-de-heridas
      */
     public function formulario_edicion_de_tipo_de_herida($idTipoHerida){
         $this->breadcrumb->populate(array(
@@ -475,9 +475,9 @@ class Administrador extends MY_ControladorGeneral {
             $this->form_validation->set_message('min_length', 'El campo %s debe tener al menos %s carácteres');
             $this->form_validation->set_message('max_length', 'El campo %s debe tener menos %s car&aacute;cteres');
             $idTipoHerida = $this->security->xss_clean($this->input->post('idTipoHerida'));
-            // Validamos el formulario, si retorna falso cargamos el método formulario_edicion_de_usuario para mostrar los errores ocurridos.
+            // Validamos el formulario, si retorna falso cargamos el método formulario_edicion_de_tipo_de_herida para mostrar los errores ocurridos.
             if (!$this->form_validation->run()){
-                $this->formulario_edicion_de_usuario($idTipoHerida);
+                $this->formulario_edicion_de_tipo_de_herida($idTipoHerida);
             }else{
                 $exito = true;
                 if(isset($_FILES) && !empty($_FILES) && $_FILES['imagen']['error'] != 4 ){
@@ -557,9 +557,9 @@ class Administrador extends MY_ControladorGeneral {
             $this->form_validation->set_message('required', 'El campo %s es obligatorio');
             $this->form_validation->set_message('min_length', 'El campo %s debe tener al menos %s carácteres');
             $this->form_validation->set_message('max_length', 'El campo %s debe tener menos %s car&aacute;cteres');
-            // Validamos el formulario, si retorna falso cargamos el método formulario_edicion_de_usuario para mostrar los errores ocurridos.
+            // Validamos el formulario, si retorna falso cargamos el método formulario_adicionar_tipo_de_herida para mostrar los errores ocurridos.
             if (!$this->form_validation->run()){
-                $this->formulario_edicion_de_usuario($idTipoHerida);
+                $this->formulario_adicionar_tipo_de_herida();
             }else{
                 $config['upload_path']          = './assets/tmp/';
                 $config['allowed_types']        = 'gif|jpg|png';
@@ -711,6 +711,198 @@ class Administrador extends MY_ControladorGeneral {
                 die();
             }
         } else {
+            redirect('Administrador/administracion-de-factores-de-riesgo','refresh');
+        }
+    }
+
+    /**
+     * Función formulario_edicion_factor_de_riesgo del controlador Administrador.
+     *
+     * Esta función se encarga de mostrar el formulario de edición de un factor de riesgo.
+     *
+     * @access public
+     * @param  integer $idFactorRiesgo identificador único del factor de riesgo a editar.
+     * @return void               Muestra el formulario de edición si existe el factor de riesgo, sino, redirecciona a: Administrador/administracion-de-factores-de-riesgo
+     */
+    public function formulario_edicion_de_factor_de_riesgo($idFactorRiesgo){
+        $this->breadcrumb->populate(array(
+            'Inicio'                     => '',
+            'Perfil'                     => 'Usuario',
+            'Administración de factores de riesgo' => 'Administrador/administracion-de-factores-de-riesgo',
+            'Editar factor de riesgo'
+        ));
+        $data       = array();
+        $this->load->model('FactorRiesgo_model');
+        $factorRiesgo = $this->FactorRiesgo_model->obtener_por_id($idFactorRiesgo);
+        if($factorRiesgo == null){
+            redirect('Administrador/administracion-de-factores-de-riesgo','refresh');
+        }
+        $data['factorriesgo']           = $factorRiesgo;
+        $data['titulo']               = "Administración - Editar factor de riesgo";
+        $data['url_editarfactorriesgo'] = "Administrador/editar-factor-riesgo";
+        $this->mostrar_pagina('admin/factorriesgo/editarFactorRiesgo', $data);
+    }
+
+    /**
+     * Función editar_factor_riesgo del controlador Administrador.
+     *
+     * Esta función se encarga de realizar las validaciones antes de editar un factor de riesgo en la base de datos
+     *
+     * @access public
+     * @return void  Redirecciona a administracion-de-factores-de-riesgo si encuentra algún error o si ha sido exitosa la actualización.
+     */
+    public function editar_factor_riesgo(){
+        if($this->input->post('submit')){
+            $this->load->library('upload');
+            //hacemos las comprobaciones que de nuestro formulario
+            $this->form_validation->set_rules('idFactorRiesgo', 'Id factor de riesgo', 'trim|required');
+            $this->form_validation->set_rules('nombre','Nombre','trim|required|max_length[100]|min_length[5]');
+            $this->form_validation->set_rules('descripcion','Descripción','trim|max_length[500]|min_length[5]');
+            $this->form_validation->set_rules('ejemplo','Ejemplo','trim|max_length[155]|min_length[5]');
+            $this->form_validation->set_message('required', 'El campo %s es obligatorio');
+            $this->form_validation->set_message('min_length', 'El campo %s debe tener al menos %s carácteres');
+            $this->form_validation->set_message('max_length', 'El campo %s debe tener menos %s car&aacute;cteres');
+            $idFactorRiesgo = $this->security->xss_clean($this->input->post('idFactorRiesgo'));
+            // Validamos el formulario, si retorna falso cargamos el método formulario_edicion_de_factor_de_riesgo para mostrar los errores ocurridos.
+            if (!$this->form_validation->run()){
+                $this->formulario_edicion_de_factor_de_riesgo($idFactorRiesgo);
+            }else{
+                $exito = true;
+                if(isset($_FILES) && !empty($_FILES) && $_FILES['imagen']['error'] != 4 ){
+                    $config['upload_path']          = './assets/img/factorriesgo/'.$idFactorRiesgo;
+                    $config['allowed_types']        = 'gif|jpg|png';
+                    $config['max_size']             = 2048;
+                    $config['max_width']            = 1024;
+                    $config['max_height']           = 768;
+                    $this->upload->initialize($config);
+                    if ( ! $this->upload->do_upload('imagen')){
+                        $exito = false;
+                        $mensaje['tipo']    = "error";
+                        $mensaje['mensaje'] = $this->upload->display_errors();
+                        $this->session->set_flashdata('mensaje', $mensaje);
+                        $this->formulario_edicion_de_tipo_de_herida($idFactorRiesgo);
+                    }
+                }
+                if($exito){
+                    $imagen = $this->upload->data();
+                    $nombre  = $this->security->xss_clean($this->input->post('nombre'));
+                    $descripcion = $this->security->xss_clean($this->input->post('descripcion'));
+                    $ejemplo = $this->security->xss_clean($this->input->post('ejemplo'));
+                    $this->load->model('FactorRiesgo_model');
+                    $resultado = $this->FactorRiesgo_model->editar_factor_riesgo($idFactorRiesgo, $nombre, $descripcion, $ejemplo, $imagen['orig_name']);
+                    $mensaje         = array();
+                    if($resultado){
+                        $mensaje['tipo']    = "success";
+                        $mensaje['mensaje'] = "factor de riesgo actualizado exitosamente. Nombre: ".$nombre;
+                    }
+                    else{
+                        $mensaje['tipo']    = "error";
+                        $mensaje['mensaje'] = "Ha ocurrido un error inesperado, porfavor inténtelo de nuevo.";
+                    }
+                    $this->session->set_flashdata('mensaje', $mensaje);
+                    redirect('Administrador/administracion-de-factores-de-riesgo','refresh');
+                }
+            }
+        }else{
+            redirect('Administrador/administracion-de-factores-de-riesgo','refresh');
+        }
+    }
+
+    /**
+     * Función formulario_adicionar_factor_de_riesgo del controlador Administrador.
+     *
+     * Esta función se encarga de mostrar el formulario para adicionar un nuevo factor de riesgo al sistema.
+     *
+     * @access public
+     * @return void No retorna nada, muestra la página para adicionar un factor de riesgo.
+     */
+    public function formulario_adicionar_factor_de_riesgo(){
+        $this->breadcrumb->populate(array(
+            'Inicio'                               => '',
+            'Perfil'                               => 'Usuario',
+            'Administración de factores de riesgo' => 'Administrador/administracion-de-factores-de-riesgo',
+            'Adicionar factor de riesgo'
+        ));
+        $data                              = array();
+        $data['url_adicionarfactorriesgo'] = "Administrador/adicionar-factor-de-riesgo";
+        $data['titulo']                    = "Administración - Adicionar factor de riesgo";
+        $this->mostrar_pagina('admin/factorriesgo/adicionarFactorRiesgo', $data);
+    }
+
+    /**
+     * Función adicionar_factor_de_riesgo del controlador Administrador.
+     *
+     * Esta función se encarga de realizar las validaciones antes de adicionar un factor de riesgo en la base de datos para luego adicionarlo y subir la imagen asociada.   
+     *
+     * @access public
+     * @return void no retorna nada, valida los campos e inserta en la base de datos.
+     */
+    public function adicionar_factor_de_riesgo(){
+        if($this->input->post('submit')){
+            $this->load->library('upload');
+            //hacemos las comprobaciones que de nuestro formulario;
+            $this->form_validation->set_rules('nombre','Nombre','trim|required|max_length[255]|min_length[5]');
+            $this->form_validation->set_rules('descripcion','Descripción','trim|max_length[500]|min_length[5]');
+            $this->form_validation->set_rules('ejemplo','Ejemplo','trim|max_length[255]|min_length[5]');
+            $this->form_validation->set_message('required', 'El campo %s es obligatorio');
+            $this->form_validation->set_message('min_length', 'El campo %s debe tener al menos %s carácteres');
+            $this->form_validation->set_message('max_length', 'El campo %s debe tener menos %s car&aacute;cteres');
+            // Validamos el formulario, si retorna falso cargamos el método formulario_adicionar_factor_de_riesgo para mostrar los errores ocurridos.
+            if (!$this->form_validation->run()){
+                $this->formulario_adicionar_factor_de_riesgo();
+            }else{
+                $config['upload_path']          = './assets/tmp/';
+                $config['allowed_types']        = 'gif|jpg|png';
+                $config['max_size']             = 2048;
+                $config['max_width']            = 1024;
+                $config['max_height']           = 768;
+                $this->upload->initialize($config);
+                if ( ! $this->upload->do_upload('imagen')){
+                    $exito              = false;
+                    $mensaje['tipo']    = "error";
+                    $mensaje['mensaje'] = $this->upload->display_errors();
+                    $this->session->set_flashdata('mensaje', $mensaje);
+                    $this->formulario_adicionar_factor_de_riesgo();
+                }else{
+                    $nombre_imagen  = $this->upload->data();
+                    $nombre         = $this->security->xss_clean($this->input->post('nombre'));
+                    $descripcion    = $this->security->xss_clean($this->input->post('descripcion'));
+                    $ejemplo        = $this->security->xss_clean($this->input->post('ejemplo'));
+                    $this->load->model('FactorRiesgo_model');
+                    $idFactorRiesgo = $this->FactorRiesgo_model->crear_factor_riesgo($nombre, $descripcion, $ejemplo, $nombre_imagen['orig_name']);
+                    $mensaje        = array();
+                    if($idFactorRiesgo){
+                        $errores = false;
+                        $creacion_directorio = mkdir("./assets/img/factorriesgo/".$idFactorRiesgo, 0755);
+                        if($creacion_directorio){
+                            $mover = rename("./assets/tmp/".$nombre_imagen['orig_name'], "./assets/img/factorriesgo/".$idFactorRiesgo."/".$nombre_imagen['orig_name']);
+                            if($mover){
+                                $mensaje['tipo']    = "success";
+                                $mensaje['mensaje'] = "Factor de riesgo adicionado exitosamente. Nombre: ".$nombre;
+                            }else{
+                                $errores = true;
+                            }
+                        }else{
+                            $errores = true;
+                        }
+                        if($errores){
+                            $mensaje['tipo']    = "error";
+                            $mensaje['mensaje'] = "No se ha podido cargar la imagen debido a un error inesperado, por favor inténtelo de nuevo.";
+                            // Elimino el factor de riesgo de la base de datos y con el parámetro false le indico que no intente eliminar la imagen ya que no se ha subido correctamente y no existe. Esto se hace para evitar errores.
+                            $this->FactorRiesgo_model->eliminar_por_id($idFactorRiesgo, false);
+                            $this->session->set_flashdata('mensaje', $mensaje);
+                            $this->formulario_adicionar_factor_de_riesgo();
+                        }
+                    }
+                    else{
+                        $mensaje['tipo']    = "error";
+                        $mensaje['mensaje'] = "Ha ocurrido un error inesperado, porfavor inténtelo de nuevo.";
+                    }
+                    $this->session->set_flashdata('mensaje', $mensaje);
+                    //redirect('Administrador/administracion-de-factores-de-riesgo','refresh');
+                }
+            }
+        }else{
             redirect('Administrador/administracion-de-factores-de-riesgo','refresh');
         }
     }
