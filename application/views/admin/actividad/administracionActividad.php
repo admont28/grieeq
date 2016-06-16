@@ -1,8 +1,8 @@
 <?php 
 /**
- * Vista administracionTipoHerida, es la encargada de mostrar las acciones administrativas para los tipos de herida
+ * Vista administracionFactorRiesgo, es la encargada de mostrar las acciones administrativas para los tipos de herida
  *
- * @package aplication/views/admin/tipoherida
+ * @package aplication/views/admin/factorriesgo
  * @author Andrés David Montoya Aguirre <admont28@gmail.com>
  * @link https://github.com/admont28 Perfil del autor.
  * @version 1.0 Versión inicial del fichero.
@@ -12,12 +12,12 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="container">
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 page-header text-left">
-			<h1><?php echo (isset($titulo))? $titulo: "Administración - Tipos de heridas"; ?></h1>
+			<h1><?php echo (isset($titulo))? $titulo: "Administración - Actividad"; ?></h1>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-		    <?php if(isset($pagination) && $pagination != ""): ?>
+			<?php if(isset($pagination) && $pagination != ""): ?>
 			    <?php echo $pagination; ?>    
 			    <?php if(isset($table)): ?>
 		        	<div class="data table-responsive">
@@ -32,19 +32,19 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 	</div>
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 page-header text-left">
-			<h1>Acciones sobre los tipos de herida</h1>
+			<h1>Acciones sobre los factores de riesgo</h1>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-bottom-1em">
 			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-				<a class="btn btn-primary btn-block" href="<?php echo base_url('Administrador/formulario-adicionar-tipo-de-herida'); ?>" id="adicionar" title="Adicionar un nuevo tipo de herida">Adicionar un nuevo tipo de herida</a>
+				<a class="btn btn-primary btn-block" href="" id="adicionar" title="Adicionar una nueva actividad">Adicionar una nueva actividad</a>
 			</div>
 			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-				<a class="btn btn-primary btn-block" href="" id="editar" title="Editar tipo de herida seleccionado">Editar tipo de herida seleccionado</a>
+				<a class="btn btn-primary btn-block" href="" id="editar" title="Editar actividad seleccionada">Editar actividad seleccionada</a>
 			</div>
 			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-				<a class="btn btn-primary btn-block" href="" id="eliminar" title="Eliminar el tipo de herida seleccionado">Eliminar el tipo de herida seleccionado</a>
+				<a class="btn btn-primary btn-block" href="" id="eliminar" title="Eliminar la actividad seleccionada">Eliminar la actividad seleccionada</a>
 			</div>
 		</div>
 	</div>
@@ -56,12 +56,12 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 		if(typeof seleccion == "undefined"){
 			swal({
 				title: "Oops... ¡Ha ocurrido un error!",
-				text: "Debe seleccionar un tipo de herida para poderlo eliminar.",
+				text: "Debe seleccionar un factor de riesgo para poderlo eliminar.",
 				type: "error"
 			});
 		}else{
 			swal({
-			  	title: '¿Eliminar tipo de herida?',
+			  	title: '¿Eliminar factor de riesgo?',
 			  	text: "No podrás deshacer esta acción, ¿Desea continuar?",
 			  	type: 'warning',
 			  	showCancelButton: true,
@@ -74,7 +74,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 			}).then(function(isConfirm) {
 			  	if (isConfirm) {
 			  		$.ajax({
-			  			url: '<?php echo base_url('Administrador/eliminar-tipo-herida'); ?>',
+			  			url: '<?php echo base_url('Administrador/eliminar-factor-riesgo'); ?>',
 			  			data: {
 							'<?php echo $this->security->get_csrf_token_name(); ?>': '<?php echo $this->security->get_csrf_hash(); ?>',
 			  				'seleccion': seleccion
@@ -121,11 +121,11 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 		if(typeof seleccion == "undefined"){
 			swal({
 				title: "Oops... ¡Ha ocurrido un error!",
-				text: "Debe seleccionar un tipo de herida para poderlo editar.",
+				text: "Debe seleccionar un factor de riesgo para poderlo editar.",
 				type: "error"
 			});
 		}else{
-			window.location = "<?php echo base_url('Administrador/formulario-edicion-de-tipo-de-herida');?>/"+seleccion;
+			window.location = "<?php echo base_url('Administrador/formulario-edicion-de-factor-de-riesgo');?>/"+seleccion;
 		}
 	});
 </script>

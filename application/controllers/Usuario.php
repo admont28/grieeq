@@ -241,7 +241,7 @@ class Usuario extends MY_ControladorGeneral {
 		$data['rol']                       = $this->obtener_rol_sesion();
 		$data['url_gestiontiposherida']    = "Administrador/administracion-de-tipos-de-heridas";
 		$data['url_gestionfactoresriesgo'] = "Administrador/administracion-de-factores-de-riesgo";
-		$data['url_gestionactividades']    = "";
+		$data['url_gestionactividades']    = "Administrador/administracion-de-actividades";
 		$data['url_gestionusuarios']       = "Administrador/administracion-de-usuarios";
 		$this->mostrar_pagina('usuario/perfil', $data);	
 	}

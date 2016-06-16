@@ -17,13 +17,17 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 	</div>
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-		    <?php echo $pagination; ?>    
-		    <?php if(isset($table)): ?>
-	        	<div class="data table-responsive">
-	            	<?php echo $table; ?>
-	        	</div>
-		    <?php endif; ?>
-    		<?php echo $pagination;?>
+		    <?php if(isset($pagination) && $pagination != ""): ?>
+			    <?php echo $pagination; ?>    
+			    <?php if(isset($table)): ?>
+		        	<div class="data table-responsive">
+		            	<?php echo $table; ?>
+		        	</div>
+			    <?php endif; ?>
+	    		<?php echo $pagination;?>
+	    	<?php else: ?>
+				<p>No se encontraron registros.</p>
+	    	<?php endif; ?>
 		</div>
 	</div>
 	<div class="row">

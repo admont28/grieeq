@@ -14,6 +14,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @version 1.0 Versión inicial de la clase.
  */
 class Actividad_model extends CI_Model {
+	/**
+	 * Constante que almacenará el nombre de la tabla Actividad.
+	 */
+	const TABLE_NAME = "Actividad";
+	/**
+	 * Constante que almacenará el nombre de la llave primaria de la tabla Actividad.
+	 */
+	const TABLE_PK_NAME = "idActividad";
 
 	/**
 	 * Función __construct del modelo Actividad_model.
@@ -68,6 +76,39 @@ class Actividad_model extends CI_Model {
 		if($resultado->num_rows() > 0 )return $resultado->result();
         else return false;
 	}
+
+	/**
+	 * Función contar_registros del modelo Actividad_model.
+	 *
+	 * Esta función se encarga de contar la cantidad de registros en la tabla Actividad.
+	 *
+	 * @access public
+	 * @return integer Retorna la cantidad de resultados obtenidos.
+	 */
+	public function contar_registros(){
+        $this->db->select('*');    
+        $this->db->from(self::TABLE_NAME);
+        return $this->db->count_all_results();
+    }
+    
+    /**
+     * Función obtener_resultados del modelo Actividad_model.
+	 *
+	 * Esta función se encarga de obtener los factores de riesgo dado cierto limite e inicio.
+	 *
+	 * @access public
+     * @param  integer $limit limite de la consulta.
+     * @param  integer $start inicio de la consulta.
+     * @return Array          Retorna un arreglo de objetos con las actividades encontradas.
+     */
+    public function obtener_resultados($limit=100,$start=0){
+        $this->db->select('*');        
+        $this->db->from(self::TABLE_NAME);
+        $this->db->order_by(self::TABLE_PK_NAME, 'ASC');
+        $this->db->limit($limit, $start);    
+        $query = $this->db->get();    
+        return $query->result();
+    }
 }// Fin de la clase Actividad_model
 /* End of file Actividad_model.php */
 /* Location: ./application/models/Actividad_model.php */

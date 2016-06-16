@@ -132,8 +132,6 @@ class Administrador extends MY_ControladorGeneral {
             $tmpl = array ( 'table_open'  => '<table class="table table-striped table-bordered table-hover">' );
             $this->table->set_template($tmpl);
             $data['table'] = $this->table->generate();
-        }else{
-        	redirect('Administrador/administracion-de-usuarios','refresh');
         }
         $this->mostrar_pagina('admin/usuario/administracionUsuario', $data);
     }
@@ -390,8 +388,6 @@ class Administrador extends MY_ControladorGeneral {
             $tmpl = array ( 'table_open'  => '<table class="table table-striped table-bordered table-hover">' );
             $this->table->set_template($tmpl);
             $data['table'] = $this->table->generate();
-        }else{
-            redirect('Administrador/administracion-de-tipos-de-heridas','refresh');
         }
         $data['titulo'] ="Administración - Tipos de heridas";
         $this->mostrar_pagina('admin/tipoherida/administracionTipoHerida', $data);
@@ -677,8 +673,6 @@ class Administrador extends MY_ControladorGeneral {
             $tmpl = array ( 'table_open'  => '<table class="table table-striped table-bordered table-hover">' );
             $this->table->set_template($tmpl);
             $data['table'] = $this->table->generate();
-        }else{
-            redirect('Administrador/administracion-de-factores-de-riesgo','refresh');
         }
         $data['titulo'] ="Administración - Factores de riesgo";
         $this->mostrar_pagina('admin/factorriesgo/administracionFactorRiesgo', $data);
@@ -899,12 +893,78 @@ class Administrador extends MY_ControladorGeneral {
                         $mensaje['mensaje'] = "Ha ocurrido un error inesperado, porfavor inténtelo de nuevo.";
                     }
                     $this->session->set_flashdata('mensaje', $mensaje);
-                    //redirect('Administrador/administracion-de-factores-de-riesgo','refresh');
+                    redirect('Administrador/administracion-de-factores-de-riesgo','refresh');
                 }
             }
         }else{
             redirect('Administrador/administracion-de-factores-de-riesgo','refresh');
         }
+    }
+
+    /**
+     * Función administracion_de_actividades del controlador Administrador.
+     *
+     * Esta función se encarga de obtener las actividades y mostrarlas en forma de tabla y paginarlas.
+     *
+     * @access public
+     * @param  string  $pagina      Es usada para mostrar en la url el string: pagina 
+     * @param  integer $page_number Número de la página a mostrar.
+     * @return void                 Muestra la página con las actividades paginadas.
+     */
+    public function administracion_de_actividades($pagina='',$page_number = 1){
+        $this->breadcrumb->populate(array(
+            'Inicio' => '',
+            'Perfil' => 'Usuario',
+            'Administración de actividades'
+        ));
+        $this->load->model('Actividad_model');        
+        // Cargo la librería pagination de codeigniter.
+        $this->load->library("pagination");
+        // configuro la cantidad de registros por página.
+        $config["per_page"]         = 4;
+        $config['use_page_numbers'] = TRUE;
+        // Enlace para usar la paginación         
+        $config['base_url']         = base_url()."Administrador/administracion-de-actividades/pagina/";
+        // Adición del html de bootstrap a la variable de configuración
+        $config                     = $this->bs_paginacion($config);
+        $page_number                = intval(($page_number  == 1 || $page_number  == 0) ? 0 : ($page_number * $config['per_page']) - $config['per_page']);
+        $config['total_rows']       = $this->Actividad_model->contar_registros();        
+        $Actividades                = $this->Actividad_model->obtener_resultados($config["per_page"], $page_number);
+        $this->pagination->initialize($config);                
+        $data['pagination']         = $this->pagination->create_links();;
+        $this->load->library('table');
+        $this->table->set_empty("---");
+        $this->table->set_heading(
+            'Seleccionar',
+            'Nombre',
+            'Descripción',  
+            'Precaución',              
+            'Imagen asociada'
+        );
+        if(count($Actividades)>0){
+            foreach ($Actividades as $actividad){
+                $datos = array(
+                    'name'  => 'seleccionar',
+                    'id'    => 'seleccionar',
+                    'class' => 'seleccion',
+                    'value' => $actividad->idActividad,
+                    'type'  => 'radio',
+                );
+                $input = form_input($datos);
+                $this->table->add_row(
+                    array('data' => $input),
+                    array('data' => $actividad->nombre_actividad),
+                    array('data' => $actividad->descripcion_actividad), 
+                    array('data' => $actividad->precaucion_actividad),          
+                    array('data' => "<div class='text-center'><img width='70px' src='".asset_url('img/'.$actividad->imagen_actividad)."' alt='".$actividad->nombre_actividad."' /></div>")
+                );
+            }
+            $tmpl = array ( 'table_open'  => '<table class="table table-striped table-bordered table-hover">' );
+            $this->table->set_template($tmpl);
+            $data['table'] = $this->table->generate();
+        }
+        $data['titulo'] ="Administración - Actividades";
+        $this->mostrar_pagina('admin/actividad/administracionActividad', $data);
     }
 } // Fin de la clase Administrador.
 /* End of file Administrador.php */
