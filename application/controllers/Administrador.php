@@ -945,7 +945,7 @@ class Administrador extends MY_ControladorGeneral {
             foreach ($Actividades as $actividad){
                 $datos = array(
                     'name'  => 'seleccionar',
-                    'id'    => 'seleccionar',
+                    'id'    => $actividad->idActividad,
                     'class' => 'seleccion',
                     'value' => $actividad->idActividad,
                     'type'  => 'radio',
@@ -965,6 +965,87 @@ class Administrador extends MY_ControladorGeneral {
         }
         $data['titulo'] ="Administración - Actividades";
         $this->mostrar_pagina('admin/actividad/administracionActividad', $data);
+    }
+
+    /**
+     * Función obtener_tipos_de_herida_dada_actividad del controlador Administrador.
+     *
+     * Esta función se encarga de obtener los tipos de herida asociados a una actividad.
+     *
+     * @access public
+     * @return void No retorna nada, imprime (echo) una tabla html con los tipos de heridas asociados a la actividad obtenida desde $_GET, si no se encuentran tipos de heridas se imprime un parrafó indicando que no se encontraron resultados.
+     */
+    public function obtener_tipos_de_herida_dada_actividad(){
+        $id = $this->input->get('id');
+        if(isset($id) && !empty($id)){
+            $this->load->model('TipoHeridaActividad_model');
+            $this->load->model('TipoHerida_model');
+            $actividades_tipoheridas = $this->TipoHeridaActividad_model->obtener_tipos_de_herida_por_actividad($id);
+            $tipos_de_heridas = array();
+            foreach ($actividades_tipoheridas as $at) {
+                $tipos_de_heridas[] = $this->TipoHerida_model->obtener_por_id($at->TipoHerida_idTipoHerida);
+            }
+            $data['tipos_de_heridas'] = $tipos_de_heridas;
+            $vista = $this->load->view('admin/tipoherida/tablaTipoHerida', $data, true);
+            echo $vista;
+        }
+    }
+
+    /**
+     * Función obtener_factores_de_riesgo_dada_actividad del controlador Administrador.
+     *
+     * Esta función se encarga de obtener los factores de riesgo asociados a una actividad.
+     *
+     * @access public
+     * @return void No retorna nada, imprime (echo) una tabla html con los factores de riesgo asociados a la actividad obtenida desde $_GET, si no se encuentran factores de riesgo se imprime un parrafó indicando que no se encontraron resultados.
+     */
+    public function obtener_factores_de_riesgo_dada_actividad(){
+        $id = $this->input->get('id');
+        if(isset($id) && !empty($id)){
+            $this->load->model('FactorRiesgoActividad_model');
+            $this->load->model('FactorRiesgo_model');
+            $actividades_factoresriesgo = $this->FactorRiesgoActividad_model->obtener_factores_de_riesgo_por_actividad($id);
+            $factores_de_riesgo = array();
+            foreach ($actividades_factoresriesgo as $af) {
+                $factorRiesgo = $this->FactorRiesgo_model->obtener_por_id($af->FactorRiesgo_idFactorRiesgo);
+                $factorRiesgo->incluir = $af->incluir_factorriesgoactividad;
+                $factores_de_riesgo[] = $factorRiesgo;
+            }
+            $data['factores_de_riesgo'] = $factores_de_riesgo;
+            $vista = $this->load->view('admin/factorriesgo/tablaFactorRiesgo', $data, true);
+            echo $vista;
+        }
+    }
+
+    /**
+     * Función eliminar_actividad del controlador Administrador.
+     *
+     * Esta función se encarga de eliminar un Factor de Riesgo de la base de datos.
+     *
+     * @access public
+     * @return void Imprime un objeto JSON dependiendo de lo que se pudo hacer, si no existe nada por post, se redirige a: administracion-de-actividades.
+     */
+    public function eliminar_actividad(){
+        if ($this->input->post('seleccion')) {
+            $idActividad = $this->input->post('seleccion');
+            $this->load->model('Actividad_model');
+            $factorRiesgo   = $this->Actividad_model->obtener_por_id($idActividad);
+            if ($factorRiesgo != null) {
+                $respuesta = $this->Actividad_model->eliminar_por_id($factorRiesgo->idActividad, false);
+                if($respuesta){
+                    echo json_encode(array("state" => "success", "title" => "¡Actividad eliminada con éxito!", "message" => "La actividad ha sido eliminada con éxito."));
+                    die();
+                }else{
+                    echo json_encode(array("state" => "error", "message" => "Ha ocurrido un error inesperado, por favor inténtelo de nuevo."));
+                    die();
+                }
+            } else {
+                echo json_encode(array("state" => "error", "message" => "Identificador de la actividad no válido."));
+                die();
+            }
+        } else {
+            redirect('Administrador/administracion-de-actividades','refresh');
+        }
     }
 } // Fin de la clase Administrador.
 /* End of file Administrador.php */

@@ -109,6 +109,52 @@ class Actividad_model extends CI_Model {
         $query = $this->db->get();    
         return $query->result();
     }
+
+    /**
+     * Función obtener_por_id del modelo Actividad_model.
+	 *
+	 * Esta función se encarga de obtener una actividad dado su id.
+	 *
+	 * @access public
+     * @param  integer $idActividad Id único de la actividad.
+     * @return mixed              Retorna la actvidad si la encuentra, de lo contrario retorna null.
+     */
+    public function obtener_por_id($idActividad){
+    	$factorRiesgo = $this->db->get_where(self::TABLE_NAME, array(self::TABLE_PK_NAME => $idActividad));
+    	if($factorRiesgo->num_rows() == 1){
+			return $factorRiesgo->row();
+		}
+		return null;
+    }
+
+    /**
+     * Función eliminar_por_id del modelo Actividad_model.
+	 *
+	 * Esta función se encarga de eliminar una actividad dado su id.
+	 * La función recibe un parámetro para indicar si sebe eliminar la imagen asociada a la actividad del servidor o si solo debe ser eliminada de la base de datos.
+	 *
+	 * @access public
+     * @param  integer $idActividad Identificación única de la actividad.
+     * @param boolean $eliminar_imagen Valor booleano para indicar si se debe intentar eliminar la imagen asociada a la actividad o solo eliminar la actividad de la base de datos.
+     * @return boolean                 Retorna true si se pudo eliminar, sino retorna false.
+     */
+    public function eliminar_por_id($idActividad, $eliminar_imagen = true){
+    	$this->db->trans_start(); // Inicio de la transacción.
+    	$this->load->model('TipoHeridaActividad_model');
+    	$this->load->model('FactorRiesgoActividad_model');
+		$this->db->delete(TipoHeridaActividad_model::TABLE_NAME, array(self::TABLE_NAME."_".self::TABLE_PK_NAME => $idActividad));
+    	$this->db->delete(FactorRiesgoActividad_model::TABLE_NAME, array(self::TABLE_NAME."_".self::TABLE_PK_NAME => $idActividad));
+		$resultado = $this->db->delete(self::TABLE_NAME, array(self::TABLE_PK_NAME => $idActividad));
+		$this->db->trans_complete(); // Fin de la transacción.
+
+		if ($this->db->trans_status() === FALSE){
+		    return false;
+		}
+		if($eliminar_imagen){
+			$this->eliminar_directorio("./assets/img/actividad/".$idActividad);
+		}
+		return true;
+	}
 }// Fin de la clase Actividad_model
 /* End of file Actividad_model.php */
 /* Location: ./application/models/Actividad_model.php */

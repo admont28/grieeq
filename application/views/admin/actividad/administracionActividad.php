@@ -32,7 +32,27 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 	</div>
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 page-header text-left">
-			<h1>Acciones sobre los factores de riesgo</h1>
+			<h3>Tipos de herida relacionados con la actividad seleccionada</h3>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="contendor_tipos_de_herida">
+			<p>Debe seleccionar una actividad para ver los tipos de herida asociados.</p>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 page-header text-left">
+			<h3>Factores de riesgo relacionados con la actividad seleccionada</h3>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="contendor_factores_de_riesgo">
+			<p>Debe seleccionar una actividad para ver los factores de riesgo asociados.</p>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 page-header text-left">
+			<h1>Acciones sobre las actividades</h1>
 		</div>
 	</div>
 	<div class="row">
@@ -50,18 +70,65 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 	</div>
 </div>
 <script type="text/javascript">
+
+	$(".seleccion").change(function(e){
+		var id = $(this).attr('id');
+		cargar_tipos_de_herida(id);
+		cargar_factores_de_riesgo(id);
+	});
+	var peticion_tipos_de_herida = null;
+	function cargar_tipos_de_herida(id) {
+		if(peticion_tipos_de_herida != null)
+			peticion_tipos_de_herida.abort();
+		peticion_tipos_de_herida = $.ajax({
+			url : "<?php echo base_url('Administrador/obtener-tipos-de-herida-dada-actividad') ?>",
+			data: {
+				'<?php echo $this->security->get_csrf_token_name(); ?>': '<?php echo $this->security->get_csrf_hash(); ?>',
+				'id' : id
+			},
+			dataType: "HTML",
+			type: "GET",
+			success: function(data){
+				$("#contendor_tipos_de_herida").html(data);
+			},
+			error: function(xhr, status){
+				console.log(status);
+			}
+		});
+	}
+	var peticion_factores_de_riesgo = null;
+	function cargar_factores_de_riesgo(id) {
+		if(peticion_factores_de_riesgo != null)
+			peticion_factores_de_riesgo.abort();
+		peticion_factores_de_riesgo = $.ajax({
+			url : "<?php echo base_url('Administrador/obtener-factores-de-riesgo-dada-actividad') ?>",
+			data: {
+				'<?php echo $this->security->get_csrf_token_name(); ?>': '<?php echo $this->security->get_csrf_hash(); ?>',
+				'id' : id
+			},
+			dataType: "HTML",
+			type: "GET",
+			success: function(data){
+				$("#contendor_factores_de_riesgo").html(data);
+			},
+			error: function(xhr, status){
+				console.log(status);
+			}
+		});
+	}
+
 	$("#eliminar").click(function(e) {
 		e.preventDefault();
 		var seleccion = $('input:radio[name=seleccionar]:checked').val();
 		if(typeof seleccion == "undefined"){
 			swal({
 				title: "Oops... ¡Ha ocurrido un error!",
-				text: "Debe seleccionar un factor de riesgo para poderlo eliminar.",
+				text: "Debe seleccionar una actividad para poderla eliminar.",
 				type: "error"
 			});
 		}else{
 			swal({
-			  	title: '¿Eliminar factor de riesgo?',
+			  	title: '¿Eliminar actividad?',
 			  	text: "No podrás deshacer esta acción, ¿Desea continuar?",
 			  	type: 'warning',
 			  	showCancelButton: true,
@@ -74,7 +141,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 			}).then(function(isConfirm) {
 			  	if (isConfirm) {
 			  		$.ajax({
-			  			url: '<?php echo base_url('Administrador/eliminar-factor-riesgo'); ?>',
+			  			url: '<?php echo base_url('Administrador/eliminar-actividad'); ?>',
 			  			data: {
 							'<?php echo $this->security->get_csrf_token_name(); ?>': '<?php echo $this->security->get_csrf_hash(); ?>',
 			  				'seleccion': seleccion
@@ -96,7 +163,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 									text: data.message,
 									type: "error"
 								}).then(function(isConfirm) {
-						    		location.reload();
+						    		//location.reload();
 						    	});
 			  				}
 			  			},
@@ -121,11 +188,11 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 		if(typeof seleccion == "undefined"){
 			swal({
 				title: "Oops... ¡Ha ocurrido un error!",
-				text: "Debe seleccionar un factor de riesgo para poderlo editar.",
+				text: "Debe seleccionar una actividad para poderla editar.",
 				type: "error"
 			});
 		}else{
-			window.location = "<?php echo base_url('Administrador/formulario-edicion-de-factor-de-riesgo');?>/"+seleccion;
+			window.location = "<?php echo base_url('Administrador/formulario-edicion-de-actividad');?>/"+seleccion;
 		}
 	});
 </script>
