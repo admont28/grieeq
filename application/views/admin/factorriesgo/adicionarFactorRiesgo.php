@@ -1,6 +1,6 @@
 <?php 
 /**
- * Vista adicionarFactorRiesgo, es la encargada de mostrar los campos necesarios para la edición de un factor de riesgo del sistema.
+ * Vista adicionarFactorRiesgo, es la encargada de mostrar los campos necesarios para la adición de un factor de riesgo del sistema.
  *
  * @package aplication/views/admin/factorriesgo
  * @author Andrés David Montoya Aguirre <admont28@gmail.com>
