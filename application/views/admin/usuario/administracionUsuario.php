@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 	</div>
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-		    <?php if(isset($pagination) && $pagination != ""): ?>
+		    <?php if(isset($pagination, $table)): ?>
 			    <?php echo $pagination; ?>    
 			    <?php if(isset($table)): ?>
 		        	<div class="data table-responsive">
