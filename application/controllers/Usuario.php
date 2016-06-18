@@ -163,6 +163,8 @@ class Usuario extends MY_ControladorGeneral {
 		$data                     = array();
 		$data['titulo']           = "Inicio de sesión";
 		$data['url_iniciosesion'] = "Usuario/inicio-de-sesion";
+		$url = $this->session->flashdata('url');
+		$this->session->set_flashdata('url', $url);
 		$this->mostrar_pagina('usuario/inicioSesion', $data);
 	}
 
@@ -196,7 +198,12 @@ class Usuario extends MY_ControladorGeneral {
 						'rol_usuario'            =>	($resultado->administrador_usuario == true)? "admin" : "normal",
 	            		);		
 					$this->session->set_userdata('usuario',$data);
-					$this->index();
+					$url = $this->session->flashdata('url');
+					if(isset($url)){
+						redirect($url,'refresh');
+					}else{
+						$this->index();
+					}
 				}
 				else{
 					$mensaje['tipo']    = "error";
