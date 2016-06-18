@@ -50,6 +50,26 @@ class TipoHeridaActividad_model extends CI_Model {
 		return $query->result();
 
 	}
+
+	/**
+	 * Función insertar del modelo TipoHeridaActividad_model.
+	 *
+	 * Esta función se encarga de insertar un registro en la base de datos.
+	 *
+	 * @access public
+	 * @param  integer  $idActividad  Identificador único de la actividad.
+	 * @param  integer  $idTipoHerida Identificador único del tipo de herida.
+	 * @param  integer $orden         Orden de la actividad para el tipo de herida.
+	 * @return boolean                Retorna true si se pudo insertar, de lo contrario retorna false.
+	 */
+	public function insertar($idActividad, $idTipoHerida, $orden = 0){
+		$datos = array(
+			'Actividad_idActividad'     => $idActividad,
+			'TipoHerida_idTipoHerida'   => $idTipoHerida,
+			'orden_tipoheridaactividad' => $orden
+		);
+		return $this->db->insert(self::TABLE_NAME, $datos);
+	}
 }// Fin de la clase TipoHeridaActividad_model
 /* End of file TipoHeridaActividad_model.php */
 /* Location: ./application/models/TipoHeridaActividad_model.php */

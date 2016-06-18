@@ -155,6 +155,58 @@ class Actividad_model extends CI_Model {
 		}
 		return true;
 	}
+
+	/**
+     * Función eliminar_directorio del modelo Actividad_model.
+     *
+     * Esta función se encarga de eliminar un directorio y todo su contenido del servidor.
+     *
+     * @access private
+     * @param  string $dir Path del directorio que se desea eliminar, pj: ./assets/img
+     * @return void      No retorna nada, solo elimina el directorio y sus archivos.
+     */
+    private function eliminar_directorio($dir) {
+	    if(!$dh = @opendir($dir)) return;
+	    while (false !== ($current = readdir($dh))) {
+	        if($current != '.' && $current != '..') {
+	            //echo 'Se ha borrado el archivo '.$dir.'/'.$current.'<br/>';
+	            if (!@unlink($dir.'/'.$current)) 
+	                $this->eliminar_directorio($dir.'/'.$current);
+	        }       
+	    }
+	    closedir($dh);
+	    //echo 'Se ha borrado el directorio '.$dir.'<br/>';
+	    @rmdir($dir);
+	}
+
+	/**
+	 * Función crear_actividad del modelo Actividad_model.
+	 *
+	 * Esta función se encarga de insertar en la base de datos una nueva actividad.
+	 *
+	 * @access public
+	 * @param  string $nombre      Nombre de la nueva actividad.
+	 * @param  string $descripcion Descripción de la nueva actividad.
+	 * @param  string $precaucion  precaucion de la nueva actividad.
+	 * @param  string $imagen      Nombre de la imagen asociada a la actividad.
+	 * @return integer             Retorna el id del actividad insertado.
+	 */
+	public function crear_actividad($nombre, $descripcion, $precaucion, $imagen){
+		$datos = array(
+			'nombre_actividad'      => $nombre,
+			'descripcion_actividad' => $descripcion,
+			'precaucion_actividad'  => $precaucion,
+			'imagen_actividad'      => $imagen
+		);
+		$this->db->insert(self::TABLE_NAME, $datos);
+		$idActividad = $this->db->insert_id();
+		$datos = array(
+			'imagen_actividad'      => "actividad/".$idActividad."/".$imagen
+		);
+		$this->db->where(self::TABLE_PK_NAME, $idActividad);
+		$this->db->update(self::TABLE_NAME, $datos);
+		return $idActividad;
+	}
 }// Fin de la clase Actividad_model
 /* End of file Actividad_model.php */
 /* Location: ./application/models/Actividad_model.php */

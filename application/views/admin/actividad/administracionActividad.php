@@ -58,7 +58,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-bottom-1em">
 			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-				<a class="btn btn-primary btn-block" href="" id="adicionar" title="Adicionar una nueva actividad">Adicionar una nueva actividad</a>
+				<a class="btn btn-primary btn-block" href="<?php echo base_url('Administrador/formulario-adicionar-actividad'); ?>" id="adicionar" title="Adicionar una nueva actividad">Adicionar una nueva actividad</a>
 			</div>
 			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
 				<a class="btn btn-primary btn-block" href="" id="editar" title="Editar actividad seleccionada">Editar actividad seleccionada</a>

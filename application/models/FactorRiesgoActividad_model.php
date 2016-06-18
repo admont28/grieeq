@@ -49,6 +49,26 @@ class FactorRiesgoActividad_model extends CI_Model {
 		return $query->result();
 
 	}
+
+	/**
+	 * Función insertar del modelo FactorRiesgoActividad_model.
+	 *
+	 * Esta función se encarga de insertar un registro en la base de datos.
+	 *
+	 * @access public
+	 * @param  integer  $idActividad    Identificador único de la actividad.
+	 * @param  integer  $idFactorRiesgo Identificador único del factor de riesgo.
+	 * @param  boolean $incluir         Booleano que indica si la actividad es de inclusión o exclusión.
+	 * @return boolean                  Retorna true si se pudo insertar, de lo contrario retorna false.
+	 */
+	public function insertar($idActividad, $idFactorRiesgo, $incluir = false){
+		$datos = array(
+			'Actividad_idActividad'         => $idActividad,
+			'FactorRiesgo_idFactorriesgo'   => $idFactorRiesgo,
+			'incluir_factorriesgoactividad' => $incluir
+		);
+		return $this->db->insert(self::TABLE_NAME, $datos);
+	}
 }// Fin de la clase FactorRiesgoActividad_model
 /* End of file FactorRiesgoActividad_model.php */
 /* Location: ./application/models/FactorRiesgoActividad_model.php */

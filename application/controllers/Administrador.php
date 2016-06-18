@@ -1029,9 +1029,9 @@ class Administrador extends MY_ControladorGeneral {
         if ($this->input->post('seleccion')) {
             $idActividad = $this->input->post('seleccion');
             $this->load->model('Actividad_model');
-            $factorRiesgo   = $this->Actividad_model->obtener_por_id($idActividad);
-            if ($factorRiesgo != null) {
-                $respuesta = $this->Actividad_model->eliminar_por_id($factorRiesgo->idActividad, false);
+            $actividad   = $this->Actividad_model->obtener_por_id($idActividad);
+            if ($actividad != null) {
+                $respuesta = $this->Actividad_model->eliminar_por_id($actividad->idActividad);
                 if($respuesta){
                     echo json_encode(array("state" => "success", "title" => "¡Actividad eliminada con éxito!", "message" => "La actividad ha sido eliminada con éxito."));
                     die();
@@ -1044,6 +1044,154 @@ class Administrador extends MY_ControladorGeneral {
                 die();
             }
         } else {
+            redirect('Administrador/administracion-de-actividades','refresh');
+        }
+    }
+
+    /**
+     * Función formulario_adicionar_actividad del controlador Administrador.
+     *
+     * Esta función se encarga de mostrar el formulario para adicionar una nueva actividad al sistema.
+     *
+     * @access public
+     * @return void No retorna nada, muestra la página para adicionar una actividad.
+     */
+    public function formulario_adicionar_actividad(){
+        $this->breadcrumb->populate(array(
+            'Inicio'                               => '',
+            'Perfil'                               => 'Usuario',
+            'Administración de actividades' => 'Administrador/administracion-de-actividades',
+            'Adicionar factor de riesgo'
+        ));
+        $this->load->model('TipoHerida_model');
+        $this->load->model('FactorRiesgo_model');
+        $data                              = array();
+        $data['tipos_de_heridas']          = $this->TipoHerida_model->obtenerTiposHerida();
+        $data['factores_de_riesgo']        = $this->FactorRiesgo_model->obtenerFactoresRiesgo();
+        $data['url_adicionaractividad']    = "Administrador/adicionar-actividad";
+        $data['titulo']                    = "Administración - Adicionar actividad";
+        $this->mostrar_pagina('admin/actividad/adicionarActividad', $data);
+    }
+
+    /**
+     * Función adicionar_actividad del controlador Administrador.
+     *
+     * Esta función se encarga de realizar las validaciones antes de adicionar una actividad en la base de datos para luego adicionarla y subir la imagen asociada.   
+     *
+     * @access public
+     * @return void no retorna nada, valida los campos e inserta en la base de datos.
+     */
+    public function adicionar_actividad(){
+        if($this->input->post('submit')){
+            $this->load->library('upload');
+            //hacemos las comprobaciones que de nuestro formulario;
+            $this->form_validation->set_rules('nombre','Nombre','trim|required|max_length[255]|min_length[5]');
+            $this->form_validation->set_rules('descripcion','Descripción','trim|max_length[500]|min_length[5]');
+            $this->form_validation->set_rules('precaucion','Precaución','trim|max_length[500]|min_length[5]');
+            $this->form_validation->set_message('required', 'El campo %s es obligatorio');
+            $this->form_validation->set_message('min_length', 'El campo %s debe tener al menos %s carácteres');
+            $this->form_validation->set_message('max_length', 'El campo %s debe tener menos %s car&aacute;cteres');
+            // Validamos el formulario, si retorna falso cargamos el método formulario_adicionar_actividad para mostrar los errores ocurridos.
+            if (!$this->form_validation->run()){
+                $this->formulario_adicionar_actividad();
+            }else{
+                $config['upload_path']          = './assets/tmp/';
+                $config['allowed_types']        = 'gif|jpg|png';
+                $config['max_size']             = 2048;
+                $config['max_width']            = 1024;
+                $config['max_height']           = 768;
+                $this->upload->initialize($config);
+                if ( ! $this->upload->do_upload('imagen')){
+                    $exito              = false;
+                    $mensaje['tipo']    = "error";
+                    $mensaje['mensaje'] = $this->upload->display_errors();
+                    $this->session->set_flashdata('mensaje', $mensaje);
+                    $this->formulario_adicionar_actividad();
+                }else{
+                    $nombre_imagen      = $this->upload->data();
+                    $nombre             = $this->security->xss_clean($this->input->post('nombre'));
+                    $descripcion        = $this->security->xss_clean($this->input->post('descripcion'));
+                    $precaucion         = $this->security->xss_clean($this->input->post('precaucion'));
+                    $tipos_de_heridas   = (!is_null($this->input->post('heridas')) ) ? $this->input->post('heridas'): array();
+                    $factores_de_riesgo = (!is_null($this->input->post('factores_de_riesgo')) ) ? $this->input->post('factores_de_riesgo'): array();
+                    
+                    $this->db->trans_begin(); // Inicio de la trasacción.
+
+                    $this->load->model('Actividad_model');
+                    $idActividad = $this->Actividad_model->crear_actividad($nombre, $descripcion, $precaucion, $nombre_imagen['orig_name']);
+                    $mensaje     = array();
+                    if($idActividad){
+                        $errores = false;
+                        $creacion_directorio = mkdir("./assets/img/actividad/".$idActividad, 0755);
+                        if($creacion_directorio){
+                            $mover = rename("./assets/tmp/".$nombre_imagen['orig_name'], "./assets/img/actividad/".$idActividad."/".$nombre_imagen['orig_name']);
+                            if($mover){
+                                $this->load->model('TipoHeridaActividad_model');
+                                $this->load->model('TipoHerida_model');
+                                foreach ($tipos_de_heridas as $indice => $idTipoHerida) {
+                                    $tipoHerida = $this->TipoHerida_model->obtener_por_id($idTipoHerida);
+                                    if(!is_null($tipoHerida)){
+                                        $resultado = $this->TipoHeridaActividad_model->insertar($idActividad, $idTipoHerida);
+                                        if(!$resultado){
+                                            $errores = true;
+                                            break;
+                                        }
+                                    }else{
+                                        $errores = true;
+                                        break;
+                                    }
+                                }
+                                $this->load->model('FactorRiesgo_model');
+                                $this->load->model('FactorRiesgoActividad_model');
+                                foreach ($factores_de_riesgo as $indice => $valor) {
+                                    // Valor viene con la letra i (inclusión) o la letra e (exclusión) seguido del id del factor de riesgo.
+                                    $accion = substr($valor, 0, 1); // Exraigo la primer letra, i o e.
+                                    $idFactorRiesgo = (int)substr($valor, 1); // Extraigo el id del factor de riesgo.
+                                    $factorRiesgo = $this->FactorRiesgo_model->obtener_por_id($idFactorRiesgo);
+                                    if(!is_null($factorRiesgo)){
+                                        $resultado = false;
+                                        if($accion == "i"){ // Actividad de inclusión.
+                                           $resultado = $this->FactorRiesgoActividad_model->insertar($idActividad, $idFactorRiesgo, true); 
+                                        }else if($accion == "e"){ // Actividad de exclusión.
+                                            $resultado = $this->FactorRiesgoActividad_model->insertar($idActividad, $idFactorRiesgo, false);
+                                        } 
+                                        if(!$resultado){
+                                            $errores = true;
+                                            break;
+                                        }
+                                    }else{
+                                        $errores = true;
+                                        break;
+                                    }
+                                }
+                                if(!$errores){
+                                    $mensaje['tipo']    = "success";
+                                    $mensaje['mensaje'] = "Actividad adicionada exitosamente. Nombre: ".$nombre;
+                                    $this->db->trans_commit();
+                                    $this->session->set_flashdata('mensaje', $mensaje);
+                                    redirect('Administrador/administracion-de-actividades','refresh');
+                                }
+                            }else{
+                                $errores = true;
+                            }
+                        }else{
+                            $errores = true;
+                        }
+                        if($errores){
+                            $mensaje['tipo']    = "error";
+                            $mensaje['mensaje'] = "No se ha podido adicionar la actividad debido a un error inesperado, por favor recarga la página e inténtalo de nuevo.";
+                            $this->db->trans_rollback();
+                            $this->session->set_flashdata('mensaje', $mensaje);
+                            $this->formulario_adicionar_actividad();
+                        }
+                    }
+                    else{
+                        $mensaje['tipo']    = "error";
+                        $mensaje['mensaje'] = "Ha ocurrido un error inesperado, porfavor inténtelo de nuevo.";
+                    }
+                }
+            }
+        }else{
             redirect('Administrador/administracion-de-actividades','refresh');
         }
     }
