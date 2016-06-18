@@ -48,7 +48,7 @@ class TipoHerida_model extends CI_Model {
 	 */
 	public function obtenerTiposHerida(){
 		$query = $this->db->get(self::TABLE_NAME);
-		if($query->num_rows() > 0) return $query;
+		if($query->num_rows() > 0) return $query->result();
 		else return false;
 	}
 

@@ -170,11 +170,11 @@ class SituacionEnfermeria extends MY_ControladorGeneral {
 				// Verificamos que exista almenos 1 tipo de herida.
 				if($tipos_herida){
 					// Almacenamos en una matriz bidimensional así $datos['idTipoHerida'] = 'nombre'
-		        	foreach($tipos_herida->result() as $row)
+		        	foreach($tipos_herida as $row)
 		           		$datos[htmlspecialchars($row->idTipoHerida, ENT_QUOTES)] = htmlspecialchars($row->nombre_tipoherida, ENT_QUOTES);
 		           	// Cargamos la vista y le enviamos los datos a mostrar
 		           	$data['typeswoundsselect'] = $datos;
-		           	$data['typeswounds'] = $tipos_herida->result();
+		           	$data['typeswounds'] = $tipos_herida;
 				}
 				// Debo mostrar el tipo de herida guardada
 				//$data['seleccionado'] = $this->session->userdata('tipo_herida');
@@ -229,7 +229,7 @@ class SituacionEnfermeria extends MY_ControladorGeneral {
 					if($consulta){
 						// Almacenamos en una matriz bidimensional así $datos['idFactorRiesgo'] = 'nombre'
 						$datos = array();
-			        	foreach($consulta->result() as $row){
+			        	foreach($consulta as $row){
 			        		$id = htmlspecialchars($row->idFactorRiesgo, ENT_QUOTES);
 			        		$nombre = htmlspecialchars($row->nombre_factorriesgo, ENT_QUOTES);;
 			        		$dato['id'] = $id;
@@ -239,7 +239,7 @@ class SituacionEnfermeria extends MY_ControladorGeneral {
 			        	}
 			           	// Cargamos la vista y le enviamos los datos a mostrar
 			           	$data['risksfactosselect'] = $datos;
-			           	$data['risksfactors'] = $consulta->result();
+			           	$data['risksfactors'] = $consulta;
 					}
 					// Se guarda la selección del tipo de herida: selTipoHerida 
 					$url_factorriesgo = self::SITUACIONENFERMERIA_URL.self::FACTORRIESGO_URL;
