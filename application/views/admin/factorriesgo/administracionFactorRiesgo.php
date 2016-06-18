@@ -26,7 +26,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 			    <?php endif; ?>
 	    		<?php echo $pagination;?>
 	    	<?php else: ?>
-				<p>No se encontraron registros.</p>
+				<p style="color: red;">No se encontraron registros.</p>
 	    	<?php endif; ?>
 		</div>
 	</div>
