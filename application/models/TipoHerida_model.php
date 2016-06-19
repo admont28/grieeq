@@ -131,7 +131,7 @@ class TipoHerida_model extends CI_Model {
      * @param  string $nombre        Nombre del tipo de herida editado.
      * @param  string $descripcion   Descripción del tipo de herida editado.
      * @param  string $nombre_imagen Nombre de la nueva imagen del tipo de herida, si viene vació no se editará el nombre de la imagen.
-     * @return boolean                Retorna true si pudo editar el tipo de herida.
+     * @return boolean                Retorna true si pudo editar el tipo de herida, de lo contrario retorna false.
      */
     public function editar_tipo_herida($idTipoHerida, $nombre, $descripcion, $nombre_imagen){
     	if(trim($nombre_imagen) == ""){
@@ -152,8 +152,7 @@ class TipoHerida_model extends CI_Model {
 			}
     	}
     	$this->db->where(self::TABLE_PK_NAME, $idTipoHerida);
-		$this->db->update(self::TABLE_NAME, $data);
-		return true;
+		return $this->db->update(self::TABLE_NAME, $data);
     }
 
     /**

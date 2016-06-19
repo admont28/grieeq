@@ -83,7 +83,7 @@ class Usuario_model extends CI_Model {
 	 * @param  string $identificacion Identificación del usuario editado.
 	 * @param  string $password       Contraseña del usuario editado.
 	 * @param  string $correo         Correo del usuario editado.
-	 * @return boolean                Retorna true si se pudo actualizar el usuario.
+	 * @return boolean                Retorna true si se pudo actualizar el usuario, de lo contrario retorna false.
 	 */
 	public function editar_usuario($idUsuario, $identificacion,$password,$correo){
 		if(trim($password) == ""){
@@ -100,8 +100,7 @@ class Usuario_model extends CI_Model {
 			);
 		}
 		$this->db->where(sef::TABLE_PK_NAME, $idUsuario);
-		$this->db->update(self::TABLE_NAME, $data);
-		return true;
+		return $this->db->update(self::TABLE_NAME, $data);
 	}
 
 	/**

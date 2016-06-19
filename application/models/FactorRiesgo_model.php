@@ -132,7 +132,7 @@ class FactorRiesgo_model extends CI_Model {
      * @param  string $descripcion   	Descripción del factor de riesgo editado.
      * @param  string $ejemplo 		 	Ejemplo del factor de riesgo editado.
      * @param  string $nombre_imagen 	Nombre de la nueva imagen del factor de riesgo, si viene vació no se editará el nombre de la imagen.
-     * @return boolean                Retorna true si pudo editar el factor de riesgo.
+     * @return boolean                Retorna true si pudo editar el factor de riesgo, de lo contrario retorna false.
      */
     public function editar_factor_riesgo($idFactorRiesgo, $nombre, $descripcion, $ejemplo, $nombre_imagen){
     	if(trim($nombre_imagen) == ""){
@@ -155,8 +155,7 @@ class FactorRiesgo_model extends CI_Model {
 			}
     	}
     	$this->db->where(self::TABLE_PK_NAME, $idFactorRiesgo);
-		$this->db->update(self::TABLE_NAME, $data);
-		return true;
+		return $this->db->update(self::TABLE_NAME, $data);
     }
 
 	/**
