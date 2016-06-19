@@ -1086,7 +1086,7 @@ class Administrador extends MY_ControladorGeneral {
             $this->load->library('upload');
             //hacemos las comprobaciones que de nuestro formulario;
             $this->form_validation->set_rules('nombre','Nombre','trim|required|max_length[255]|min_length[5]');
-            $this->form_validation->set_rules('descripcion','Descripción','trim|max_length[500]|min_length[5]');
+            $this->form_validation->set_rules('descripcion','Descripción','trim|required|max_length[500]|min_length[5]');
             $this->form_validation->set_rules('precaucion','Precaución','trim|max_length[500]|min_length[5]');
             $this->form_validation->set_message('required', 'El campo %s es obligatorio');
             $this->form_validation->set_message('min_length', 'El campo %s debe tener al menos %s carácteres');
@@ -1146,20 +1146,28 @@ class Administrador extends MY_ControladorGeneral {
                                 foreach ($factores_de_riesgo as $indice => $valor) {
                                     // Valor viene con la letra i (inclusión) o la letra e (exclusión) seguido del id del factor de riesgo.
                                     $accion = substr($valor, 0, 1); // Exraigo la primer letra, i o e.
-                                    $idFactorRiesgo = (int)substr($valor, 1); // Extraigo el id del factor de riesgo.
-                                    $factorRiesgo = $this->FactorRiesgo_model->obtener_por_id($idFactorRiesgo);
-                                    if(!is_null($factorRiesgo)){
-                                        $resultado = false;
-                                        if($accion == "i"){ // Actividad de inclusión.
-                                           $resultado = $this->FactorRiesgoActividad_model->insertar($idActividad, $idFactorRiesgo, true); 
-                                        }else if($accion == "e"){ // Actividad de exclusión.
-                                            $resultado = $this->FactorRiesgoActividad_model->insertar($idActividad, $idFactorRiesgo, false);
-                                        } 
-                                        if(!$resultado){
-                                            $errores = true;
-                                            break;
+                                    $resultado = false;
+                                    if($accion == "i"){
+                                        $idFactorRiesgo = (int)substr($valor, 1); // Extraigo el id del factor de riesgo.
+                                        $factorRiesgo = $this->FactorRiesgo_model->obtener_por_id($idFactorRiesgo);
+                                        if(!is_null($factorRiesgo)){
+                                            $resultado = $this->FactorRiesgoActividad_model->insertar($idActividad, $idFactorRiesgo, true); 
                                         }
+                                    }  
+                                    else if($accion == "e"){ // Actividad de exclusión.
+                                        $idFactorRiesgo = (int)substr($valor, 1); // Extraigo el id del factor de riesgo.
+                                        $factorRiesgo = $this->FactorRiesgo_model->obtener_por_id($idFactorRiesgo);
+                                        if(!is_null($factorRiesgo)){
+                                            $resultado = $this->FactorRiesgoActividad_model->insertar($idActividad, $idFactorRiesgo, false);
+                                        }
+                                        
+                                    }else if($accion = "s"){
+                                        continue;
                                     }else{
+                                        $errores = true;
+                                        break;
+                                    }
+                                    if(!$resultado){
                                         $errores = true;
                                         break;
                                     }
