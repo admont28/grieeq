@@ -69,6 +69,19 @@ class FactorRiesgoActividad_model extends CI_Model {
 		);
 		return $this->db->insert(self::TABLE_NAME, $datos);
 	}
+
+	/**
+	 * Función eliminar_relacion_factores_de_riesgo_por_actividad del modelo FactorRiesgoActividad_model.
+	 *
+	 * Esta función se encarga de eliminar de la base de datos las relaciones entre factores de riesgo y actividad.
+	 * 
+	 * @access public
+	 * @param  integer $idActividad  Identificador único de la actividad.
+	 * @return boolean               Retorna true si se pudo eliminar, de lo contrario retorna false.
+	 */
+	public function eliminar_relacion_factores_de_riesgo_por_actividad($idActividad = 0){
+		return $resultado = $this->db->delete(self::TABLE_NAME, array("Actividad_idActividad" => $idActividad));
+	}
 }// Fin de la clase FactorRiesgoActividad_model
 /* End of file FactorRiesgoActividad_model.php */
 /* Location: ./application/models/FactorRiesgoActividad_model.php */

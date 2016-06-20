@@ -1,6 +1,6 @@
 <?php 
 /**
- * Vista adicionarActividad, es la encargada de mostrar los campos necesarios para la adición de una nueva actividad.
+ * Vista editarActividad, es la encargada de mostrar los campos necesarios para la edición de una  actividad.
  *
  * @package aplication/views/admin/actividad
  * @author Andrés David Montoya Aguirre <admont28@gmail.com>
@@ -12,17 +12,18 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="container">
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 page-header text-left">
-			<h1><?php echo (isset($titulo))? $titulo: "Administración - Adicionar actividad"; ?></h1>
+			<h1><?php echo (isset($titulo))? $titulo: "Administración - Editar actividad"; ?></h1>
 		</div>
 	</div>
-	<?php if(isset($url_adicionaractividad, $tipos_de_heridas, $factores_de_riesgo)): ?>
+	<?php if(isset($url_editaractividad, $actividad, $tipos_de_heridas, $factores_de_riesgo)): ?>
 		<div class="row">
 			<?php echo validation_errors('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button>', '</div>'); ?>
 		</div>
 		<div class="row">
 			<div class="col-lg-12 col-md-12 col-sm-11 col-xs-12 ">
 				<?php $atributos = array('class' => 'form-horizontal', 'role' => 'form');?>
-				<?php echo form_open_multipart($url_adicionaractividad,$atributos); ?>
+				<?php echo form_open_multipart($url_editaractividad,$atributos); ?>
+				<?php echo form_hidden('idActividad', $actividad->idActividad); ?>
 					<div class="form-group">
 						<?php $atributos = array(
 								'class'			=> 'col-lg-3 control-label',
@@ -37,7 +38,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 						        'class' 		=> 'form-control',
 						        'required'		=> 'required',
 						        'autofocus'		=> 'autofocus',
-						        'value' 		=> set_value('nombre'),
+						        'value' 		=> (isset($actividad->nombre_actividad))? $actividad->nombre_actividad: set_value('nombre'),
 							);	?>
 							<?php echo form_input($datos); ?>
 						</div>
@@ -56,7 +57,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 						        'required'		=> 'required',
 						        'class' 		=> 'form-control',
 						        'rows'			=> '4',
-						        'value' 		=> set_value('descripcion'),
+						        'value' 		=> (isset($actividad->descripcion_actividad))? $actividad->descripcion_actividad: set_value('descripcion'),
 							);	?>
 							<?php echo form_textarea($datos); ?>
 						</div>
@@ -75,7 +76,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 						        'required'		=> 'required',
 						        'class' 		=> 'form-control',
 						        'rows'			=> '4',
-						        'value' 		=> set_value('precaucion'),
+						        'value' 		=> (isset($actividad->precaucion_actividad))? $actividad->precaucion_actividad: set_value('precaucion'),
 							);	?>
 							<?php echo form_textarea($datos); ?>
 						</div>
@@ -86,12 +87,14 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 						); ?>
 						<?php echo form_label('Imagen asociada','imagen',$atributos) ?>
 						<div class="col-lg-8">
+							<img width='150' src="<?php echo asset_url('img/'.$actividad->imagen_actividad); ?>" alt="<?php echo $actividad->nombre_actividad; ?>" class="img-responsive" />
 							<?php $datos = array(
 						        'name'          => 'imagen',
 						        'id'            => 'imagen',
 						        'value' 		=> set_value('imagen'),
 							);	?>
 							<?php echo form_upload($datos); ?>
+							<p style="color: green;">Si no selecciona ninguna imagen, se conservará la imagen actual.</p>
 							<p style="color: green;">Peso máximo: 2MB, formatos: gif, png, jpg, ancho máximo: 1024, altura máxima: 768.</p>
 						</div>
 					</div>
@@ -106,7 +109,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 							        'name'          => 'heridas[]',
 							        'id'            => $th->idTipoHerida,
 							        'value'         => $th->idTipoHerida,
-							        'checked'		=> set_checkbox('heridas[]', $th->idTipoHerida),
+							        'checked'		=> (isset($th->checked) && $th->checked) ? "checked" : set_checkbox('heridas[]', $th->idTipoHerida),
 								);	?>
 								<div class="margin-bottom-1em">
 									<?php echo form_checkbox($datos); ?>
@@ -138,7 +141,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 								        'name'          => "factores_de_riesgo[".$i."]",
 								        'id'            => 'i'.$fr->idFactorRiesgo,
 								        'value'         => 'i'.$fr->idFactorRiesgo,
-								        'checked'		=> set_radio("factores_de_riesgo[".$i."]", 'i'.$fr->idFactorRiesgo),
+								        'checked'		=> (isset($fr->incluir) && $fr->incluir) ? "checked" : set_radio("factores_de_riesgo[".$i."]", 'i'.$fr->idFactorRiesgo),
 									);	?>
 									<?php echo form_radio($datos); ?>
 									¿Incluir?
@@ -148,7 +151,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 								        'name'          => "factores_de_riesgo[".$i."]",
 								        'id'            => 'e'.$fr->idFactorRiesgo,
 								        'value'         => 'e'.$fr->idFactorRiesgo,
-								        'checked'		=> set_radio("factores_de_riesgo[".$i."]", 'e'.$fr->idFactorRiesgo),
+								        'checked'		=> (isset($fr->incluir) && !$fr->incluir) ? "checked" : set_radio("factores_de_riesgo[".$i."]", 'e'.$fr->idFactorRiesgo),
 									);	?>
 									<?php echo form_radio($datos); ?>
 									¿Excluir?
@@ -163,7 +166,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 						<div class="col-lg-offset-5 col-lg-3">
 							<?php $datos = array(
 								'name' 			=> 'submit',
-								'value' 		=> 'Adicionar actividad',
+								'value' 		=> 'Editar actividad',
 								'class' 		=> 'btn btn-primary col-xs-12'
 										); ?>
 							<?php echo form_submit($datos); ?>

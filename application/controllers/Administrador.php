@@ -188,6 +188,9 @@ class Administrador extends MY_ControladorGeneral {
 		$this->load->model('Usuario_model');
 		$usuario = $this->Usuario_model->obtener_por_id($idUsuario);
 		if($usuario == null){
+            $mensaje['tipo']    = "error";
+            $mensaje['mensaje'] = "Identificador de usuario no válido.";
+            $this->session->set_flashdata('mensaje', $mensaje);
 			redirect('Administrador/administracion-de-usuarios','refresh');
 		}
 		$data['usuario']           = $usuario;
@@ -444,6 +447,9 @@ class Administrador extends MY_ControladorGeneral {
         $this->load->model('TipoHerida_model');
         $tipoherida = $this->TipoHerida_model->obtener_por_id($idTipoHerida);
         if($tipoherida == null){
+            $mensaje['tipo']    = "error";
+            $mensaje['mensaje'] = "Identificador de tipo de herida no válido.";
+            $this->session->set_flashdata('mensaje', $mensaje);
             redirect('Administrador/administracion-de-tipos-de-heridas','refresh');
         }
         $data['tipoherida']           = $tipoherida;
@@ -466,7 +472,7 @@ class Administrador extends MY_ControladorGeneral {
             //hacemos las comprobaciones que de nuestro formulario
             $this->form_validation->set_rules('idTipoHerida', 'Id Tipo de Herida', 'trim|required');
             $this->form_validation->set_rules('nombre','Nombre','trim|required|max_length[100]|min_length[5]');
-            $this->form_validation->set_rules('descripcion','Descripción','trim|max_length[500]|min_length[5]');
+            $this->form_validation->set_rules('descripcion','Descripción','trim|required|max_length[500]|min_length[5]');
             $this->form_validation->set_message('required', 'El campo %s es obligatorio');
             $this->form_validation->set_message('min_length', 'El campo %s debe tener al menos %s carácteres');
             $this->form_validation->set_message('max_length', 'El campo %s debe tener menos %s car&aacute;cteres');
@@ -490,13 +496,14 @@ class Administrador extends MY_ControladorGeneral {
                         $this->session->set_flashdata('mensaje', $mensaje);
                         $this->formulario_edicion_de_tipo_de_herida($idTipoHerida);
                     }
+
                 }
                 if($exito){
                     $nombre_imagen = $this->upload->data();
                     $nombre  = $this->security->xss_clean($this->input->post('nombre'));
                     $descripcion = $this->security->xss_clean($this->input->post('descripcion'));
                     $this->load->model('TipoHerida_model');
-                    $resultado = $this->TipoHerida_model->editar_tipo_herida($idTipoHerida, $nombre, $descripcion, $nombre_imagen['orig_name']);
+                    $resultado = $this->TipoHerida_model->editar_tipo_herida($idTipoHerida, $nombre, $descripcion, $nombre_imagen['file_name']);
                     $mensaje         = array();
                     if($resultado){
                         $mensaje['tipo']    = "success";
@@ -574,13 +581,13 @@ class Administrador extends MY_ControladorGeneral {
                     $nombre  = $this->security->xss_clean($this->input->post('nombre'));
                     $descripcion = $this->security->xss_clean($this->input->post('descripcion'));
                     $this->load->model('TipoHerida_model');
-                    $idTipoHerida = $this->TipoHerida_model->crear_tipo_herida($nombre, $descripcion, $nombre_imagen['orig_name']);
+                    $idTipoHerida = $this->TipoHerida_model->crear_tipo_herida($nombre, $descripcion, $nombre_imagen['file_name']);
                     $mensaje         = array();
                     if($idTipoHerida){
                         $errores = false;
                         $creacion_directorio = mkdir("./assets/img/tipoherida/".$idTipoHerida, 0755);
                         if($creacion_directorio){
-                            $mover = rename("./assets/tmp/".$nombre_imagen['orig_name'], "./assets/img/tipoherida/".$idTipoHerida."/".$nombre_imagen['orig_name']);
+                            $mover = rename("./assets/tmp/".$nombre_imagen['file_name'], "./assets/img/tipoherida/".$idTipoHerida."/".$nombre_imagen['file_name']);
                             if($mover){
                                 $mensaje['tipo']    = "success";
                                 $mensaje['mensaje'] = "Tipo de herida adicionado exitosamente. Nombre: ".$nombre;
@@ -710,7 +717,7 @@ class Administrador extends MY_ControladorGeneral {
     }
 
     /**
-     * Función formulario_edicion_factor_de_riesgo del controlador Administrador.
+     * Función formulario_edicion_de_factor_de_riesgo del controlador Administrador.
      *
      * Esta función se encarga de mostrar el formulario de edición de un factor de riesgo.
      *
@@ -729,6 +736,9 @@ class Administrador extends MY_ControladorGeneral {
         $this->load->model('FactorRiesgo_model');
         $factorRiesgo = $this->FactorRiesgo_model->obtener_por_id($idFactorRiesgo);
         if($factorRiesgo == null){
+            $mensaje['tipo']    = "error";
+            $mensaje['mensaje'] = "Identificador de factor de riesgo no válido.";
+            $this->session->set_flashdata('mensaje', $mensaje);
             redirect('Administrador/administracion-de-factores-de-riesgo','refresh');
         }
         $data['factorriesgo']           = $factorRiesgo;
@@ -751,8 +761,8 @@ class Administrador extends MY_ControladorGeneral {
             //hacemos las comprobaciones que de nuestro formulario
             $this->form_validation->set_rules('idFactorRiesgo', 'Id factor de riesgo', 'trim|required');
             $this->form_validation->set_rules('nombre','Nombre','trim|required|max_length[100]|min_length[5]');
-            $this->form_validation->set_rules('descripcion','Descripción','trim|max_length[500]|min_length[5]');
-            $this->form_validation->set_rules('ejemplo','Ejemplo','trim|max_length[155]|min_length[5]');
+            $this->form_validation->set_rules('descripcion','Descripción','trim|required|max_length[500]|min_length[5]');
+            $this->form_validation->set_rules('ejemplo','Ejemplo','trim|required|max_length[155]|min_length[5]');
             $this->form_validation->set_message('required', 'El campo %s es obligatorio');
             $this->form_validation->set_message('min_length', 'El campo %s debe tener al menos %s carácteres');
             $this->form_validation->set_message('max_length', 'El campo %s debe tener menos %s car&aacute;cteres');
@@ -774,7 +784,7 @@ class Administrador extends MY_ControladorGeneral {
                         $mensaje['tipo']    = "error";
                         $mensaje['mensaje'] = $this->upload->display_errors();
                         $this->session->set_flashdata('mensaje', $mensaje);
-                        $this->formulario_edicion_de_tipo_de_herida($idFactorRiesgo);
+                        $this->formulario_edicion_de_factor_de_riesgo($idFactorRiesgo);
                     }
                 }
                 if($exito){
@@ -783,7 +793,7 @@ class Administrador extends MY_ControladorGeneral {
                     $descripcion = $this->security->xss_clean($this->input->post('descripcion'));
                     $ejemplo = $this->security->xss_clean($this->input->post('ejemplo'));
                     $this->load->model('FactorRiesgo_model');
-                    $resultado = $this->FactorRiesgo_model->editar_factor_riesgo($idFactorRiesgo, $nombre, $descripcion, $ejemplo, $imagen['orig_name']);
+                    $resultado = $this->FactorRiesgo_model->editar_factor_riesgo($idFactorRiesgo, $nombre, $descripcion, $ejemplo, $imagen['file_name']);
                     $mensaje         = array();
                     if($resultado){
                         $mensaje['tipo']    = "success";
@@ -863,13 +873,13 @@ class Administrador extends MY_ControladorGeneral {
                     $descripcion    = $this->security->xss_clean($this->input->post('descripcion'));
                     $ejemplo        = $this->security->xss_clean($this->input->post('ejemplo'));
                     $this->load->model('FactorRiesgo_model');
-                    $idFactorRiesgo = $this->FactorRiesgo_model->crear_factor_riesgo($nombre, $descripcion, $ejemplo, $nombre_imagen['orig_name']);
+                    $idFactorRiesgo = $this->FactorRiesgo_model->crear_factor_riesgo($nombre, $descripcion, $ejemplo, $nombre_imagen['file_name']);
                     $mensaje        = array();
                     if($idFactorRiesgo){
                         $errores = false;
                         $creacion_directorio = mkdir("./assets/img/factorriesgo/".$idFactorRiesgo, 0755);
                         if($creacion_directorio){
-                            $mover = rename("./assets/tmp/".$nombre_imagen['orig_name'], "./assets/img/factorriesgo/".$idFactorRiesgo."/".$nombre_imagen['orig_name']);
+                            $mover = rename("./assets/tmp/".$nombre_imagen['file_name'], "./assets/img/factorriesgo/".$idFactorRiesgo."/".$nombre_imagen['file_name']);
                             if($mover){
                                 $mensaje['tipo']    = "success";
                                 $mensaje['mensaje'] = "Factor de riesgo adicionado exitosamente. Nombre: ".$nombre;
@@ -1118,13 +1128,13 @@ class Administrador extends MY_ControladorGeneral {
                     $this->db->trans_begin(); // Inicio de la trasacción.
 
                     $this->load->model('Actividad_model');
-                    $idActividad = $this->Actividad_model->crear_actividad($nombre, $descripcion, $precaucion, $nombre_imagen['orig_name']);
+                    $idActividad = $this->Actividad_model->crear_actividad($nombre, $descripcion, $precaucion, $nombre_imagen['file_name']);
                     $mensaje     = array();
                     if($idActividad){
                         $errores = false;
                         $creacion_directorio = mkdir("./assets/img/actividad/".$idActividad, 0755);
                         if($creacion_directorio){
-                            $mover = rename("./assets/tmp/".$nombre_imagen['orig_name'], "./assets/img/actividad/".$idActividad."/".$nombre_imagen['orig_name']);
+                            $mover = rename("./assets/tmp/".$nombre_imagen['file_name'], "./assets/img/actividad/".$idActividad."/".$nombre_imagen['file_name']);
                             if($mover){
                                 $this->load->model('TipoHeridaActividad_model');
                                 $this->load->model('TipoHerida_model');
@@ -1197,6 +1207,219 @@ class Administrador extends MY_ControladorGeneral {
                         $mensaje['tipo']    = "error";
                         $mensaje['mensaje'] = "Ha ocurrido un error inesperado, porfavor inténtelo de nuevo.";
                     }
+                }
+            }
+        }else{
+            redirect('Administrador/administracion-de-actividades','refresh');
+        }
+    }
+    /**
+     * Función formulario_edicion_de_actividad del controlador Administrador.
+     *
+     * Esta función se encarga de mostrar el formulario de edición de una actividad.
+     *
+     * @access public
+     * @param  integer $idActividad Identificador único de la actividad.
+     * @return void               Muestra el formulario de edición si existe la actividad, sino, redirecciona a: Administrador/administracion-de-actividades
+     */
+    public function formulario_edicion_de_actividad($idActividad){
+        $this->breadcrumb->populate(array(
+            'Inicio'                     => '',
+            'Perfil'                     => 'Usuario',
+            'Administración de actividades' => 'Administrador/administracion-de-actividades',
+            'Editar actividad'
+        ));
+        $data       = array();
+        $this->load->model('Actividad_model');
+        $actividad = $this->Actividad_model->obtener_por_id($idActividad);
+        if($actividad == null){
+            $mensaje['tipo']    = "error";
+            $mensaje['mensaje'] = "Identificador de actividad no válido.";
+            $this->session->set_flashdata('mensaje', $mensaje);
+            redirect('Administrador/administracion-de-actividades','refresh');
+        }
+        $this->load->model('TipoHerida_model');
+        $this->load->model('FactorRiesgo_model');
+        $this->load->model('TipoHeridaActividad_model');
+        $this->load->model('FactorRiesgoActividad_model');
+        $tipos_de_heridas = $this->TipoHerida_model->obtenerTiposHerida();
+        $tipos_de_heridas_por_actividad = $this->TipoHeridaActividad_model->obtener_tipos_de_herida_por_actividad($idActividad);
+        $tipos_de_heridas_aux = array();
+        foreach ($tipos_de_heridas as $th) {
+            $th->checked = false; 
+            foreach ($tipos_de_heridas_por_actividad as $thpa) {
+                if($th->idTipoHerida == $thpa->TipoHerida_idTipoHerida){
+                    $th->checked = true;
+                    break;
+                }
+            }
+            $tipos_de_heridas_aux[] = $th;
+        }
+        $factores_de_riesgo_aux = array();
+        $factores_de_riesgo = $this->FactorRiesgo_model->obtenerFactoresRiesgo();
+        $factores_de_riesgo_por_actividad = $this->FactorRiesgoActividad_model->obtener_factores_de_riesgo_por_actividad($idActividad);
+        foreach ($factores_de_riesgo as $fr) {
+            foreach ($factores_de_riesgo_por_actividad as $frpa) {
+                if($fr->idFactorRiesgo == $frpa->FactorRiesgo_idFactorRiesgo){
+                    if($frpa->incluir_factorriesgoactividad){
+                        $fr->incluir = true;
+                    }
+                    else{
+                        $fr->incluir = false;
+                    }
+                }
+            }
+            $factores_de_riesgo_aux[] = $fr;
+        }
+        $data['tipos_de_heridas']          = $tipos_de_heridas_aux;
+        $data['factores_de_riesgo']        = $factores_de_riesgo_aux;
+        $data['actividad']           = $actividad;
+        $data['titulo']              = "Administración - Editar actividad";
+        $data['url_editaractividad'] = "Administrador/editar-actividad";
+        $this->mostrar_pagina('admin/actividad/editarActividad', $data);
+    }
+
+    /**
+     * Función editar_actividad del controlador Administrador.
+     *
+     * Esta función se encarga de realizar las validaciones antes de editar una actividad en la base de datos.
+     *
+     * @access public
+     * @return void  Redirecciona a administracion-de-actividades si encuentra algún error o si ha sido exitosa la actualización.
+     */
+    public function editar_actividad(){
+        if($this->input->post('submit')){
+            $this->load->library('upload');
+            //hacemos las comprobaciones que de nuestro formulario
+            $this->form_validation->set_rules('idActividad', 'Id actividad', 'trim|required');
+            $this->form_validation->set_rules('nombre','Nombre','trim|required|max_length[100]|min_length[5]');
+            $this->form_validation->set_rules('descripcion','Descripción','trim|required|max_length[500]|min_length[5]');
+            $this->form_validation->set_rules('precaucion','Precaución','trim|max_length[155]|min_length[5]');
+            $this->form_validation->set_message('required', 'El campo %s es obligatorio');
+            $this->form_validation->set_message('min_length', 'El campo %s debe tener al menos %s carácteres');
+            $this->form_validation->set_message('max_length', 'El campo %s debe tener menos %s car&aacute;cteres');
+            $idActividad = $this->security->xss_clean($this->input->post('idActividad'));
+            // Validamos el formulario, si retorna falso cargamos el método formulario_edicion_de_actividad para mostrar los errores ocurridos.
+            if (!$this->form_validation->run()){
+                $this->formulario_edicion_de_actividad($idActividad);
+            }else{
+                $exito = true;
+                if(isset($_FILES) && !empty($_FILES) && $_FILES['imagen']['error'] != 4 ){
+                    $config['upload_path']          = './assets/img/actividad/'.$idActividad;
+                    $config['allowed_types']        = 'gif|jpg|png';
+                    $config['max_size']             = 2048;
+                    $config['max_width']            = 1024;
+                    $config['max_height']           = 768;
+                    $this->upload->initialize($config);
+                    if ( ! $this->upload->do_upload('imagen')){
+                        $exito              = false;
+                        $mensaje['tipo']    = "error";
+                        $mensaje['mensaje'] = $this->upload->display_errors();
+                        $this->session->set_flashdata('mensaje', $mensaje);
+                        $this->formulario_edicion_de_actividad($idActividad);
+                    }
+                }
+                if($exito){
+                    $imagen      = $this->upload->data();
+                    $nombre      = $this->security->xss_clean($this->input->post('nombre'));
+                    $descripcion = $this->security->xss_clean($this->input->post('descripcion'));
+                    $precaucion  = $this->security->xss_clean($this->input->post('precaucion'));
+                    $tipos_de_heridas   = (!is_null($this->input->post('heridas')) ) ? $this->input->post('heridas'): array();
+                    $factores_de_riesgo = (!is_null($this->input->post('factores_de_riesgo')) ) ? $this->input->post('factores_de_riesgo'): array();
+                    $this->load->model('Actividad_model');
+                    // INICIO DE LA TRANSACCIÓN
+                    $this->db->trans_begin();
+                    $resultado = $this->Actividad_model->editar_actividad($idActividad, $nombre, $descripcion, $precaucion, $imagen['file_name']);
+                    $mensaje   = array();
+                    $errores = false;
+                    if($resultado){
+                        $this->load->model('TipoHeridaActividad_model');
+                        $this->load->model('TipoHerida_model');
+                        $this->load->model('FactorRiesgo_model');
+                        $this->load->model('FactorRiesgoActividad_model');
+                        $eliminacion_tipos_de_herida = $this->TipoHeridaActividad_model->eliminar_relacion_tipos_de_herida_por_actividad($idActividad);
+                        $eliminacion_factores_de_riesgo = $this->FactorRiesgoActividad_model->eliminar_relacion_factores_de_riesgo_por_actividad($idActividad);
+                        if($eliminacion_tipos_de_herida && $eliminacion_factores_de_riesgo){
+                            foreach ($tipos_de_heridas as $indice => $idTipoHerida) {
+                                $tipoHerida = $this->TipoHerida_model->obtener_por_id($idTipoHerida);
+                                if(!is_null($tipoHerida)){
+                                    $resultado = $this->TipoHeridaActividad_model->insertar($idActividad, $idTipoHerida);
+                                    if(!$resultado){
+                                        // Falló la inserción de la relación entre tipo de herida y actividad
+                                        $errores = true;
+                                        break;
+                                    }
+                                }else{
+                                    // No existe el tipo de herida que seleccionó el usuario.
+                                    $errores = true;
+                                    break;
+                                }
+                            }
+                            if(!$errores){
+                                foreach ($factores_de_riesgo as $indice => $valor) {
+                                    // Valor viene con la letra i (inclusión) o la letra e (exclusión) seguido del id del factor de riesgo.
+                                    $accion = substr($valor, 0, 1); // Exraigo la primer letra, i o e.
+                                    $resultado_consulta = false;
+                                    if($accion == "i"){
+                                        $idFactorRiesgo = (int)substr($valor, 1); // Extraigo el id del factor de riesgo.
+                                        $factorRiesgo = $this->FactorRiesgo_model->obtener_por_id($idFactorRiesgo);
+                                        if(!is_null($factorRiesgo)){
+                                            $resultado_consulta = $this->FactorRiesgoActividad_model->insertar($idActividad, $idFactorRiesgo, true); 
+                                        }else{
+                                            $errores = true;
+                                            break;
+                                        }
+                                    }  
+                                    else if($accion == "e"){ // Actividad de exclusión.
+                                        $idFactorRiesgo = (int)substr($valor, 1); // Extraigo el id del factor de riesgo.
+                                        $factorRiesgo = $this->FactorRiesgo_model->obtener_por_id($idFactorRiesgo);
+                                        if(!is_null($factorRiesgo)){
+                                            $resultado_consulta = $this->FactorRiesgoActividad_model->insertar($idActividad, $idFactorRiesgo, false);
+                                        }
+                                        else{
+                                            $errores = true;
+                                            break;
+                                        }  
+                                    }else if($accion = "s"){
+                                        continue;
+                                    }else{
+                                        // Viene una acción incorrecta, solo debe ser i,e o s.
+                                        $errores = true;
+                                        break;
+                                    }
+                                    if(!$resultado_consulta){
+                                        $errores = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }else{
+                            // Falló la eliminación de los tipos de herida o factores de riesgo.
+                            $errores = true;
+                        }
+                    }
+                    else{
+                        // Falló la edición de la actividad.
+                        $errores = true;
+                    }
+                    if(!$errores){
+                        // No han habido errores lógica de programación, pero válido que no hayan errores en la transacción.
+                        if ($this->db->trans_status() === FALSE){
+                            $mensaje['tipo']    = "error";
+                            $mensaje['mensaje'] = "Ha ocurrido un error inesperado, porfavor inténtelo de nuevo.";
+                            $this->db->trans_rollback();
+                        }
+                        else{
+                            $mensaje['tipo']    = "success";
+                            $mensaje['mensaje'] = "Actividad actualizada exitosamente. Nombre: ".$nombre;
+                            $this->db->trans_commit();                        }
+                    }else{
+                        $mensaje['tipo']    = "error";
+                        $mensaje['mensaje'] = "Ha ocurrido un error inesperado, porfavor inténtelo de nuevo.";
+                        $this->db->trans_rollback();
+                    }
+                    $this->session->set_flashdata('mensaje', $mensaje);
+                    redirect('Administrador/administracion-de-actividades','refresh');
                 }
             }
         }else{

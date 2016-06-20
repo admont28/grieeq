@@ -70,6 +70,19 @@ class TipoHeridaActividad_model extends CI_Model {
 		);
 		return $this->db->insert(self::TABLE_NAME, $datos);
 	}
+
+	/**
+	 * Función eliminar_relacion_tipos_de_herida_por_actividad del modelo TipoHerida_model.
+	 *
+	 * Esta función se encarga de eliminar de la base de datos las relaciones entre tipos de herida y actividad.
+	 * 
+	 * @access public
+	 * @param  integer $idActividad  Identificador único de la actividad.
+	 * @return boolean               Retorna true si se pudo eliminar, de lo contrario retorna false.
+	 */
+	public function eliminar_relacion_tipos_de_herida_por_actividad($idActividad = 0){
+		return $resultado = $this->db->delete(self::TABLE_NAME, array("Actividad_idActividad" => $idActividad));
+	}
 }// Fin de la clase TipoHeridaActividad_model
 /* End of file TipoHeridaActividad_model.php */
 /* Location: ./application/models/TipoHeridaActividad_model.php */

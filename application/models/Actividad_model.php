@@ -207,6 +207,43 @@ class Actividad_model extends CI_Model {
 		$this->db->update(self::TABLE_NAME, $datos);
 		return $idActividad;
 	}
+
+	/**
+     * Función editar_actividad del modelo Actividad_model.
+     *
+     * Esta función se encarga de editar una actividad en la base datos, así como la eliminación de la imagen anterior, si es que ha editado la imagen.
+     *
+     * @access public
+     * @param  integer $idActividad  	Identificación única de la actividad.
+     * @param  string $nombre        	Nombre de la actividad editada.
+     * @param  string $descripcion   	Descripción de la actividad editada.
+     * @param  string $precaucion 		Precaucion de la actividad editada.
+     * @param  string $nombre_imagen 	Nombre de la nueva imagen de la actividad, si viene vació no se editará el nombre de la imagen.
+     * @return boolean                Retorna true si pudo editar el actividad, de lo contrario retorna false.
+     */
+    public function editar_actividad($idActividad, $nombre, $descripcion, $precaucion, $nombre_imagen){
+    	if(trim($nombre_imagen) == ""){
+    		$data = array(
+				'nombre_actividad'      => $nombre,
+				'descripcion_actividad' => $descripcion,
+				'precaucion_actividad'  => $precaucion
+    		);
+    	}else{
+    		$actividad = $this->db->get_where(self::TABLE_NAME, array(self::TABLE_PK_NAME => $idActividad));
+	    	if($actividad->num_rows() == 1){
+				$actividad = $actividad->row();
+    			unlink("./assets/img/".$actividad->imagen_actividad);
+    			$data = array(
+					'nombre_actividad'      => $nombre,
+					'descripcion_actividad' => $descripcion,
+					'precaucion_actividad'  => $precaucion,
+					'imagen_actividad'      => "actividad/".$idActividad."/".$nombre_imagen
+	    		);
+			}
+    	}
+    	$this->db->where(self::TABLE_PK_NAME, $idActividad);
+		return $this->db->update(self::TABLE_NAME, $data);
+    }
 }// Fin de la clase Actividad_model
 /* End of file Actividad_model.php */
 /* Location: ./application/models/Actividad_model.php */
