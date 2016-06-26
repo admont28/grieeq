@@ -212,8 +212,8 @@ class Administrador extends MY_ControladorGeneral {
     		//hacemos las comprobaciones que de nuestro formulario
     		$this->form_validation->set_rules('idUsuario', 'Id usuario', 'trim|required');
 			$this->form_validation->set_rules('identificacion','Identificacion','trim|required|max_length[50]|min_length[8]|callback_es_unico[identificacion]');
-			$this->form_validation->set_rules('password','Contraseña','trim|max_length[50]|min_length[8]');
-			$this->form_validation->set_rules('repetirpassword','Repetir contraseña','matches[password]');
+			$this->form_validation->set_rules('password','Contraseña','trim|max_length[50]|min_length[8]|matches[repetirpassword]');
+			$this->form_validation->set_rules('repetirpassword','Repetir contraseña','trim|max_length[50]|min_length[8]|matches[password]');
 			$this->form_validation->set_rules('correo','Correo electrónico','trim|valid_email|required|callback_es_unico[correo]');
 			$this->form_validation->set_message('required', 'El campo %s es obligatorio');
 			$this->form_validation->set_message('valid_email', 'El campo %s no es v&aacute;lido');

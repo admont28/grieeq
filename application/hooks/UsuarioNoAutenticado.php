@@ -75,8 +75,6 @@ class UsuarioNoAutenticado{
 			// iniciar sesión no se encuentre entre las funciones permitidas
 			if(!in_array($metodo, $this->metodos_permitidos)){	
 				// Si es así, se redirige al login.
-				$url = $clase."/".$metodo;
-				$this->ci->session->set_flashdata('url', $url);
 				redirect('Usuario/formulario-inicio-de-sesion','refresh');
 			}
 		}
@@ -87,8 +85,6 @@ class UsuarioNoAutenticado{
 			// no permitidas para el.
 			if (in_array($metodo, $this->metodos_no_permitidos)) {
 				// Si es así, se redirige al login.
-				$url = $clase."/".$metodo;
-				$this->ci->session->set_flashdata('url', $url);
 				redirect('Usuario/formulario-inicio-de-sesion','refresh');
 			}
 		}

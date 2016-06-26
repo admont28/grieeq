@@ -198,12 +198,7 @@ class Usuario extends MY_ControladorGeneral {
 						'rol_usuario'            =>	($resultado->administrador_usuario == true)? "admin" : "normal",
 	            		);		
 					$this->session->set_userdata('usuario',$data);
-					$url = $this->session->flashdata('url');
-					if(isset($url)){
-						redirect($url,'refresh');
-					}else{
-						$this->index();
-					}
+					$this->index();
 				}
 				else{
 					$mensaje['tipo']    = "error";

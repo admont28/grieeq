@@ -99,7 +99,7 @@ class Usuario_model extends CI_Model {
 			    'password_usuario' => $password
 			);
 		}
-		$this->db->where(sef::TABLE_PK_NAME, $idUsuario);
+		$this->db->where(self::TABLE_PK_NAME, $idUsuario);
 		return $this->db->update(self::TABLE_NAME, $data);
 	}
 
