@@ -72,7 +72,7 @@ class TipoHeridaActividad_model extends CI_Model {
 	}
 
 	/**
-	 * Función eliminar_relacion_tipos_de_herida_por_actividad del modelo TipoHerida_model.
+	 * Función eliminar_relacion_tipos_de_herida_por_actividad del modelo TipoHeridaActividad_model.
 	 *
 	 * Esta función se encarga de eliminar de la base de datos las relaciones entre tipos de herida y actividad.
 	 * 
@@ -83,6 +83,43 @@ class TipoHeridaActividad_model extends CI_Model {
 	public function eliminar_relacion_tipos_de_herida_por_actividad($idActividad = 0){
 		return $resultado = $this->db->delete(self::TABLE_NAME, array("Actividad_idActividad" => $idActividad));
 	}
+
+	/**
+	 * Función obtener_actividades_por_tipo_de_herida del modelo TipoHeridaActividad_model.
+	 *
+	 * Esta función se encarga de obtener las actividades dado un tipo de herida en específico.
+	 * 
+	 * @access public
+	 * @param  integer $idTipoHerida Identificación única del tipo de herida.
+	 * @return array                 Retorna un arreglo con el resultado de la consulta, el arreglo retorna vacío si no encuentra ninguna coincidencia.
+	 */
+	public function obtener_actividades_por_tipo_de_herida($idTipoHerida = 0){
+		$this->db->where(array('TipoHerida_idTipoHerida' => $idTipoHerida));
+		$this->db->order_by("orden_tipoheridaactividad ASC");
+		$query = $this->db->get(self::TABLE_NAME);
+		return $query->result();
+	}
+
+	/**
+	 * Función actualizar_orden_actividad del modelo TipoHeridaActividad_model.
+	 *
+	 * Esta función se encarga de actualizar el orden de una actividad dado un tipo de herida.
+	 * 
+	 * @access public
+	 * @param  integer $idActividad  Identificador único de la actividad a actualizar.
+	 * @param  integer $idTipoHerida Identificador único del tipo de herida con la que la actividad está relacionada.
+	 * @param  integer $orden        Orden de la actividad, ej: 1,2,3,4,5...
+	 * @return boolean               Retorna 
+	 */
+	public function actualizar_orden_actividad($idActividad = 0, $idTipoHerida = 0, $orden = 0){
+		$data = array(
+			'orden_tipoheridaactividad' => $orden,
+		);
+		$this->db->where('Actividad_idActividad', $idActividad);
+		$this->db->where('TipoHerida_idTipoHerida', $idTipoHerida);
+		return $this->db->update(self::TABLE_NAME, $data);
+	}
+
 }// Fin de la clase TipoHeridaActividad_model
 /* End of file TipoHeridaActividad_model.php */
 /* Location: ./application/models/TipoHeridaActividad_model.php */

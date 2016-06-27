@@ -23,6 +23,8 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 	<link rel="stylesheet" href="<?php echo asset_url('css/bootstrap.css'); ?>" />
 	<!-- Archivo CSS de estilos personales -->
 	<link rel="stylesheet" href="<?php echo asset_url('css/main.css'); ?>" />
+	<!-- Archivo JS de HTML.SORTABLE -->
+	<script type="text/javascript" src="<?php echo asset_url('js/html.sortable.min.js'); ?>"></script>
 	<!-- Archivo JS de SwwetAlert2 -->
 	<script type="text/javascript" src="<?php echo asset_url('js/sweetalert2.min.js'); ?>"></script>
 	<!-- Archivo CSS de SwwetAlert2 -->

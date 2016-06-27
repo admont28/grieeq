@@ -21,19 +21,17 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-bottom-1em">
-				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-					<a class="btn btn-primary btn-block" href="<?php echo base_url().$url_gestiontiposherida; ?>" title="Gestionar información de los tipos de herida">Gestionar información de los tipos de herida</a>
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 margin-bottom-1em">
+					<a class="btn btn-primary btn-block " href="<?php echo base_url().$url_gestiontiposherida; ?>" title="Gestionar información de los tipos de herida">Gestionar información de los tipos de herida</a>
 				</div>
-				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 margin-bottom-1em">
 					<a class="btn btn-primary btn-block" href="<?php echo base_url().$url_gestionfactoresriesgo; ?>" title="Gestionar la información de los factores de riesgo">Gestionar información de los factores de riesgo</a>
 				</div>
-			</div>
-			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 margin-bottom-1em">
 					<a class="btn btn-primary btn-block" href="<?php echo base_url().$url_gestionactividades; ?>" title="Gestionar la información de las actividades">Gestionar información de las actividades</a>
 				</div>
-				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 margin-bottom-1em">
 					<a class="btn btn-primary btn-block" href="<?php echo base_url().$url_gestionusuarios; ?>" title="Gestionar los usuarios">Gestionar los usuarios</a>
 				</div>
 			</div>

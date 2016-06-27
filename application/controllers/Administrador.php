@@ -212,7 +212,7 @@ class Administrador extends MY_ControladorGeneral {
     		//hacemos las comprobaciones que de nuestro formulario
     		$this->form_validation->set_rules('idUsuario', 'Id usuario', 'trim|required');
 			$this->form_validation->set_rules('identificacion','Identificacion','trim|required|max_length[50]|min_length[8]|callback_es_unico[identificacion]');
-			$this->form_validation->set_rules('password','Contraseña','trim|max_length[50]|min_length[8]|matches[repetirpassword]');
+            $this->form_validation->set_rules('password','Contraseña','trim|max_length[50]|min_length[8]|matches[repetirpassword]');
 			$this->form_validation->set_rules('repetirpassword','Repetir contraseña','trim|max_length[50]|min_length[8]|matches[password]');
 			$this->form_validation->set_rules('correo','Correo electrónico','trim|valid_email|required|callback_es_unico[correo]');
 			$this->form_validation->set_message('required', 'El campo %s es obligatorio');
@@ -616,6 +616,91 @@ class Administrador extends MY_ControladorGeneral {
             }
         }else{
             redirect('Administrador/administracion-de-tipos-de-heridas','refresh');
+        }
+    }
+
+    /**
+     * Función ordenar_actividades del controlador Administrador.
+     *
+     * Esta función se encarga de mostrar las actividades relacionadas con el tipo de herida pasado por parametro, para que el usuario pueda ordenarlas.   
+     *
+     * @access public
+     * @param  integer $idTipoHerida Identificador único del tipo de herida.
+     * @return void                  No retorna, muestra la página con las actividades del tipo de herida pasado por parametro para que sean ordenadas, las muestra en el orden en que se encuentra en la base de datos.
+     */
+    public function ordenar_actividades($idTipoHerida){
+        $this->breadcrumb->populate(array(
+            'Inicio'                     => '',
+            'Perfil'                     => 'Usuario',
+            'Administración de tipos de herida' => 'Administrador/administracion-de-tipos-de-heridas',
+            'Ordenar actividades del tipo de herida'
+        ));
+        $this->load->model('TipoHerida_model');
+        $tipoHerida = $this->TipoHerida_model->obtener_por_id($idTipoHerida);
+        if(!is_null($tipoHerida)){
+            $this->load->model('TipoHeridaActividad_model');
+            $this->load->model('Actividad_model');
+            $actividades = array();
+            $actividades_tipo_heridas = $this->TipoHeridaActividad_model->obtener_actividades_por_tipo_de_herida($idTipoHerida);
+            foreach ($actividades_tipo_heridas as $a) {
+                $actividad = $this->Actividad_model->obtener_por_id($a->Actividad_idActividad);
+                $a->nombre_actividad = $actividad->nombre_actividad;
+                $actividades[] = $a;
+            }
+            $data = array();
+            $data['actividades'] = $actividades;
+            $data['tipoHerida'] = $tipoHerida;
+            $data['titulo'] = "Administración - Ordenar actividades del tipo de herida: ".$tipoHerida->nombre_tipoherida;
+            $data['url_ordenaractividades'] = "Administrador/ordenar-actividades";
+            $this->mostrar_pagina("admin/tipoherida/ordenarActividades", $data);
+        }
+    }
+
+    /**
+     * Función ordenar_actividades_post del controlador Administrador.
+     *
+     * Esta función se encarga de guardar el orden de las actividades que llegan en post, desde 1 hasta n.
+     *
+     * @access public
+     * @return JSON Retorna un objeto JSON con la información de la respuesta, un mensaje de éxito o error.
+     */
+    public function ordenar_actividades_post(){
+        if (isset($_POST, $_POST['idTipoHerida'], $_POST['actividades'])) {
+            $this->load->model('TipoHerida_model');
+            $tipoHerida = $this->TipoHerida_model->obtener_por_id($this->input->post('idTipoHerida'));
+            $errores = false;
+            // INICIO DE LA TRANSACCIÓN
+            $this->db->trans_begin();
+            if(!is_null($tipoHerida)){
+                $this->load->model('TipoHeridaActividad_model');
+                $this->load->model('Actividad_model');
+                $actividades = json_decode($this->input->post('actividades'));
+                foreach ($actividades as $a) {
+                    $actividad = $this->Actividad_model->obtener_por_id($a->id_actividad);
+                    if(!is_null($actividad)){
+                        $this->TipoHeridaActividad_model->actualizar_orden_actividad($a->id_actividad, $tipoHerida->idTipoHerida, $a->orden);
+                    }else{
+                        $errores = true;
+                        break;
+                    }
+                }
+            }
+            if($errores){
+                // SI HUBO ALGÚN ERROR, HAGO UN ROLLBACK
+                $this->db->trans_rollback();
+                echo json_encode(array("state" => "error", "message" => "Ha ocurrido un error inesperado, por favor inténtelo más tarde."));
+            }else{
+                if($this->db->trans_status() === FALSE){
+                    // SI TODO SALE BIEN LOGICAMENTE PERO HUBO ALGÙN ERROR EN BD, HAGO EL ROLLBACK
+                    $this->db->trans_rollback();
+                    echo json_encode(array("state" => "error", "message" => "Ha ocurrido un error inesperado, por favor inténtelo más tarde."));
+                }
+                else{
+                    // SI TODO SALE BIEN, HAGO EL COMMIT A LA BD.
+                    $this->db->trans_commit();
+                    echo json_encode(array("state" => "success", "title"=> "¡Guardado con éxito!", "message" => "Se ha guardado el orden de las actividades con éxito."));
+                }
+            }
         }
     }
 

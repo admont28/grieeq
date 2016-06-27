@@ -36,15 +36,18 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-bottom-1em">
-			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 margin-bottom-1em">
 				<a class="btn btn-primary btn-block" href="<?php echo base_url('Administrador/formulario-adicionar-tipo-de-herida'); ?>" id="adicionar" title="Adicionar un nuevo tipo de herida">Adicionar un nuevo tipo de herida</a>
 			</div>
-			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 margin-bottom-1em">
 				<a class="btn btn-primary btn-block" href="" id="editar" title="Editar tipo de herida seleccionado">Editar tipo de herida seleccionado</a>
 			</div>
-			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 margin-bottom-1em">
 				<a class="btn btn-primary btn-block" href="" id="eliminar" title="Eliminar el tipo de herida seleccionado">Eliminar el tipo de herida seleccionado</a>
+			</div>
+			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 margin-bottom-1em">
+				<a class="btn btn-primary btn-block" href="" id="ordenar" title="Ordenar actividades del tipo de herida seleccionado">Ordenar actividades del tipo de herida seleccionado</a>
 			</div>
 		</div>
 	</div>
@@ -126,6 +129,20 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 			});
 		}else{
 			window.location = "<?php echo base_url('Administrador/formulario-edicion-de-tipo-de-herida');?>/"+seleccion;
+		}
+	});
+
+	$("#ordenar").click(function (e) {
+		e.preventDefault();
+		var seleccion = $('input:radio[name=seleccionar]:checked').val();
+		if(typeof seleccion == "undefined"){
+			swal({
+				title: "Oops... ¡Ha ocurrido un error!",
+				text: "Debe seleccionar un tipo de herida para poder ordenar sus actividades.",
+				type: "error"
+			});
+		}else{
+			window.location = "<?php echo base_url('Administrador/ordenar-actividades');?>/"+seleccion;
 		}
 	});
 </script>
