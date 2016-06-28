@@ -25,6 +25,9 @@ html, body {
 .btn, .margin-bottom-2px {
 	margin-bottom: 2px !important;
 }
+.btn{
+	white-space: normal !important;
+}
 
 /* --- Propiedades usadas para el Sticky Footer (Footer siempre abajo) ---- */
 	#wrap > .container {

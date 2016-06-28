@@ -20,15 +20,15 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 			<?php echo validation_errors('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button>', '</div>'); ?>
 		</div>
 		<div class="row">
-			<div class="col-lg-12 col-md-12 col-sm-11 col-xs-12 ">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
 				<?php $atributos = array('class' => 'form-horizontal', 'role' => 'form');?>
 				<?php echo form_open_multipart($url_adicionaractividad,$atributos); ?>
 					<div class="form-group">
 						<?php $atributos = array(
-								'class'			=> 'col-lg-3 control-label',
+								'class'			=> 'col-lg-2 control-label',
 						); ?>
 						<?php echo form_label('Nombre:', 'nombre', $atributos); ?>
-						<div class="col-lg-8">
+						<div class="col-lg-10">
 							<?php $datos = array(
 						        'name'          => 'nombre',
 						        'id'            => 'nombre',
@@ -44,10 +44,10 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 					</div>
 					<div class="form-group">
 						<?php $atributos = array(
-								'class'			=> 'col-lg-3 control-label',
+								'class'			=> 'col-lg-2 control-label',
 						); ?>
 						<?php echo form_label('Descripción:','descripcion', $atributos) ?>
-						<div class="col-lg-8">
+						<div class="col-lg-10">
 							<?php $datos = array(
 						        'name'          => 'descripcion',
 						        'id'            => 'descripcion',
@@ -63,10 +63,10 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 					</div>
 					<div class="form-group">
 						<?php $atributos = array(
-								'class'			=> 'col-lg-3 control-label',
+								'class'			=> 'col-lg-2 control-label',
 						); ?>
 						<?php echo form_label('Precaución:','precaucion', $atributos) ?>
-						<div class="col-lg-8">
+						<div class="col-lg-10">
 							<?php $datos = array(
 						        'name'          => 'precaucion',
 						        'id'            => 'precaucion',
@@ -82,10 +82,10 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 					</div>
 					<div class="form-group">
 						<?php $atributos = array(
-								'class'			=> 'col-lg-3 control-label',
+								'class'			=> 'col-lg-2 control-label',
 						); ?>
-						<?php echo form_label('Imagen asociada','imagen',$atributos) ?>
-						<div class="col-lg-8">
+						<?php echo form_label('Imagen asociada:','imagen',$atributos) ?>
+						<div class="col-lg-10">
 							<?php $datos = array(
 						        'name'          => 'imagen',
 						        'id'            => 'imagen',
@@ -97,61 +97,67 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 					</div>
 					<div class="form-group">
 						<?php $atributos = array(
-								'class'			=> 'col-lg-3 control-label',
+								'class'			=> 'col-lg-2 control-label',
 							); ?>
-						<?php echo form_label('Tipos de herida asociados','tipoherida',$atributos) ?>
-						<div class="col-lg-8">
+						<?php echo form_label('Tipos de herida asociados:','tipoherida',$atributos) ?>
+						<div class="checkbox col-lg-10">
 							<?php foreach ($tipos_de_heridas as $th ): ?>
-								<?php $datos = array(
-							        'name'          => 'heridas[]',
-							        'id'            => $th->idTipoHerida,
-							        'value'         => $th->idTipoHerida,
-							        'checked'		=> set_checkbox('heridas[]', $th->idTipoHerida),
-								);	?>
-								<div class="margin-bottom-1em">
+								<label class="checkbox">
+									<?php $datos = array(
+								        'name'          => 'heridas[]',
+								        'id'            => $th->idTipoHerida,
+								        'value'         => $th->idTipoHerida,
+								        'checked'		=> set_checkbox('heridas[]', $th->idTipoHerida),
+									); ?>
 									<?php echo form_checkbox($datos); ?>
 									<?php echo $th->nombre_tipoherida; ?>
-								</div>
+								</label>
 							<?php endforeach ?>
 						</div>
 					</div>
 					<div class="form-group">
 						<?php $atributos = array(
-								'class'			=> 'col-lg-3 control-label',
+								'class'			=> 'col-lg-2 control-label',
 							); ?>
-						<?php echo form_label('Factores de riesgo asociados','factorriesgo',$atributos) ?>
-						<div class="col-lg-8">
+						<?php echo form_label('Factores de riesgo asociados:','factorriesgo',$atributos) ?>
+						<div class="col-lg-10">
 							<?php $i=0; ?>
 							<?php foreach ($factores_de_riesgo as $fr ): ?>
-								<div class="col-lg-2 col-xs-4">
-									<?php $datos = array(
-								        'name'          => "factores_de_riesgo[".$i."]",
-								        'id'            => 's'.$fr->idFactorRiesgo,
-								        'value'         => 's'.$fr->idFactorRiesgo,
-								        'checked'		=> set_radio("factores_de_riesgo[".$i."]", 's'.$fr->idFactorRiesgo, true),
-									);	?>
-									<?php echo form_radio($datos); ?>
-									Sin relación
+								<div class="radio col-lg-2 col-xs-4">
+									<label>
+										<?php $datos = array(
+									        'name'          => "factores_de_riesgo[".$i."]",
+									        'id'            => 's'.$fr->idFactorRiesgo,
+									        'value'         => 's'.$fr->idFactorRiesgo,
+									        'checked'		=> set_radio("factores_de_riesgo[".$i."]", 's'.$fr->idFactorRiesgo, true),
+										);	?>
+										<?php echo form_radio($datos); ?>
+										Sin relación
+									</label>
 								</div>
-								<div class="col-lg-2 col-xs-4">
-									<?php $datos = array(
-								        'name'          => "factores_de_riesgo[".$i."]",
-								        'id'            => 'i'.$fr->idFactorRiesgo,
-								        'value'         => 'i'.$fr->idFactorRiesgo,
-								        'checked'		=> set_radio("factores_de_riesgo[".$i."]", 'i'.$fr->idFactorRiesgo),
-									);	?>
-									<?php echo form_radio($datos); ?>
-									¿Incluir?
+								<div class="radio col-lg-2 col-xs-4">
+									<label>
+										<?php $datos = array(
+									        'name'          => "factores_de_riesgo[".$i."]",
+									        'id'            => 'i'.$fr->idFactorRiesgo,
+									        'value'         => 'i'.$fr->idFactorRiesgo,
+									        'checked'		=> set_radio("factores_de_riesgo[".$i."]", 'i'.$fr->idFactorRiesgo),
+										);	?>
+										<?php echo form_radio($datos); ?>
+										¿Incluir?
+									</label>
 								</div>
-								<div class="col-lg-2 col-xs-4">
-									<?php $datos = array(
-								        'name'          => "factores_de_riesgo[".$i."]",
-								        'id'            => 'e'.$fr->idFactorRiesgo,
-								        'value'         => 'e'.$fr->idFactorRiesgo,
-								        'checked'		=> set_radio("factores_de_riesgo[".$i."]", 'e'.$fr->idFactorRiesgo),
-									);	?>
-									<?php echo form_radio($datos); ?>
-									¿Excluir?
+								<div class="radio col-lg-2 col-xs-4">
+									<label>
+										<?php $datos = array(
+									        'name'          => "factores_de_riesgo[".$i."]",
+									        'id'            => 'e'.$fr->idFactorRiesgo,
+									        'value'         => 'e'.$fr->idFactorRiesgo,
+									        'checked'		=> set_radio("factores_de_riesgo[".$i."]", 'e'.$fr->idFactorRiesgo),
+										);	?>
+										<?php echo form_radio($datos); ?>
+										¿Excluir?
+									</label>
 								</div>
 								<div class="col-lg-6 col-xs-12 margin-bottom-1em">
 									<?php echo $fr->nombre_factorriesgo; ?>
