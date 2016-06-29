@@ -129,6 +129,32 @@ class Paciente_model extends CI_Model {
     	// TODO: Eliminar todas las relaciones del paciente.
     	return $this->db->delete(self::TABLE_NAME, array('idPaciente' => $idPaciente));
     }
+
+    /**
+	 * Función editar_paciente del modelo Paciente_model.
+	 *
+	 * Esta función se encarga de editar un paciente en la base de datos.
+	 *
+	 * @access public
+	 * @param  integer $idPaciente     	Identificador único del paciente editado.
+	 * @param  string $nombre     		Nombre del paciente editado.
+	 * @param  string $identificacion 	Identificación del paciente editado.
+	 * @param  integer $edad       		Edad del paciente editado.
+	 * @param  string $sexo         	Genero del paciente editado.
+	 * @param  string $diagnostico      Genero del paciente editado.
+	 * @return boolean                	Retorna true si se pudo actualizar el paciente, de lo contrario retorna false.
+	 */
+	public function editar_paciente($idPaciente, $nombre, $identificacion, $edad, $sexo, $diagnostico){
+		$data = array(
+			'nombre_paciente' => $nombre,
+		    'identificacion_paciente' => $identificacion,
+		    'edad_paciente' => $edad,
+		    'sexo_paciente' => $sexo,
+		    'diagnostico_paciente' => $diagnostico
+		);
+		$this->db->where(self::TABLE_PK_NAME, $idPaciente);
+		return $this->db->update(self::TABLE_NAME, $data);
+	}
 }// Fin de la clase Paciente_model
 /* End of file Paciente_model.php */
 /* Location: ./application/models/Paciente_model.php */

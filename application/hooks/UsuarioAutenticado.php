@@ -32,7 +32,7 @@ class UsuarioAutenticado{
 	private $metodos_permitidos;
 	/**
 	 * Variable metodos no permitidos que contendrá la lista de métodos a los que un usuario autenticado no podrá acceder.
-	 * @var [type]
+	 * @var Array
 	 */
 	private $metodos_no_permitidos;
 
@@ -65,7 +65,9 @@ class UsuarioAutenticado{
 			'perfil', // Controlador Usuario
 			'formulario_adicionar_paciente', // Controlador Usuario
 			'adicionar_paciente', // Controlador Usuario
-			'eliminar_paciente' // Controlador Usuario
+			'eliminar_paciente', // Controlador Usuario
+			'formulario_edicion_de_paciente', // Controlador Usuario
+			'editar_paciente' // Controlador Usuario
 		];
 
 		$this->metodos_no_permitidos['normal']       = [

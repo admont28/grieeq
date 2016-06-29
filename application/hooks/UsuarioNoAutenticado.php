@@ -32,7 +32,7 @@ class UsuarioNoAutenticado{
 	private $metodos_permitidos;
 	/**
 	 * Variable metodos no permitidos que contendrá la lista de métodos a los que un usuario no autenticado no podrá acceder.
-	 * @var [type]
+	 * @var Array
 	 */
 	private $metodos_no_permitidos;
 
@@ -54,7 +54,9 @@ class UsuarioNoAutenticado{
 			'cerrar_sesion', // Controlador Usuario
 			'perfil', // Controlador Usuario
 			'formulario_adicionar_paciente', // Controlador Usuario
-			'adicionar_paciente' // Controlador Usuario
+			'adicionar_paciente', // Controlador Usuario
+			'formulario_edicion_de_paciente', // Controlador Usuario
+			'editar_paciente' // Controlador Usuario
 		];
 	}
 

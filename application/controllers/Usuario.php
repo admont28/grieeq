@@ -295,6 +295,7 @@ class Usuario extends MY_ControladorGeneral {
 		$data['titulo']                    = "Perfil - Lista de pacientes";
 		$data['rol']                       = $this->obtener_rol_sesion();
 		$data['url_adicionarpaciente']	   = "Usuario/formulario-adicionar-paciente";
+		$data['url_editarpaciente']	   	   = "Usuario/formulario-edicion-de-paciente";
 		$data['url_gestiontiposherida']    = "Administrador/administracion-de-tipos-de-heridas";
 		$data['url_gestionfactoresriesgo'] = "Administrador/administracion-de-factores-de-riesgo";
 		$data['url_gestionactividades']    = "Administrador/administracion-de-actividades";
@@ -487,6 +488,87 @@ class Usuario extends MY_ControladorGeneral {
     	} else {
     		redirect('Usuario/perfil','refresh');
     	}
+    }
+
+    /**
+	 * Función formulario_edicion_de_paciente del controlador Usuario.
+	 *
+	 * Esta función se encarga de mostrar el formulario para editar un paciente en la base de datos.
+	 *
+	 * @access public
+	 * @param integer $idPaciente Identificador único del paciente.
+	 * @return void No retorna, muestra la página con el formulario para editar un paciente.
+	 */
+    public function formulario_edicion_de_paciente($idPaciente){
+    	$this->breadcrumb->populate(array(
+			'Inicio' => '',
+			'Perfil' => 'Usuario',
+			'Editar paciente'
+        ));
+		$data                            = array();
+		$this->load->model('Paciente_model');
+		$paciente = $this->Paciente_model->obtener_por_id($idPaciente);
+		if($paciente == null){
+            $mensaje['tipo']    = "error";
+            $mensaje['mensaje'] = "Identificador de paciente no válido.";
+            $this->session->set_flashdata('mensaje', $mensaje);
+			redirect('Usuario/perfil','refresh');
+		}
+		$data['paciente']           	 = $paciente;
+		$data['url_editarpaciente'] 	 = "Usuario/editar-paciente";
+		$data['titulo']                  = "Editar paciente";
+        $this->mostrar_pagina('paciente/editarPaciente', $data);
+    }
+
+    /**
+     * Función editar_paciente del controlador Usuario.
+	 *
+	 * Esta función se encarga de editar un paciente en la base de datos, haciendo las validaciones antes de actualizarlo.
+	 *
+	 * @access public
+     * @return void No retorna, Redirige a otra página mostrando un mensaje de éxito, o muestra los mensajes de error si existieron.
+     */
+    public function editar_paciente(){
+    	if($this->input->post('submit')){
+            //hacemos las comprobaciones que de nuestro formulario;
+            $this->form_validation->set_rules('nombre','Nombre','trim|required|max_length[100]|min_length[5]');
+            $this->form_validation->set_rules('identificacion','Identificación','trim|required|max_length[45]|min_length[5]');
+            $this->form_validation->set_rules('edad','Edad','trim|required|is_natural_no_zero|max_length[200]|min_length[0]');
+            $this->form_validation->set_rules('sexo','Sexo','trim|required|in_list[M,F]');
+            $this->form_validation->set_rules('diagnostico','Diagnóstico','trim|required|max_length[1000]|min_length[5]');
+            $this->form_validation->set_message('required', 'El campo %s es obligatorio');
+            $this->form_validation->set_message('min_length', 'El campo %s debe tener al menos %s carácteres');
+            $this->form_validation->set_message('max_length', 'El campo %s debe tener menos de %s car&aacute;cteres');
+            $this->form_validation->set_message('is_natural_no_zero', 'El campo %s debe ser mayor a cero.');
+            $this->form_validation->set_message('in_list', 'El campo %s debe ser Masculino o Femenino');
+            $idPaciente = $this->security->xss_clean($this->input->post('idPaciente'));
+            // Validamos el formulario, si retorna falso cargamos el método formulario_adicionar_paciente para mostrar los errores ocurridos.
+            if (!$this->form_validation->run()){
+                $this->formulario_adicionar_paciente();
+            }else{
+				$nombre         = $this->security->xss_clean($this->input->post('nombre'));
+				$identificacion = $this->security->xss_clean($this->input->post('identificacion'));
+				$edad           = $this->security->xss_clean($this->input->post('edad'));
+				$sexo           = $this->security->xss_clean($this->input->post('sexo'));
+				$diagnostico    = $this->security->xss_clean($this->input->post('diagnostico'));
+				$session        = $this->session->usuario;
+				$this->load->model('Paciente_model');
+				$resultado = $this->Paciente_model->editar_paciente($idPaciente, $nombre, $identificacion, $edad, $sexo, $diagnostico, $session['idUsuario']);
+				$mensaje        = array();
+                if($resultado){
+                    $mensaje['tipo']    = "success";
+                    $mensaje['mensaje'] = "El paciente ha sido editado con éxito. Nombre: ".$nombre;
+                }
+                else{
+                    $mensaje['tipo']    = "error";
+                    $mensaje['mensaje'] = "Ha ocurrido un error inesperado, porfavor inténtelo de nuevo.";
+                }
+                $this->session->set_flashdata('mensaje', $mensaje);
+                redirect('Usuario/perfil','refresh');
+            }
+        }else{
+            redirect('Usuario/formulario-edicion-de-paciente','refresh');
+        }
     }
 } // Fin de la clase Usuario
 /* End of file Usuario.php */

@@ -29,7 +29,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 	    	<?php endif; ?>
 		</div>
 	</div>
-	<?php if(isset($rol,$url_adicionarpaciente) && $rol == "admin"): ?>
+	<?php if(isset($rol,$url_adicionarpaciente)): ?>
 		<div class="row">
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 page-header text-left">
 					<h1>Acciones sobre los pacientes</h1>
@@ -142,6 +142,20 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 			  		});
 			  	}
 			});
+		}
+	});
+
+	$("#editar").click(function(e){
+		e.preventDefault();
+		var seleccion = $('input:radio[name=seleccionar]:checked').val();
+		if(typeof seleccion == "undefined"){
+			swal({
+				title: "Oops... ¡Ha ocurrido un error!",
+				text: "Debe seleccionar un paciente para poderlo editar.",
+				type: "error"
+			});
+		}else{
+			window.location = "<?php echo base_url('Usuario/formulario-edicion-de-paciente');?>/"+seleccion;
 		}
 	});
 </script>
