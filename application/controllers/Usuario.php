@@ -388,7 +388,14 @@ class Usuario extends MY_ControladorGeneral {
 	    }
 	}
 
-
+	/**
+	 * Función formulario_adicionar_paciente del controlador Usuario.
+	 *
+	 * Esta función se encarga de mostrar el formulario para adicionar un paciente en la bd.
+	 *
+	 * @access public
+	 * @return void No retorna, muestra la página con el formulario para adicionar un paciente.
+	 */
     public function formulario_adicionar_paciente(){
     	$this->breadcrumb->populate(array(
 			'Inicio' => '',
@@ -401,6 +408,14 @@ class Usuario extends MY_ControladorGeneral {
         $this->mostrar_pagina('paciente/adicionarPaciente', $data);
     }
 
+    /**
+     * Función adicionar_paciente del controlador Usuario.
+	 *
+	 * Esta función se encarga de adicionar un paciente en la base de datos, haciendo las validaciones antes de agregarlo.
+	 *
+	 * @access public
+     * @return void No retorna, Redirige a otra página mostrando un mensaje de éxito, o muestra los mensajes de error si existieron.
+     */
     public function adicionar_paciente(){
     	if($this->input->post('submit')){
             //hacemos las comprobaciones que de nuestro formulario;
