@@ -64,7 +64,8 @@ class UsuarioAutenticado{
 			'cerrar_sesion', // Controlador Usuario
 			'perfil', // Controlador Usuario
 			'formulario_adicionar_paciente', // Controlador Usuario
-			'adicionar_paciente' // Controlador Usuario
+			'adicionar_paciente', // Controlador Usuario
+			'eliminar_paciente' // Controlador Usuario
 		];
 
 		$this->metodos_no_permitidos['normal']       = [

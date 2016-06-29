@@ -98,6 +98,37 @@ class Paciente_model extends CI_Model {
 				);
 		return $this->db->insert(self::TABLE_NAME,$data);
 	}
+
+	/**
+     * Función obtener_por_id del modelo Paciente_model.
+	 *
+	 * Esta función se encarga de obtener un paciente dado su id.
+	 *
+	 * @access public
+     * @param  integer $idPaciente 	Id único del paciente.
+     * @return mixed              	Retorna el paciente si lo encuentra, de lo contrario retorna null.
+     */
+    public function obtener_por_id($idPaciente){
+    	$paciente = $this->db->get_where(self::TABLE_NAME, array(self::TABLE_PK_NAME => $idPaciente));
+    	if($paciente->num_rows() == 1){
+			return $paciente->row();
+		}
+		return null;
+    }
+
+    /**
+     * Función eliminar_por_id del modelo Paciente_model.
+	 *
+	 * Esta función se encarga de eliminar un paciente dado su id.
+	 *
+	 * @access public
+     * @param  integer $idPaciente 		Identificación única del paciente.
+     * @return boolean                 	Retorna true si se pudo eliminar, sino retorna false.
+     */
+    public function eliminar_por_id($idPaciente){
+    	// TODO: Eliminar todas las relaciones del paciente.
+    	return $this->db->delete(self::TABLE_NAME, array('idPaciente' => $idPaciente));
+    }
 }// Fin de la clase Paciente_model
 /* End of file Paciente_model.php */
 /* Location: ./application/models/Paciente_model.php */

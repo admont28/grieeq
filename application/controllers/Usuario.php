@@ -391,7 +391,7 @@ class Usuario extends MY_ControladorGeneral {
 	/**
 	 * Función formulario_adicionar_paciente del controlador Usuario.
 	 *
-	 * Esta función se encarga de mostrar el formulario para adicionar un paciente en la bd.
+	 * Esta función se encarga de mostrar el formulario para adicionar un paciente en la base de datos.
 	 *
 	 * @access public
 	 * @return void No retorna, muestra la página con el formulario para adicionar un paciente.
@@ -458,6 +458,36 @@ class Usuario extends MY_ControladorGeneral {
         }
     }
 
+    /**
+     * Función eliminar_paciente del controlador Usuario.
+	 *
+	 * Esta función se encarga de eliminar (dar de alta) a un paciente dado de la base de datos.
+	 *
+	 * @access public
+     * @return void Imprime un objeto JSON dependiendo de lo que se pudo hacer, si no existe nada por post, se redirige a: perfil.
+     */
+    public function eliminar_paciente(){
+    	if ($this->input->post('seleccion')) {
+            $idPaciente          = $this->input->post('seleccion');
+            $this->load->model('Paciente_model');
+            $paciente            = $this->Paciente_model->obtener_por_id($idPaciente);
+    		if ($paciente != null) {
+    			$respuesta = $this->Paciente_model->eliminar_por_id($paciente->idPaciente);
+    			if($respuesta){
+    				echo json_encode(array("state" => "success", "message" => "El paciente ha sido eliminado con éxito"));
+    				die();
+    			}else{
+    				echo json_encode(array("state" => "error", "message" => "Ha ocurrido un error inesperado, por favor inténtelo de nuevo."));
+    				die();
+    			}
+    		} else {
+    			echo json_encode(array("state" => "error", "message" => "Identificador del paciente no válido."));
+    			die();
+    		}
+    	} else {
+    		redirect('Usuario/perfil','refresh');
+    	}
+    }
 } // Fin de la clase Usuario
 /* End of file Usuario.php */
 /* Location: ./application/controllers/Usuario.php */
