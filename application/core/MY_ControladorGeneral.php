@@ -115,6 +115,34 @@ class MY_ControladorGeneral extends CI_Controller {
 	  }
 	  return $retval;
 	} 
+
+	/**
+	 * Función bs_paginación del controlador MY_ControladorGeneral.
+	 *
+	 * Esta función se encarga de adicionar al parámetro config las etiquetas para la paginación en bootstrap.
+	 *
+	 * @access protected
+	 * @param  Array $config Arreglo a adicionar las etiquetas para la paginación de bootstrap.
+	 * @return Array         Retorna un arreglo con las etiquetas usadas en la paginación de bootstrap.
+	 */
+	protected function bs_paginacion($config){
+        /* This Application Must Be Used With BootStrap 3 *  */
+		$config['full_tag_open']    = "<ul class='pagination'>";
+		$config['full_tag_close']   ="</ul>";
+		$config['num_tag_open']     = '<li>';
+		$config['num_tag_close']    = '</li>';
+		$config['cur_tag_open']     = "<li class='disabled'><li class='active'><a>";
+		$config['cur_tag_close']    = "<span class='sr-only'></span></a></li>";
+		$config['next_tag_open']    = "<li>";
+		$config['next_tagl_close']  = "</li>";
+		$config['prev_tag_open']    = "<li>";
+		$config['prev_tagl_close']  = "</li>";
+		$config['first_tag_open']   = "<li>";
+		$config['first_tagl_close'] = "</li>";
+		$config['last_tag_open']    = "<li>";
+		$config['last_tagl_close']  = "</li>";
+        return $config;
+    }
 }// Fin de la clase MY_ControladorGeneral
 /* End of file MY_ControladorGeneral.php */
 /* Location: ./application/core/MY_ControladorGeneral.php */

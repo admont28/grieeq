@@ -56,12 +56,15 @@ class UsuarioAutenticado{
 			'Usuario'
 		];
 
-		$this->metodos_permitidos['normal']          = [];
+		$this->metodos_permitidos['normal']          = [
+		];
 
 		$this->metodos_permitidos['admin']           = [
 			'index', // Controlador Usuario
 			'cerrar_sesion', // Controlador Usuario
-			'perfil' // Controlador Usuario
+			'perfil', // Controlador Usuario
+			'formulario_adicionar_paciente', // Controlador Usuario
+			'adicionar_paciente' // Controlador Usuario
 		];
 
 		$this->metodos_no_permitidos['normal']       = [

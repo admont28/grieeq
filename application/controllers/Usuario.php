@@ -195,6 +195,7 @@ class Usuario extends MY_ControladorGeneral {
 					$data = array(
 						'logueado'               => TRUE,
 						'identificacion_usuario' => $resultado->identificacion_usuario,
+						'idUsuario'			 	 => $resultado->idUsuario,
 						'rol_usuario'            =>	($resultado->administrador_usuario == true)? "admin" : "normal",
 	            		);		
 					$this->session->set_userdata('usuario',$data);
@@ -231,16 +232,69 @@ class Usuario extends MY_ControladorGeneral {
 	 * Esta función se encarga de mostrar la página perfil para el usuario.
 	 *
 	 * @access public
-	 * @return void 	Muestra la página de perfil para el usuario.
+	 * @param  string  $pagina      Es usada para mostrar en la url el string: pagina 
+ 	 * @param  integer $page_number Número de la página a mostrar.
+	 * @return void    Muestra la página de perfil para el usuario con los pacientes que tenga registrados.
 	 */
-	public function perfil(){
+	public function perfil($pagina='',$page_number = 1){
 		$this->breadcrumb->populate(array(
 		    'Inicio' => '',
 		   	'Perfil'
 		));
-		$data                              = array();
+        $this->load->model('Paciente_model');        
+        // Cargo la librería pagination de codeigniter.
+        $this->load->library("pagination");
+		$data                       = array();
+		// configuro la cantidad de registros por página.
+		$config["per_page"]         = 4;
+		$config['use_page_numbers'] = TRUE;
+        // Enlace para usar la paginación         
+        $config['base_url']         = base_url()."Usuario/perfil/pagina/";
+        // Adición del html de bootstrap a la variable de configuración
+        $config                     = $this->bs_paginacion($config);
+        $page_number                = intval(($page_number  == 1 || $page_number  == 0) ? 0 : ($page_number * $config['per_page']) - $config['per_page']);
+        $identificacion_usuario     = $this->session->usuario['identificacion_usuario'];
+        $config['total_rows']       = $this->Paciente_model->contar_registros();   
+        $session 					= $this->session->usuario;     
+        $pacientes                  = $this->Paciente_model->obtener_resultados($config["per_page"], $page_number, $session['idUsuario']);
+        $this->pagination->initialize($config);      
+        $data['pagination']         = $this->pagination->create_links();
+        $this->load->library('table');
+        $this->table->set_empty("---");
+        $this->table->set_heading(
+        	'Seleccionar',
+            'Nombre',
+            'Identificación',                
+            'Edad',
+            'Sexo',
+            'Diagnóstico'
+        );
+        if(count($pacientes)>0){
+            foreach ($pacientes as $paciente){
+            	$datos = array(
+					'name'  => 'seleccionar',
+					'id'    => 'seleccionar',
+					'class' => 'seleccion',
+					'value' => $paciente->idPaciente,
+					'type'  => 'radio',
+	            );
+				$input = form_input($datos);
+                $this->table->add_row(
+                	array('data' => $input),
+                    array('data' => $paciente->nombre_paciente),
+                   	array('data' => $paciente->identificacion_paciente),          
+                    array('data' => $paciente->edad_paciente),
+                    array('data' => $paciente->sexo_paciente),
+                    array('data' => $paciente->diagnostico_paciente)
+                );
+            }
+            $tmpl = array ( 'table_open'  => '<table class="table table-striped table-bordered table-hover">' );
+            $this->table->set_template($tmpl);
+            $data['table'] = $this->table->generate();
+        }	
 		$data['titulo']                    = "Perfil - Lista de pacientes";
 		$data['rol']                       = $this->obtener_rol_sesion();
+		$data['url_adicionarpaciente']	   = "Usuario/formulario-adicionar-paciente";
 		$data['url_gestiontiposherida']    = "Administrador/administracion-de-tipos-de-heridas";
 		$data['url_gestionfactoresriesgo'] = "Administrador/administracion-de-factores-de-riesgo";
 		$data['url_gestionactividades']    = "Administrador/administracion-de-actividades";
@@ -333,6 +387,61 @@ class Usuario extends MY_ControladorGeneral {
 	        return true;
 	    }
 	}
+
+
+    public function formulario_adicionar_paciente(){
+    	$this->breadcrumb->populate(array(
+			'Inicio' => '',
+			'Perfil' => 'Usuario',
+			'Adicionar paciente'
+        ));
+		$data                            = array();
+		$data['url_adicionarpaciente'] 	 = "Usuario/adicionar-paciente";
+		$data['titulo']                  = "Adicionar paciente";
+        $this->mostrar_pagina('paciente/adicionarPaciente', $data);
+    }
+
+    public function adicionar_paciente(){
+    	if($this->input->post('submit')){
+            //hacemos las comprobaciones que de nuestro formulario;
+            $this->form_validation->set_rules('nombre','Nombre','trim|required|max_length[100]|min_length[5]');
+            $this->form_validation->set_rules('identificacion','Identificación','trim|required|max_length[45]|min_length[5]');
+            $this->form_validation->set_rules('edad','Edad','trim|required|is_natural_no_zero|max_length[200]|min_length[0]');
+            $this->form_validation->set_rules('sexo','Sexo','trim|required|in_list[M,F]');
+            $this->form_validation->set_rules('diagnostico','Diagnóstico','trim|required|max_length[1000]|min_length[5]');
+            $this->form_validation->set_message('required', 'El campo %s es obligatorio');
+            $this->form_validation->set_message('min_length', 'El campo %s debe tener al menos %s carácteres');
+            $this->form_validation->set_message('max_length', 'El campo %s debe tener menos de %s car&aacute;cteres');
+            $this->form_validation->set_message('is_natural_no_zero', 'El campo %s debe ser mayor a cero.');
+            $this->form_validation->set_message('in_list', 'El campo %s debe ser Masculino o Femenino');
+            // Validamos el formulario, si retorna falso cargamos el método formulario_adicionar_paciente para mostrar los errores ocurridos.
+            if (!$this->form_validation->run()){
+                $this->formulario_adicionar_paciente();
+            }else{
+				$nombre         = $this->security->xss_clean($this->input->post('nombre'));
+				$identificacion = $this->security->xss_clean($this->input->post('identificacion'));
+				$edad           = $this->security->xss_clean($this->input->post('edad'));
+				$sexo           = $this->security->xss_clean($this->input->post('sexo'));
+				$diagnostico    = $this->security->xss_clean($this->input->post('diagnostico'));
+				$session        = $this->session->usuario;
+				$this->load->model('Paciente_model');
+				$resultado      = $this->Paciente_model->crear_paciente($nombre, $identificacion, $edad, $sexo, $diagnostico, $session['idUsuario']);
+				$mensaje        = array();
+                if($resultado){
+                    $mensaje['tipo']    = "success";
+                    $mensaje['mensaje'] = "El paciente ha sido adicionado con éxito. Nombre: ".$nombre;
+                }
+                else{
+                    $mensaje['tipo']    = "error";
+                    $mensaje['mensaje'] = "Ha ocurrido un error inesperado, porfavor inténtelo de nuevo.";
+                }
+                $this->session->set_flashdata('mensaje', $mensaje);
+                redirect('Usuario/perfil','refresh');
+            }
+        }else{
+            redirect('Usuario/formulario-adicionar-paciente','refresh');
+        }
+    }
 
 } // Fin de la clase Usuario
 /* End of file Usuario.php */

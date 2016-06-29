@@ -51,8 +51,10 @@ class UsuarioNoAutenticado{
 		$this->controladores_permitidos = ['Usuario','SituacionEnfermeria','Inicio'];
 		$this->metodos_permitidos       = [''];
 		$this->metodos_no_permitidos    = [
-			'cerrar_sesion',
-			'perfil'
+			'cerrar_sesion', // Controlador Usuario
+			'perfil', // Controlador Usuario
+			'formulario_adicionar_paciente', // Controlador Usuario
+			'adicionar_paciente' // Controlador Usuario
 		];
 	}
 
