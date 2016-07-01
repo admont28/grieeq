@@ -67,7 +67,7 @@ class Paciente_model extends CI_Model {
         $this->db->select('*');        
         $this->db->from(self::TABLE_NAME);
         $this->db->where("Usuario_idUsuario", $idUsuario);
-        $this->db->order_by(self::TABLE_PK_NAME, 'ASC');
+        $this->db->order_by(self::TABLE_PK_NAME, 'DESC');
         $this->db->limit($limit, $start);    
         $query = $this->db->get();    
         return $query->result();
