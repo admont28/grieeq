@@ -44,7 +44,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 					<a class="btn btn-primary btn-block" href="" id="editar" title="Editar paciente seleccionado">Editar paciente seleccionado</a>
 				</div>
 				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 margin-bottom-1em">
-					<a class="btn btn-primary btn-block" href="" title="Adicionar situación de enfermería a paciente seleccionado">Adicionar situación de enfermería a paciente seleccionado</a>
+					<a class="btn btn-primary btn-block" href="" id="adicionarsituacionenfermeria" title="Adicionar situación de enfermería a paciente seleccionado">Adicionar situación de enfermería a paciente seleccionado</a>
 				</div>
 				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 margin-bottom-1em">
 					<a class="btn btn-primary btn-block" href="" id="eliminar" title="Dar de alta a paciente seleccionado (Eliminar)">Dar de alta a paciente seleccionado (Eliminar)</a>
@@ -158,4 +158,19 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 			window.location = "<?php echo base_url('Usuario/formulario-edicion-de-paciente');?>/"+seleccion;
 		}
 	});
+
+	$("#adicionarsituacionenfermeria").click(function(e){
+		e.preventDefault();
+		var seleccion = $('input:radio[name=seleccionar]:checked').val();
+		if(typeof seleccion == "undefined"){
+			swal({
+				title: "Oops... ¡Ha ocurrido un error!",
+				text: "Debe seleccionar un paciente para poder adicionar una situación de enfermería",
+				type: "error"
+			});
+		}else{
+			window.location = "<?php echo base_url().$url_adicionarsituacionenfermeria; ?>/"+seleccion;
+		}
+	});
+
 </script>

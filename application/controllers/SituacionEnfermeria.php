@@ -65,12 +65,14 @@ class SituacionEnfermeria extends MY_ControladorGeneral {
 	 *
 	 * Esta función se ejecuta cuando se crea una instancia de este controlador (SituacionEnfermeria).
 	 * La función ejecuta el constructor de la clase padre (CI_Controller).
+	 * La función carga la librería table para poder ser usada en todo el controlador.
 	 * 
 	 * @access public
 	 * @return void  
 	 */
 	public function __construct(){
 		parent::__construct();
+		$this->load->library('table');
 	}
 
 	/**
@@ -80,15 +82,20 @@ class SituacionEnfermeria extends MY_ControladorGeneral {
 	 * La función muestra la página inicial de la aplicación.
 	 *
 	 * @access public
+	 * @param integer $idPaciente Id del paciente al que se le adiciona la situación de enfermería, si es 0 no se adiciona a ningún paciente, solo se verifica la situación de enfermería.
 	 * @return void No se retorna, se muestra la página. 
 	 */
-	public function index(){
+	public function index($idPaciente = 0){
 		$this->breadcrumb->populate(array(
 		    'Inicio' => '',
 		    self::SITUACIONENFERMERIA_NOMBRE => self::SITUACIONENFERMERIA_URL,
 		));
 		// Se muestra la página por defecto.
 		$data = array();
+		echo $idPaciente;
+		if($idPaciente != 0){
+			$this->session->set_userdata('idPaciente', $idPaciente);
+		}
 		$url_localizacion = self::SITUACIONENFERMERIA_URL.self::LOCALIZACION_URL;
 		$data['url_localizacion'] = base_url($url_localizacion);
 		$this->mostrar_pagina("situacionenfermeria/inicioSituacionEnfermeria", $data);
@@ -135,6 +142,13 @@ class SituacionEnfermeria extends MY_ControladorGeneral {
 			$url_localizacion = self::SITUACIONENFERMERIA_URL.self::LOCALIZACION_URL;
 			$data['url_localizacion'] = base_url($url_localizacion);
 			$data['seleccionado'] = ($this->session->has_userdata('localizacion')) ? $this->session->localizacion: "";
+			$idPaciente = $this->session->userdata('idPaciente');
+		    if(isset($idPaciente) && $idPaciente > 0){
+		        $this->load->model('Paciente_model');
+		        $paciente = $this->Paciente_model->obtener_por_id($idPaciente);
+		        if(!is_null($paciente))
+		        	$data['paciente'] = $paciente;
+		    }
 			$this->mostrar_pagina('situacionenfermeria/localizacionHerida',$data);
 		}
 	}
@@ -181,11 +195,17 @@ class SituacionEnfermeria extends MY_ControladorGeneral {
 				$url_tipoherida = self::SITUACIONENFERMERIA_URL.self::TIPOHERIDA_URL;
 				$data['url_tipoherida'] = base_url($url_tipoherida); 	
 				$data['seleccionado'] = ($this->session->has_userdata('tipo_herida')) ? $this->session->tipo_herida: "";
+				$idPaciente = $this->session->userdata('idPaciente');
+			    if(isset($idPaciente) && $idPaciente > 0){
+			        $this->load->model('Paciente_model');
+			        $paciente = $this->Paciente_model->obtener_por_id($idPaciente);
+			        if(!is_null($paciente))
+			        	$data['paciente'] = $paciente;
+			    }
 				$this->mostrar_pagina('situacionenfermeria/tipoHerida', $data);
 			} else{
 				$url_localizacion = self::SITUACIONENFERMERIA_URL.self::LOCALIZACION_URL;
 				redirect($url_localizacion);
-				//header("Location: ".base_url($url_localizacion));
 			}
 		}
 	}
@@ -243,7 +263,14 @@ class SituacionEnfermeria extends MY_ControladorGeneral {
 					}
 					// Se guarda la selección del tipo de herida: selTipoHerida 
 					$url_factorriesgo = self::SITUACIONENFERMERIA_URL.self::FACTORRIESGO_URL;
-					$data['url_factorriesgo'] = base_url($url_factorriesgo); 	
+					$data['url_factorriesgo'] = base_url($url_factorriesgo);
+					$idPaciente = $this->session->userdata('idPaciente');
+				    if(isset($idPaciente) && $idPaciente > 0){
+				        $this->load->model('Paciente_model');
+				        $paciente = $this->Paciente_model->obtener_por_id($idPaciente);
+				        if(!is_null($paciente))
+				        	$data['paciente'] = $paciente;
+				    } 	
 					$this->mostrar_pagina('situacionenfermeria/factoresRiesgo', $data);
 				}else{
 					$url_tipoherida = self::SITUACIONENFERMERIA_URL.self::TIPOHERIDA_URL;
@@ -282,7 +309,9 @@ class SituacionEnfermeria extends MY_ControladorGeneral {
 		    self::FACTORRIESGO_NOMBRE => self::SITUACIONENFERMERIA_URL.self::FACTORRIESGO_URL,
 		    self::ACTIVIDAD_NOMBRE
 		));
-		
+		if($this->session->has_userdata('actividades')){
+			$this->session->unset_userdata('actividades');
+		}
 		if($this->session->has_userdata('localizacion') && $this->session->has_userdata('tipo_herida')){
 			$datos_post = $this->input->post();
 			$this->load->model('Actividad_model');
@@ -330,9 +359,20 @@ class SituacionEnfermeria extends MY_ControladorGeneral {
 					}
 				}
 			}
-			$data['actividades_finales'] = (sizeof($actividades_generales) > 0)? $actividades_generales : null;
-			$url_reinicio = self::SITUACIONENFERMERIA_URL.self::REINICIO_URL;
-			$data['url_reinicio'] = base_url($url_reinicio); 	
+			
+			$data['actividades_finales']            = (sizeof($actividades_generales) > 0)? $actividades_generales : null;
+			$url_reinicio                           = self::SITUACIONENFERMERIA_URL.self::REINICIO_URL;
+			$data['url_reinicio']                   = base_url($url_reinicio); 
+			$data['url_guardarsituacionenfermeria'] = base_url(self::SITUACIONENFERMERIA_URL."guardar-situacion-de-enfermeria"); 
+			$idPaciente                             = $this->session->userdata('idPaciente');
+		    if(isset($idPaciente) && $idPaciente > 0){
+		        $this->load->model('Paciente_model');
+		        $paciente = $this->Paciente_model->obtener_por_id($idPaciente);
+		        if(!is_null($paciente)){
+		        	$data['paciente'] = $paciente;
+		        	$this->session->set_userdata('actividades', $actividades_generales);
+		        }
+		    }	
 			$this->mostrar_pagina('situacionenfermeria/actividadesSugeridas',$data);
 		} else{
 			$url_tipoherida = self::SITUACIONENFERMERIA_URL.self::TIPOHERIDA_URL;
@@ -341,10 +381,10 @@ class SituacionEnfermeria extends MY_ControladorGeneral {
 	}
 
 	/**
-	 * Función reiniciar para el controlador SituacionEnfermeria.
+	 * Función reiniciar_situacion_de_enfermeria para el controlador SituacionEnfermeria.
 	 *
-	 * Esta función se ejecuta al acceder a: URL_APP/SituacionEnfermeria/reiniciar.
-	 * La función elimina todas las variables de sesión y destuye la sesión, luego redirecciona a: URL_APP/SituacionEnfermeria/localizacion-herida
+	 * Esta función se ejecuta al acceder a: URL_APP/SituacionEnfermeria/reiniciar-situacion-de-enfermeria.
+	 * La función elimina todas las variables de sesión y destuye la sesión, luego redirecciona a: URL_APP/SituacionEnfermeria
 	 *
 	 * @access public
 	 * @return void Se muestra la página si no existe algún error, de lo contrario es redireccionado
@@ -368,7 +408,6 @@ class SituacionEnfermeria extends MY_ControladorGeneral {
 	 * 
 	 * @access private
 	 * @return boolean           Retorna true si la actividad se encuentra en la lista, de lo contrario retorna false.
-	 * 
 	 */
 	private function existe_actividad($lista, $actividad){
 		foreach ($lista as $key ) {
@@ -376,6 +415,70 @@ class SituacionEnfermeria extends MY_ControladorGeneral {
 				return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Función guardar_situacion_de_enfermeria para el controlador SituacionEnfermeria.
+	 *
+	 * Esta función se encarga de almacenar la situación de enfermería contenida en las variables de sesión a un paciente también contenido allí.
+	 *
+	 * @access public
+	 * @return void No retorna nada, solo redigire a Usuario/perfil mostrando mensajes de éxito o error.
+	 */
+	public function guardar_situacion_de_enfermeria(){
+		if($this->input->post('submit')){
+			$observaciones = $this->security->xss_clean($this->input->post('observaciones'));
+			if(trim($observaciones) == ""){
+				$mensaje['tipo']    = "error";
+                $mensaje['mensaje'] = "Debe proporcionar una observación.";
+                $url_actividad = self::SITUACIONENFERMERIA_URL.self::ACTIVIDAD_URL;
+				$this->session->set_flashdata('mensaje', $mensaje);
+                redirect($url_actividad,'refresh');
+			}else{
+				$idPaciente     = $this->session->has_userdata('idPaciente');
+				$localizacion   = $this->session->has_userdata('localizacion');
+				$tipoHerida     = $this->session->has_userdata('tipo_herida');
+				$factoresRiesgo = $this->session->has_userdata('factores_riesgo');
+				$actividades    = $this->session->has_userdata('actividades');
+				if(!$idPaciente){
+					$mensaje['tipo']    = "error";
+	                $mensaje['mensaje'] = "No existe ningún paciente para adicionarle la situación de enfermería.";
+	                $url_actividad = self::SITUACIONENFERMERIA_URL;
+	                redirect($url_actividad,'refresh');
+				}
+				if(!$localizacion){
+					$url_localizacion = self::SITUACIONENFERMERIA_URL.self::LOCALIZACION_URL;
+					redirect($url_localizacion);
+				}else if(!$tipoHerida){
+					$url_tipoherida = self::SITUACIONENFERMERIA_URL.self::TIPOHERIDA_URL;
+					redirect($url_tipoherida);
+				}else if(!$factoresRiesgo){
+					$url_factorriesgo = self::SITUACIONENFERMERIA_URL.self::FACTORRIESGO_URL;
+					redirect($url_factorriesgo);
+				}else if(!$actividades){
+					$url_actividad = self::SITUACIONENFERMERIA_URL.self::ACTIVIDAD_URL;
+					redirect($url_actividad);
+				}
+				$idPaciente     = $this->session->idPaciente;
+				$localizacion   = $this->session->localizacion;
+				$tipoHerida     = $this->session->tipo_herida;
+				$factoresRiesgo = $this->session->factores_riesgo;
+				$actividades    = $this->session->actividades;
+				$this->load->model('SituacionEnfermeria_model');
+				$resultado = $this->SituacionEnfermeria_model->crear_situacion_de_enfermeria($idPaciente, $localizacion, $tipoHerida, $observaciones, $factoresRiesgo, $actividades);
+				if($resultado) {
+					$mensaje['tipo']    = "success";
+	                $mensaje['mensaje'] = "Se ha adicionado la situación de enfermería con éxito.";
+					$this->session->set_flashdata('mensaje', $mensaje);
+	                redirect("Usuario/perfil",'refresh');
+				}else{
+					$mensaje['tipo']    = "error";
+	                $mensaje['mensaje'] = "Ha ocurrido un error al adicionar la situación de enfemería, por favor inténtelo de nuevo.";
+					$this->session->set_flashdata('mensaje', $mensaje);
+	                redirect("Usuario/perfil",'refresh');
+				}
+			}
+		}
 	}
 }// Fin de la clase SituacionEnfermeria
 /* End of file SituacionEnfermeria.php */

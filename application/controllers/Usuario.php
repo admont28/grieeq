@@ -296,6 +296,7 @@ class Usuario extends MY_ControladorGeneral {
 		$data['rol']                       = $this->obtener_rol_sesion();
 		$data['url_adicionarpaciente']	   = "Usuario/formulario-adicionar-paciente";
 		$data['url_editarpaciente']	   	   = "Usuario/formulario-edicion-de-paciente";
+		$data['url_adicionarsituacionenfermeria'] = "SituacionEnfermeria/index";
 		$data['url_gestiontiposherida']    = "Administrador/administracion-de-tipos-de-heridas";
 		$data['url_gestionfactoresriesgo'] = "Administrador/administracion-de-factores-de-riesgo";
 		$data['url_gestionactividades']    = "Administrador/administracion-de-actividades";

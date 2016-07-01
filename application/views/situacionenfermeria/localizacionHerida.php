@@ -15,6 +15,11 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 			<h1>1. Localización anatómica de la herida</h1>
 		</div>
 	</div>
+	<?php if (isset($paciente)): ?>
+		<div class="row">
+			<?php $this->load->view('paciente/tablaInfoPaciente', $paciente); ?>
+		</div>
+	<?php endif ?>
 	<?php if(isset($localizations, $url_localizacion)): ?>
 		<div class="row">
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-justify margin-bottom-2em">

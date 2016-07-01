@@ -68,8 +68,7 @@ class Usuario_model extends CI_Model {
 				'estado_usuario' => false,
 				'administrador_usuario' => false,
 				);
-		$this->db->insert(self::TABLE_NAME,$data);
-		return true;
+		return $this->db->insert(self::TABLE_NAME,$data);
 	}
 
 	/**

@@ -15,6 +15,11 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 			<h1>3. Factores de riesgo</h1>
 		</div>
 	</div>
+	<?php if (isset($paciente)): ?>
+		<div class="row">
+			<?php $this->load->view('paciente/tablaInfoPaciente', $paciente); ?>
+		</div>
+	<?php endif ?>
 	<div class="row">
 		<?php if(isset($risksfactosselect, $risksfactors)): ?>
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-justify margin-bottom-2em">
