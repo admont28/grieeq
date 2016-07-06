@@ -1,13 +1,13 @@
 <?php 
 /**
- * Vista tablaInfoPaciente, es la encargada de mostrar la información básica del paciente en forma de tabla.
+ * Vista tablaSituacionEnfermeria, es la encargada de mostrar las situaciones de enfermería en forma de tabla bootstrap.
  *
- * @package aplication/views/paciente
+ * @package aplication/views/situacionenfermeria
  * @author Andrés David Montoya Aguirre <admont28@gmail.com>
  * @link https://github.com/admont28 Perfil del autor.
  * @version 1.0 Versión inicial del fichero.
  */
-    if(isset($paciente)){
+    if(isset($situaionesenfermeria) && sizeof($situaionesenfermeria) > 0){
         $this->table->set_empty("---");
         $this->table->set_heading(
             'Nombre',

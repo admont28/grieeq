@@ -172,5 +172,17 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 			window.location = "<?php echo base_url().$url_adicionarsituacionenfermeria; ?>/"+seleccion;
 		}
 	});
-
+	$("#historial").click(function(e){
+		e.preventDefault();
+		var seleccion = $('input:radio[name=seleccionar]:checked').val();
+		if(typeof seleccion == "undefined"){
+			swal({
+				title: "Oops... ¡Ha ocurrido un error!",
+				text: "Debe seleccionar un paciente para poder visualizar su historial",
+				type: "error"
+			});
+		}else{
+			window.location = "<?php echo base_url().$url_historialsituacionenfermeria; ?>/"+seleccion;
+		}
+	});
 </script>

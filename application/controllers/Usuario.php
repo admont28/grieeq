@@ -19,6 +19,7 @@ class Usuario extends MY_ControladorGeneral {
 	 *
 	 * Esta función se ejecuta cuando se crea una instancia de este controlador (Usuario).
 	 * La función ejecuta el constructor de la clase padre (MY_ControladorGeneral).
+	 * La función carga la librería table para poder ser usada en todo el controlador.
 	 *
 	 * @access public
 	 * @return void 
@@ -34,6 +35,8 @@ class Usuario extends MY_ControladorGeneral {
 		//creamos un random alfanumerico de longitud 6 
 		//para nuestro captcha y sesión captcha
 		$this->rand = random_string('alnum', 6);
+		// Se carga la librería table para mostrar la info básica del paciente en forma de tabla.
+		$this->load->library('table');
 	}
 
 	/**
@@ -292,15 +295,16 @@ class Usuario extends MY_ControladorGeneral {
             $this->table->set_template($tmpl);
             $data['table'] = $this->table->generate();
         }	
-		$data['titulo']                    = "Perfil - Lista de pacientes";
-		$data['rol']                       = $this->obtener_rol_sesion();
-		$data['url_adicionarpaciente']	   = "Usuario/formulario-adicionar-paciente";
-		$data['url_editarpaciente']	   	   = "Usuario/formulario-edicion-de-paciente";
+		$data['titulo']                           = "Perfil - Lista de pacientes";
+		$data['rol']                              = $this->obtener_rol_sesion();
+		$data['url_adicionarpaciente']            = "Usuario/formulario-adicionar-paciente";
+		$data['url_editarpaciente']               = "Usuario/formulario-edicion-de-paciente";
 		$data['url_adicionarsituacionenfermeria'] = "SituacionEnfermeria/index";
-		$data['url_gestiontiposherida']    = "Administrador/administracion-de-tipos-de-heridas";
-		$data['url_gestionfactoresriesgo'] = "Administrador/administracion-de-factores-de-riesgo";
-		$data['url_gestionactividades']    = "Administrador/administracion-de-actividades";
-		$data['url_gestionusuarios']       = "Administrador/administracion-de-usuarios";
+		$data['url_historialsituacionenfermeria'] = "Usuario/historial-paciente";
+		$data['url_gestiontiposherida']           = "Administrador/administracion-de-tipos-de-heridas";
+		$data['url_gestionfactoresriesgo']        = "Administrador/administracion-de-factores-de-riesgo";
+		$data['url_gestionactividades']           = "Administrador/administracion-de-actividades";
+		$data['url_gestionusuarios']              = "Administrador/administracion-de-usuarios";
 		$this->mostrar_pagina('usuario/perfil', $data);	
 	}
 
@@ -570,6 +574,90 @@ class Usuario extends MY_ControladorGeneral {
         }else{
             redirect('Usuario/formulario-edicion-de-paciente','refresh');
         }
+    }
+
+    /**
+     * [historial_paciente description]
+     * @param  integer $idPaciente  [description]
+     * @param  string  $pagina      [description]
+     * @param  integer $page_number [description]
+     * @return [type]               [description]
+     */
+    public function historial_paciente($idPaciente = 0, $pagina='', $page_number = 1){
+    	if($idPaciente != 0){
+    		$this->breadcrumb->populate(array(
+				'Inicio' => '',
+				'Perfil' => 'Usuario',
+				'Historial del paciente'
+	        ));
+			$this->load->model('Paciente_model');
+			$data     = array();
+			$paciente = $this->Paciente_model->obtener_por_id($idPaciente);
+			if($paciente == null){
+	            $mensaje['tipo']    = "error";
+	            $mensaje['mensaje'] = "Identificador de paciente no válido.";
+	            $this->session->set_flashdata('mensaje', $mensaje);
+				redirect('Usuario/perfil','refresh');
+			}
+			$session 		  = $this->session->usuario; 
+			$validar_paciente = $this->Paciente_model->validar_paciente($idPaciente, $session['idUsuario']);
+			if($validar_paciente){
+				$this->load->model('SituacionEnfermeria_model');
+		        // Cargo la librería pagination de codeigniter.
+		        $this->load->library("pagination");
+				$data                       = array();
+				// configuro la cantidad de registros por página.
+				$config["per_page"]         = 4;
+				$config['use_page_numbers'] = TRUE;
+				$config["uri_segment"] = 5;
+				// Enlace para usar la paginación         
+				$config['base_url']         = base_url()."Usuario/historial-paciente/".$idPaciente."/pagina/";
+				// Adición del html de bootstrap a la variable de configuración
+				$config                     = $this->bs_paginacion($config);
+				$page_number                = intval(($page_number  == 1 || $page_number  == 0) ? 0 : ($page_number * $config['per_page']) - $config['per_page']);
+				$config['total_rows']       = $this->SituacionEnfermeria_model->contar_registros($idPaciente, $session['idUsuario']);
+				$situacionesenfermeria      = $this->SituacionEnfermeria_model->obtener_resultados($idPaciente, $config["per_page"], $page_number);
+		        $this->pagination->initialize($config);      
+		        $data['pagination']         = $this->pagination->create_links();
+		        $this->load->library('table');
+		        $this->table->set_empty("---");
+		        $this->table->set_heading(
+		        	'Seleccionar',
+		            'Identificador',
+		            'Observaciones'
+		        );
+		        if(count($situacionesenfermeria)>0){
+		        	$i = 1;
+		            foreach ($situacionesenfermeria as $se){
+		            	$datos = array(
+							'name'  => 'seleccionar',
+							'id'    => $se->idSituacionEnfermeria,
+							'class' => 'seleccion',
+							'value' => $se->idSituacionEnfermeria,
+							'type'  => 'radio',
+			            );
+						$input = form_input($datos);
+		                $this->table->add_row(
+		                	array('data' => $input),
+		                    array('data' => $se->idSituacionEnfermeria),
+		                   	array('data' => $se->observaciones_situacionenfermeria)
+		                );
+		                $i++;
+		            }
+		            $tmpl = array ( 'table_open'  => '<table class="table table-striped table-bordered table-hover">' );
+		            $this->table->set_template($tmpl);
+		            $data['table'] = $this->table->generate();
+		        }	
+				$data['paciente'] = $paciente;
+				$data['titulo']   = "Historial del paciente: ".$paciente->nombre_paciente;
+		        $this->mostrar_pagina('paciente/historialPaciente', $data);
+			}else{
+				$mensaje['tipo']    = "error";
+	            $mensaje['mensaje'] = "Identificador de paciente no válido.";
+	            $this->session->set_flashdata('mensaje', $mensaje);
+				redirect('Usuario/perfil','refresh');
+    		}
+		}
     }
 } // Fin de la clase Usuario
 /* End of file Usuario.php */

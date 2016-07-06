@@ -14,6 +14,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @version 1.0 Versión inicial de la clase.
  */
 class Localizacion_model extends CI_Model {
+	/**
+	 * Constante que almacenará el nombre de la tabla Localizacion.
+	 */
+	const TABLE_NAME = "Localizacion";
+	/**
+	 * Constante que almacenará el nombre de la llave primaria de la tabla Localizacion.
+	 */
+	const TABLE_PK_NAME = "idLocalizacion";
 
 	/**
 	 * Función __construct del modelo Localizacion_model.
@@ -42,6 +50,24 @@ class Localizacion_model extends CI_Model {
 		$query = $this->db->get("Localizacion");
 		if($query->num_rows() > 0) return $query;
 		else return false;
+	}
+
+	/**
+	 * Función obtener_por_id del modelo Localizacion_model.
+	 *
+	 * Esta función se encarga de obtener una localización dado su id.
+	 *
+	 * @access public
+	 * @param  integer $idLocalizacion Identificador único de la localización.
+	 * @return Mixed                   Retorna un arreglo vacío si no encuentra la localización, si la encuentra retorna un objeto.
+	 */
+	public function obtener_por_id($idLocalizacion = 0){
+		if($idLocalizacion != 0){
+			$this->db->where(array(self::TABLE_PK_NAME => $idLocalizacion));
+			$query = $this->db->get(self::TABLE_NAME);
+			return $query->result();
+		}
+		return array();
 	}
 }// Fin de la clase Localizacion_model
 /* End of file Localizacion_model.php */

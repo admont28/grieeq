@@ -126,7 +126,7 @@ class Paciente_model extends CI_Model {
      * @return boolean                 	Retorna true si se pudo eliminar, sino retorna false.
      */
     public function eliminar_por_id($idPaciente){
-    	// TODO: Eliminar todas las relaciones del paciente.
+    	// Al eliminar un paciente, se eliminan las situaciones de enfermería asociadas, esto está dado por el motor de base de datos, dadas las reglas de integridad: ON DELETE CASCADE.
     	return $this->db->delete(self::TABLE_NAME, array('idPaciente' => $idPaciente));
     }
 
@@ -154,6 +154,26 @@ class Paciente_model extends CI_Model {
 		);
 		$this->db->where(self::TABLE_PK_NAME, $idPaciente);
 		return $this->db->update(self::TABLE_NAME, $data);
+	}
+
+	/**
+	 * Función validar_paciente del modelo Paciente_model.
+	 *
+	 * Esta función se encarga consultar un paciente dado un usuario.
+	 *
+	 * @access public
+	 * @param  integer $idPaciente Identificador único del paciente.
+	 * @param  integer $idUsuario  Identificador único del usuario.
+	 * @return boolean             Retorna true si el paciente le corresponde al usuario, de lo contrario retorna false.
+	 */
+	public function validar_paciente($idPaciente = 0, $idUsuario = 0){
+		$this->db->select('*');        
+        $this->db->from(self::TABLE_NAME);
+        $this->db->where("idPaciente", $idPaciente);
+        $this->db->where("Usuario_idUsuario", $idUsuario);    
+        $query = $this->db->get();    
+        $paciente = $query->result();
+        return (count($paciente) == 1) ? true : false;
 	}
 }// Fin de la clase Paciente_model
 /* End of file Paciente_model.php */

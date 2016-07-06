@@ -92,9 +92,14 @@ class SituacionEnfermeria extends MY_ControladorGeneral {
 		));
 		// Se muestra la página por defecto.
 		$data = array();
-		echo $idPaciente;
 		if($idPaciente != 0){
 			$this->session->set_userdata('idPaciente', $idPaciente);
+		    if(isset($idPaciente) && $idPaciente > 0){
+		        $this->load->model('Paciente_model');
+		        $paciente = $this->Paciente_model->obtener_por_id($idPaciente);
+		        if(!is_null($paciente))
+		        	$data['paciente'] = $paciente;
+		    }
 		}
 		$url_localizacion = self::SITUACIONENFERMERIA_URL.self::LOCALIZACION_URL;
 		$data['url_localizacion'] = base_url($url_localizacion);
@@ -477,6 +482,43 @@ class SituacionEnfermeria extends MY_ControladorGeneral {
 					$this->session->set_flashdata('mensaje', $mensaje);
 	                redirect("Usuario/perfil",'refresh');
 				}
+			}
+		}
+	}
+
+	public function obtener_informacion(){
+		if($this->input->get('id')){
+			$idSituacionEnfermeria = $this->input->get('id');
+			$this->load->model('SituacionEnfermeria_model');
+			$situacionEnfermeria = $this->SituacionEnfermeria_model->obtener_por_id($idSituacionEnfermeria);
+			if(!is_null($situacionEnfermeria)){
+				header("Content-type: application/json");
+				$this->load->model('Localizacion_model');
+				$this->load->model('TipoHerida_model');
+				$this->load->model('FactorRiesgo_model');
+				$this->load->model('Actividad_model');
+				$localizacion = $this->Localizacion_model->obtener_por_id($situacionEnfermeria->Localizacion_idLocalizacion);
+				$tipoHerida = $this->TipoHerida_model->obtener_por_id($situacionEnfermeria->TipoHerida_idTipoHerida);
+				$aTipoHerida[] = $tipoHerida;
+
+				//print_r($aTipoHerida); die();
+				$SituacionEnfermeriaFactoresRiesgo = $this->SituacionEnfermeria_model->obtener_factores_de_riesgo($idSituacionEnfermeria);
+				$factores_de_riesgo = array();
+	            foreach ($SituacionEnfermeriaFactoresRiesgo as $sefr) {
+	                $factorRiesgo = $this->FactorRiesgo_model->obtener_por_id($sefr->FactorRiesgo_idFactorRiesgo);
+	                $factores_de_riesgo[]  = $factorRiesgo;
+	            }
+	            $SituacionEnfermeriaActividades = $this->SituacionEnfermeria_model->obtener_actividades($idSituacionEnfermeria);
+				$actividades = array();
+	            foreach ($SituacionEnfermeriaActividades as $sea) {
+	                $actividad = $this->Actividad_model->obtener_por_id($sea->Actividad_idActividad);
+	                $actividades[]  = $actividad;
+	            }
+	            $tablaTipoHerida = $this->load->view('admin/tipoherida/tablaTipoHerida', array('tipos_de_heridas' => $aTipoHerida), true);
+	            $tablaFactorRiesgo = $this->load->view('admin/factorriesgo/tablaInfoFactorRiesgo', array('factores_de_riesgo' => $factores_de_riesgo), true);
+	            $tablaLocalizacion = $this->load->view('admin/localizacion/tablaLocalizacion', array('localizaciones' => $localizacion), true);
+				$tablaActividad = $this->load->view('admin/actividad/tablaActividad', array('actividades' => $actividades), true);
+	            echo json_encode(array("localizacion" => $tablaLocalizacion, "tipo_herida" => $tablaTipoHerida, "factor_riesgo" => $tablaFactorRiesgo, "actividad" => $tablaActividad));
 			}
 		}
 	}

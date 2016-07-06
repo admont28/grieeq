@@ -1076,7 +1076,7 @@ class Administrador extends MY_ControladorGeneral {
             foreach ($actividades_factoresriesgo as $af) {
                 $factorRiesgo = $this->FactorRiesgo_model->obtener_por_id($af->FactorRiesgo_idFactorRiesgo);
                 $factorRiesgo->incluir = $af->incluir_factorriesgoactividad;
-                $factores_de_riesgo[] = $factorRiesgo;
+                $factores_de_riesgo[]  = $factorRiesgo;
             }
             $data['factores_de_riesgo'] = $factores_de_riesgo;
             $vista = $this->load->view('admin/factorriesgo/tablaFactorRiesgo', $data, true);

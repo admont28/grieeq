@@ -13,6 +13,13 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 page-header text-center">
 			<h1>Aplicación Web de apoyo para el profesional de la salud en el cuidado de las personas con heridas</h1>
 		</div>
+	</div>
+	<?php if (isset($paciente)): ?>
+		<div class="row">
+			<?php $this->load->view('paciente/tablaInfoPaciente', $paciente); ?>
+		</div>
+	<?php endif ?>
+	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-justify margin-bottom-2em">
 			<p>La aplicación para el tratamiento de heridas consta de 4 pasos los cuales son mencionados a continuación:</p>
 			<ol>
