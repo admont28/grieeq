@@ -665,8 +665,9 @@ class Usuario extends MY_ControladorGeneral {
 	            $this->session->set_flashdata('mensaje', $mensaje);
 				redirect('Usuario/perfil','refresh');
     		}
+		}else{
+			redirect('Usuario/perfil','refresh');
 		}
-		redirect('Usuario/perfil','refresh');
     }
 
     /**
@@ -802,8 +803,9 @@ class Usuario extends MY_ControladorGeneral {
 				// Guardamos el documento.
 				$objWriter->save('php://output');
     		}
+    	}else{
+    		redirect('Usuario/perfil','refresh');
     	}
-    	redirect('Usuario/perfil','refresh');
     }
 } // Fin de la clase Usuario
 /* End of file Usuario.php */

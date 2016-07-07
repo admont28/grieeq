@@ -106,7 +106,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 	<?php if(isset($paciente)): ?>
 		<div class="row">
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="contendor_actividades">
-				<p>En esta sección usted podrá exportar el historial completo del paciente a un archivo en formato docx. (word)</p>
+				<p>En esta sección usted podrá exportar el historial completo del paciente a un archivo en formato .docx (Word), si el historial del paciente contiene mucha información es posible que la aplicación se demore un poco en procesarla antes de presentar la ventana de descarga, por favor tenga paciencia.</p>
 			</div>
 			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
 				<a class="btn btn-primary btn-block" href="<?php echo base_url($url_exportarhistorial); ?>/<?php echo $paciente->idPaciente; ?>" id="adicionar" title="Exportar historial completo">Exportar historial completo</a>
