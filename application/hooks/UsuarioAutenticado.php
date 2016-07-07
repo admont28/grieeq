@@ -68,7 +68,8 @@ class UsuarioAutenticado{
 			'eliminar_paciente', // Controlador Usuario
 			'formulario_edicion_de_paciente', // Controlador Usuario
 			'editar_paciente', // Controlador Usuario
-			'historial_paciente' // Controlador Usuario
+			'historial_paciente', // Controlador Usuario
+			'exportar_historial_de_paciente' // Controlador Usuario
 		];
 
 		$this->metodos_no_permitidos['normal']       = [

@@ -98,6 +98,21 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 			<img class="cargando_actividades" style="display: none;" src="<?php echo asset_url('img/cargando.gif'); ?>" alt="Cargando..."/>
 		</div>
 	</div>
+	<div class="row">
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 page-header text-left">
+			<h3>Exportar historial completo</h3>
+		</div>
+	</div>
+	<?php if(isset($paciente)): ?>
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="contendor_actividades">
+				<p>En esta sección usted podrá exportar el historial completo del paciente a un archivo en formato docx. (word)</p>
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+				<a class="btn btn-primary btn-block" href="<?php echo base_url($url_exportarhistorial); ?>/<?php echo $paciente->idPaciente; ?>" id="adicionar" title="Exportar historial completo">Exportar historial completo</a>
+			</div>
+		</div>
+	<?php endif; ?>
 </div>
 <script type="text/javascript">
 	$(".seleccion").change(function(e){

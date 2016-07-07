@@ -34,10 +34,10 @@ class MY_ControladorGeneral extends CI_Controller {
 	 * @param  String $vista Nombre de la vista a cargar, por defecto se cargará la vista: information
 	 * @param  Array $datos Array asociativo opcional por si se desea enviar datos a la vista, por defecto es un arreglo vacío.
 	 *
-	 * @access public
+	 * @access protected
 	 * @return void Se muestra la página.
 	 */
-	public function mostrar_pagina($vista = '', $datos = array()){
+	protected function mostrar_pagina($vista = '', $datos = array()){
 		$path_vista   = APPPATH.'views/'.$vista.'.php';
 		$path_head    = APPPATH.'views/plantilla/head.php';
 		$path_nav  	  = APPPATH.'views/plantilla/nav.php';
@@ -64,10 +64,10 @@ class MY_ControladorGeneral extends CI_Controller {
 	 *
 	 * Esta función se encarga de imprimir un arreglo con la función echo de php y el llamado la función dump de este mismo contorlador para imprimir el arreglo recursivamente.
 	 * @param  array  $data Arreglo que se desea imprimir por pantalla.
-	 * @access public
+	 * @access protected
 	 * @return void         No retorna nada, solo imprimie en pantalla.
 	 */
-	public function echodump($data = array()){
+	protected function echodump($data = array()){
 		echo "Imprimiendo Arreglo:";
 		echo "<pre>";
 		echo $this->dump($data);

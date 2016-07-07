@@ -52,6 +52,9 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 margin-bottom-1em">
 					<a class="btn btn-primary btn-block" href="" id="historial" title="Ver historial del paciente seleccionado">Ver historial del paciente seleccionado</a>
 				</div>
+				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 margin-bottom-1em">
+					<a class="btn btn-primary btn-block" href="" id="exportar" title="Exportar el historial completo">Exportar el historial completo</a>
+				</div>
 			</div>
 		</div>
 	<?php endif; ?>
@@ -172,6 +175,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 			window.location = "<?php echo base_url().$url_adicionarsituacionenfermeria; ?>/"+seleccion;
 		}
 	});
+
 	$("#historial").click(function(e){
 		e.preventDefault();
 		var seleccion = $('input:radio[name=seleccionar]:checked').val();
@@ -183,6 +187,20 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 			});
 		}else{
 			window.location = "<?php echo base_url().$url_historialsituacionenfermeria; ?>/"+seleccion;
+		}
+	});
+
+	$("#exportar").click(function(e){
+		e.preventDefault();
+		var seleccion = $('input:radio[name=seleccionar]:checked').val();
+		if(typeof seleccion == "undefined"){
+			swal({
+				title: "Oops... ¡Ha ocurrido un error!",
+				text: "Debe seleccionar un paciente para poder exportar su historial",
+				type: "error"
+			});
+		}else{
+			window.location = "<?php echo base_url().$url_exportarhistorial; ?>/"+seleccion;
 		}
 	});
 </script>

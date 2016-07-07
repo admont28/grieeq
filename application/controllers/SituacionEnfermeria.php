@@ -395,9 +395,10 @@ class SituacionEnfermeria extends MY_ControladorGeneral {
 	 * @return void Se muestra la página si no existe algún error, de lo contrario es redireccionado
 	 */
 	public function reiniciar_situacion_de_enfermeria(){
-		// Eliminar la localización y el tipo de herida de la session.
+		// Eliminar la localización, el tipo de herida y las actividades de la session.
 		$this->session->unset_userdata("localizacion");
 		$this->session->unset_userdata("tipo_herida");
+		$this->session->unset_userdata("actividades");
 		// Redireccionar al inicio de la situación de enfermería.
 		redirect('/SituacionEnfermeria');
 	}
@@ -483,9 +484,20 @@ class SituacionEnfermeria extends MY_ControladorGeneral {
 	                redirect("Usuario/perfil",'refresh');
 				}
 			}
+		}else{
+			redirect('Usuario/perfil','refresh');
 		}
 	}
 
+	/**
+	 * Función obtener_informacion para el controlador SituacionEnfermeria.
+	 *
+	 * Esta función se encarga de obtener toda la información relacionada con una situación de enfermería dada. Obtiene la localización anatómica, el tipo de herida, los factores de riesgo y las actividades finales sugeridas que estén asociadas a la situación de enfermería.
+	 * El id de situación de enfermería es obtenido por get con la clave 'id'.
+	 *
+	 * @access public
+	 * @return void No retorna nada imprime un objeto JSON con la localización, el tipo de herida, los factores de riesgo y las actividades sugeridas.
+	 */
 	public function obtener_informacion(){
 		if($this->input->get('id')){
 			$idSituacionEnfermeria = $this->input->get('id');
@@ -501,7 +513,6 @@ class SituacionEnfermeria extends MY_ControladorGeneral {
 				$tipoHerida = $this->TipoHerida_model->obtener_por_id($situacionEnfermeria->TipoHerida_idTipoHerida);
 				$aTipoHerida[] = $tipoHerida;
 
-				//print_r($aTipoHerida); die();
 				$SituacionEnfermeriaFactoresRiesgo = $this->SituacionEnfermeria_model->obtener_factores_de_riesgo($idSituacionEnfermeria);
 				$factores_de_riesgo = array();
 	            foreach ($SituacionEnfermeriaFactoresRiesgo as $sefr) {
@@ -520,6 +531,8 @@ class SituacionEnfermeria extends MY_ControladorGeneral {
 				$tablaActividad = $this->load->view('admin/actividad/tablaActividad', array('actividades' => $actividades), true);
 	            echo json_encode(array("localizacion" => $tablaLocalizacion, "tipo_herida" => $tablaTipoHerida, "factor_riesgo" => $tablaFactorRiesgo, "actividad" => $tablaActividad));
 			}
+		}else{
+			redirect('Usuario/perfil','refresh');
 		}
 	}
 }// Fin de la clase SituacionEnfermeria

@@ -41,21 +41,23 @@ class Paciente_model extends CI_Model {
 	/**
 	 * Función contar_registros del modelo Paciente_model.
 	 *
-	 * Esta función se encarga de contar la cantidad de registros en la tabla Paciente.
+	 * Esta función se encarga de contar la cantidad de registros en la tabla Paciente dado un usuario, es decir, cuenta los pacientes que tenga un usuario en específico.
 	 *
 	 * @access public
+	 * @param  integer $idUsuario Identificador único del usuario.
 	 * @return integer Retorna la cantidad de resultados obtenidos.
 	 */
-	public function contar_registros(){
+	public function contar_registros($idUsuario = 0){
         $this->db->select('*');    
         $this->db->from(self::TABLE_NAME);
+        $this->db->where("Usuario_idUsuario", $idUsuario);
         return $this->db->count_all_results();
     }
     
     /**
      * Función obtener_resultados del modelo Paciente_model.
 	 *
-	 * Esta función se encarga de obtener los Pacientes dado cierto limite e inicio.
+	 * Esta función se encarga de obtener los Pacientes dado cierto limite e inicio de cierto usuario.
 	 *
 	 * @access public
      * @param  integer $limit limite de la consulta.

@@ -251,14 +251,16 @@ class Usuario extends MY_ControladorGeneral {
 		// configuro la cantidad de registros por página.
 		$config["per_page"]         = 4;
 		$config['use_page_numbers'] = TRUE;
+		$config["uri_segment"]      = 4;
         // Enlace para usar la paginación         
         $config['base_url']         = base_url()."Usuario/perfil/pagina/";
         // Adición del html de bootstrap a la variable de configuración
         $config                     = $this->bs_paginacion($config);
+        $session 					= $this->session->usuario; 
         $page_number                = intval(($page_number  == 1 || $page_number  == 0) ? 0 : ($page_number * $config['per_page']) - $config['per_page']);
         $identificacion_usuario     = $this->session->usuario['identificacion_usuario'];
-        $config['total_rows']       = $this->Paciente_model->contar_registros();   
-        $session 					= $this->session->usuario;     
+        $config['total_rows']       = $this->Paciente_model->contar_registros($session['idUsuario']);   
+            
         $pacientes                  = $this->Paciente_model->obtener_resultados($config["per_page"], $page_number, $session['idUsuario']);
         $this->pagination->initialize($config);      
         $data['pagination']         = $this->pagination->create_links();
@@ -301,6 +303,7 @@ class Usuario extends MY_ControladorGeneral {
 		$data['url_editarpaciente']               = "Usuario/formulario-edicion-de-paciente";
 		$data['url_adicionarsituacionenfermeria'] = "SituacionEnfermeria/index";
 		$data['url_historialsituacionenfermeria'] = "Usuario/historial-paciente";
+		$data['url_exportarhistorial']			  = "Usuario/exportar-historial-de-paciente";
 		$data['url_gestiontiposherida']           = "Administrador/administracion-de-tipos-de-heridas";
 		$data['url_gestionfactoresriesgo']        = "Administrador/administracion-de-factores-de-riesgo";
 		$data['url_gestionactividades']           = "Administrador/administracion-de-actividades";
@@ -577,11 +580,15 @@ class Usuario extends MY_ControladorGeneral {
     }
 
     /**
-     * [historial_paciente description]
-     * @param  integer $idPaciente  [description]
-     * @param  string  $pagina      [description]
-     * @param  integer $page_number [description]
-     * @return [type]               [description]
+     * Función historial_paciente del controlador Usuario.
+	 *
+	 * Esta función se encarga de obtener el historial de un paciente dado y mostrarlo al usuario.
+	 *
+	 * @access public
+     * @param  integer $idPaciente  Identificación única del paciente.
+     * @param  string  $pagina      Es usada para mostrar en la url el string: pagina 
+ 	 * @param  integer $page_number Número de la página a mostrar.
+	 * @return void    				No retorna nada, muestra la página con las situaciones de enfermería del paciente pasado por parámetro.
      */
     public function historial_paciente($idPaciente = 0, $pagina='', $page_number = 1){
     	if($idPaciente != 0){
@@ -609,7 +616,7 @@ class Usuario extends MY_ControladorGeneral {
 				// configuro la cantidad de registros por página.
 				$config["per_page"]         = 4;
 				$config['use_page_numbers'] = TRUE;
-				$config["uri_segment"] = 5;
+				$config["uri_segment"]      = 5;
 				// Enlace para usar la paginación         
 				$config['base_url']         = base_url()."Usuario/historial-paciente/".$idPaciente."/pagina/";
 				// Adición del html de bootstrap a la variable de configuración
@@ -650,6 +657,7 @@ class Usuario extends MY_ControladorGeneral {
 		        }	
 				$data['paciente'] = $paciente;
 				$data['titulo']   = "Historial del paciente: ".$paciente->nombre_paciente;
+				$data['url_exportarhistorial'] = "Usuario/exportar-historial-de-paciente";
 		        $this->mostrar_pagina('paciente/historialPaciente', $data);
 			}else{
 				$mensaje['tipo']    = "error";
@@ -658,6 +666,144 @@ class Usuario extends MY_ControladorGeneral {
 				redirect('Usuario/perfil','refresh');
     		}
 		}
+		redirect('Usuario/perfil','refresh');
+    }
+
+    /**
+     * Función historial_paciente del controlador Usuario.
+	 *
+	 * Esta función se encarga de obtener el historial de un paciente dado y exportarlo a un documento en formato .docx
+	 *
+	 * @access public
+     * @param  integer $idPaciente Identificador único del paciente.
+     * @return void                No retorna nada, presenta la descarga del documento .docx
+     */
+    public function exportar_historial_de_paciente($idPaciente = 0){
+    	if($idPaciente != 0){
+    		$this->load->model('Paciente_model');
+    		$paciente = $this->Paciente_model->obtener_por_id($idPaciente);
+    		$session 		  = $this->session->usuario; 
+			$validar_paciente = $this->Paciente_model->validar_paciente($idPaciente, $session['idUsuario']);
+    		if(!is_null($paciente) && $validar_paciente){
+    			// Cargamos la librería creada para manejar PHPWord.
+	    		$this->load->library('word');
+	    		$sectionStyle = array(
+					'marginTop'    => 1000,
+					'marginRight'  => 1000,
+					'marginBottom' => 1000,
+					'marginLeft'   => 1000
+				);
+				// Adicionamos una sección al documento.
+				$section = $this->word->addSection($sectionStyle);
+				// Creamos los estilos para el título 1.
+				$fontStyle1 = array('name' => 'Cambria', 'size' => 16, 'bold' => true);
+				// Configuramos el estilo del título 1.
+				$this->word->addTitleStyle(1, $fontStyle1);
+				// Creamos los estilos para el título 2.
+				$fontStyle2 = array('name' => 'Cambria', 'size' => 14, 'bold' => true);
+				$paragraphStyle2 = array('align' => 'both', 'indent' => 1);
+				// Configuramos el estilo del título 2.
+				$this->word->addTitleStyle(2, $fontStyle2, $paragraphStyle2);
+				// Creamos los estilos para el título 3.
+				$fontStyle3 = array('name' => 'Cambria', 'size' => 12, 'bold' => false);
+				$paragraphStyle3 = array('align' => 'both', 'indent' => 2);
+				// Configuramos el estilo del título 3.
+				$this->word->addTitleStyle(3, $fontStyle3,$paragraphStyle3);
+				//$section->addTOC();
+				// Adicionamos un título 1.
+				$section->addTitle('Historial del paciente: '.$paciente->nombre_paciente, 1);
+				// Adicionamos un salto de línea.
+				$section->addTextBreak(1);
+				// Adicionamos un título 2.
+				$section->addTitle('Información básica del paciente:', 2);
+				$section->addText("Nombre: ".$paciente->nombre_paciente, array('name' => 'Cambria'), array('align' => 'both', 'indent' => 2));
+				$section->addText("Identificación: ".$paciente->identificacion_paciente, array('name' => 'Cambria'), array('align' => 'both', 'indent' => 2));
+				$section->addText("Edad: ".$paciente->edad_paciente, array('name' => 'Cambria'), array('align' => 'both', 'indent' => 2));
+				$sexo_paciente = $paciente->sexo_paciente == "M" ? "Masculino" : "Femenino";
+				$section->addText("Sexo: ".$sexo_paciente, array('name' => 'Cambria'), array('align' => 'both', 'indent' => 2));
+				$section->addText("Diagnóstico: ".$paciente->diagnostico_paciente, array('name' => 'Cambria'), array('align' => 'both', 'indent' => 2));
+				// Adicionamos un salto de línea.
+				$section->addTextBreak(1);
+
+				$this->load->model('SituacionEnfermeria_model');
+				$this->load->model('Localizacion_model');
+				$this->load->model('TipoHerida_model');
+				$this->load->model('FactorRiesgo_model');
+				$this->load->model('Actividad_model');
+				$situacionesEnfermeria = $this->SituacionEnfermeria_model->obtener_por_paciente($idPaciente);
+				$paragraphStyle = array('align' => 'both', 'indent' => 3);
+				$i = 1;
+				foreach ($situacionesEnfermeria as $se) {
+					$section->addTitle('Situación de enfermería: '.$i, 2);
+					$section->addText("Observaciones: ".$se->observaciones_situacionenfermeria, array('name' => 'Cambria'), array('indent' => 2));
+					$section->addTextBreak(1);
+					/*
+					 * ADICIONO LA INFORMACIÓN DE LA LOCALIZACIÓN ANATÓMICA DE LA HERIDA.
+					 */
+					$localizacion = $this->Localizacion_model->obtener_por_id($se->Localizacion_idLocalizacion);
+					$section->addTitle('Localización anatómica de la herida:', 3);
+					$nombre_localizacion = "Sin localización anatómica.";
+					if(isset($localizacion) && sizeof($localizacion) == 1)
+						$nombre_localizacion = $localizacion[0]->nombre_localizacion;
+					$section->addText("Nombre: ".$nombre_localizacion, array('name' => 'Cambria'), $paragraphStyle);
+
+					/*
+					 * ADICIONO LA INFORMACIÓN DEL TIPO DE HERIDA.
+					 */
+					$tipoHerida = $this->TipoHerida_model->obtener_por_id($se->TipoHerida_idTipoHerida);
+					$section->addTitle('Tipo de herida:', 3);
+					$nombre_tipoherida = "Sin nombre de tipo de herida.";
+					$descripcion_tipoherida = "Sin descripción en el tipo de herida.";
+					if (isset($tipoHerida, $tipoHerida->nombre_tipoherida, $tipoHerida->descripcion_tipoherida)) {
+						$nombre_tipoherida      = $tipoHerida->nombre_tipoherida;
+						$descripcion_tipoherida = $tipoHerida->descripcion_tipoherida;
+					}
+					$section->addText("Nombre: ".$nombre_tipoherida, array('name' => 'Cambria'), $paragraphStyle);
+					$section->addText("Descripción: ".$descripcion_tipoherida, array('name' => 'Cambria'), $paragraphStyle);
+
+					/*
+					 * ADICIONO LA INFORMACIÓN DE LOS FACTORES DE RIESGO
+					 */
+					$SituacionEnfermeriaFactoresRiesgo = $this->SituacionEnfermeria_model->obtener_factores_de_riesgo($se->idSituacionEnfermeria);
+					$i_factorriesgo = 1;
+		            foreach ($SituacionEnfermeriaFactoresRiesgo as $sefr) {
+		                $factorRiesgo = $this->FactorRiesgo_model->obtener_por_id($sefr->FactorRiesgo_idFactorRiesgo);
+		                $section->addTitle('Factor de riesgo: '.$i_factorriesgo, 3);
+		                $section->addText("Nombre: ".$factorRiesgo->nombre_factorriesgo, array('name' => 'Cambria'), $paragraphStyle);
+		                $section->addText("Descripción: ".$factorRiesgo->descripcion_factorriesgo, array('name' => 'Cambria'), $paragraphStyle);
+		                $section->addText("Ejemplo: ".$factorRiesgo->ejemplo_factorriesgo, array('name' => 'Cambria'), $paragraphStyle);
+		                $i_factorriesgo++;
+		            }
+
+		            /*
+					 * ADICIONO LA INFORMACIÓN DE LAS ACTIVIDADES SUGERIDAS.
+					 */
+		            $SituacionEnfermeriaActividades = $this->SituacionEnfermeria_model->obtener_actividades($se->idSituacionEnfermeria);
+		            $i_actividad = 1;
+		            foreach ($SituacionEnfermeriaActividades as $sea) {
+		                $actividad = $this->Actividad_model->obtener_por_id($sea->Actividad_idActividad);
+		                $section->addTitle('Actividad: '.$i_actividad, 3);
+		                $section->addText("Nombre: ".$actividad->nombre_actividad, array('name' => 'Cambria'), $paragraphStyle);
+		                $section->addText("Descripción: ".$actividad->descripcion_actividad, array('name' => 'Cambria'), $paragraphStyle);
+		                $section->addText("Ejemplo: ".$actividad->precaucion_actividad, array('name' => 'Cambria'), $paragraphStyle);
+		                $i_actividad++;
+		            }
+		            $section->addTextBreak(1);
+					$i++;
+				}// Cierre foreach de situaciones de enfermería.
+				// Configuramos el nombre con el que se guardará el documento.
+				$filename = "historialpaciente_".$paciente->identificacion_paciente.".docx";
+				// Configuramos las cabeceras de la petición para indicar que se descargará un archivo word.
+				header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document'); //mime type
+				header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
+				header('Cache-Control: max-age=0'); //no cache
+				// Creamos el documento word con la fabrica IOFactory de la librería PHPWord
+				$objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($this->word, 'Word2007');
+				// Guardamos el documento.
+				$objWriter->save('php://output');
+    		}
+    	}
+    	redirect('Usuario/perfil','refresh');
     }
 } // Fin de la clase Usuario
 /* End of file Usuario.php */
