@@ -95,7 +95,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 							);	?>
 							<?php echo form_upload($datos); ?>
 							<p style="color: green;">Si no selecciona ninguna imagen, se conservará la imagen actual.</p>
-							<p style="color: green;">Peso máximo: 2MB, formatos: gif, png, jpg, ancho máximo: 1024, altura máxima: 768.</p>
+							<p style="color: green;">Peso máximo: 2MB, formatos: gif, png, jpg, ancho máximo: 1300, altura máxima: 800.</p>
 						</div>
 					</div>
 					<div class="form-group">

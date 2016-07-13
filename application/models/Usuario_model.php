@@ -152,7 +152,7 @@ class Usuario_model extends CI_Model {
     public function obtener_resultados($limit=100,$start=0){
         $this->db->select('*');        
         $this->db->from(self::TABLE_NAME);
-        $this->db->order_by(self::TABLE_PK_NAME, 'ASC');
+        $this->db->order_by(self::TABLE_PK_NAME, 'DESC');
         $this->db->limit($limit, $start);    
         $query = $this->db->get();    
         return $query->result();

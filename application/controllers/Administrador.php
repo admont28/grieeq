@@ -458,8 +458,8 @@ class Administrador extends MY_ControladorGeneral {
                     $config['upload_path']          = './assets/img/tipoherida/'.$idTipoHerida;
                     $config['allowed_types']        = 'gif|jpg|png';
                     $config['max_size']             = 2048;
-                    $config['max_width']            = 1024;
-                    $config['max_height']           = 768;
+                    $config['max_width']            = 1300;
+                    $config['max_height']           = 800;
                     $this->upload->initialize($config);
                     if ( ! $this->upload->do_upload('imagen')){
                         $exito = false;
@@ -528,7 +528,7 @@ class Administrador extends MY_ControladorGeneral {
             $this->load->library('upload');
             //hacemos las comprobaciones que de nuestro formulario;
             $this->form_validation->set_rules('nombre','Nombre','trim|required|max_length[100]|min_length[5]');
-            $this->form_validation->set_rules('descripcion','Descripción','trim|max_length[500]|min_length[5]');
+            $this->form_validation->set_rules('descripcion','Descripción','trim|required|max_length[500]|min_length[5]');
             $this->form_validation->set_message('required', 'El campo %s es obligatorio');
             $this->form_validation->set_message('min_length', 'El campo %s debe tener al menos %s carácteres');
             $this->form_validation->set_message('max_length', 'El campo %s debe tener menos %s car&aacute;cteres');
@@ -539,8 +539,8 @@ class Administrador extends MY_ControladorGeneral {
                 $config['upload_path']          = './assets/tmp/';
                 $config['allowed_types']        = 'gif|jpg|png';
                 $config['max_size']             = 2048;
-                $config['max_width']            = 1024;
-                $config['max_height']           = 768;
+                $config['max_width']            = 1300;
+                $config['max_height']           = 800;
                 $this->upload->initialize($config);
                 if ( ! $this->upload->do_upload('imagen')){
                     $exito = false;
@@ -833,8 +833,8 @@ class Administrador extends MY_ControladorGeneral {
                     $config['upload_path']          = './assets/img/factorriesgo/'.$idFactorRiesgo;
                     $config['allowed_types']        = 'gif|jpg|png';
                     $config['max_size']             = 2048;
-                    $config['max_width']            = 1024;
-                    $config['max_height']           = 768;
+                    $config['max_width']            = 1300;
+                    $config['max_height']           = 800;
                     $this->upload->initialize($config);
                     if ( ! $this->upload->do_upload('imagen')){
                         $exito = false;
@@ -915,8 +915,8 @@ class Administrador extends MY_ControladorGeneral {
                 $config['upload_path']          = './assets/tmp/';
                 $config['allowed_types']        = 'gif|jpg|png';
                 $config['max_size']             = 2048;
-                $config['max_width']            = 1024;
-                $config['max_height']           = 768;
+                $config['max_width']            = 1300;
+                $config['max_height']           = 800;
                 $this->upload->initialize($config);
                 if ( ! $this->upload->do_upload('imagen')){
                     $exito              = false;
@@ -1165,8 +1165,8 @@ class Administrador extends MY_ControladorGeneral {
                 $config['upload_path']          = './assets/tmp/';
                 $config['allowed_types']        = 'gif|jpg|png';
                 $config['max_size']             = 2048;
-                $config['max_width']            = 1024;
-                $config['max_height']           = 768;
+                $config['max_width']            = 1300;
+                $config['max_height']           = 800;
                 $this->upload->initialize($config);
                 if ( ! $this->upload->do_upload('imagen')){
                     $exito              = false;
@@ -1365,8 +1365,8 @@ class Administrador extends MY_ControladorGeneral {
                     $config['upload_path']          = './assets/img/actividad/'.$idActividad;
                     $config['allowed_types']        = 'gif|jpg|png';
                     $config['max_size']             = 2048;
-                    $config['max_width']            = 1024;
-                    $config['max_height']           = 768;
+                    $config['max_width']            = 1300;
+                    $config['max_height']           = 800;
                     $this->upload->initialize($config);
                     if ( ! $this->upload->do_upload('imagen')){
                         $exito              = false;
