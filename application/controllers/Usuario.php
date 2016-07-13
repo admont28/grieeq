@@ -136,9 +136,10 @@ class Usuario extends MY_ControladorGeneral {
 						$mensaje['tipo']    = "error";
 						$mensaje['mensaje'] = "Ha ocurrido un error inesperado, porfavor inténtelo de nuevo.";
 					}
-					$this->session->set_flashdata('mensaje', $mensaje);
-					redirect('Usuario/formulario-de-registro-de-usuario','refresh');
-				}else{
+					$this->session->set_userdata('mensaje', $mensaje);
+					$this->session->mark_as_flash('mensaje');
+                	redirect('Usuario/formulario-de-registro-de-usuario');
+                }else{
 					$mensaje['tipo']    = "error";
 					$mensaje['mensaje'] = "La imagen ha expirado, debe escribir el texto que aparece en la nueva imagen y presionar el botón Registrarme.";
 					$this->session->set_flashdata('mensaje', $mensaje);
@@ -166,8 +167,6 @@ class Usuario extends MY_ControladorGeneral {
 		$data                     = array();
 		$data['titulo']           = "Inicio de sesión";
 		$data['url_iniciosesion'] = "Usuario/inicio-de-sesion";
-		$url = $this->session->flashdata('url');
-		$this->session->set_flashdata('url', $url);
 		$this->mostrar_pagina('usuario/inicioSesion', $data);
 	}
 
