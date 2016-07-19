@@ -93,7 +93,6 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 						        'id'            => 'observaciones',
 						        'max'     		=> '1000',
 						        'min'			=> '5',
-						        'required'		=> 'required',
 						        'class' 		=> 'form-control',
 						        'rows'			=> '4',
 						        'value' 		=> set_value('observaciones'),

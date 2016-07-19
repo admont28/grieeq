@@ -39,10 +39,18 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="contendor_tipos_de_herida">
 			<p>Debe seleccionar una actividad para ver los tipos de herida asociados.</p>
 		</div>
+		<div class='text-center'>
+			<img class="cargando_tipos_de_herida" style="display: none;" src="<?php echo asset_url('img/grieeqcargando.gif'); ?>" alt="Cargando..."/>
+			<img class="cargando_tipos_de_herida" style="display: none;" src="<?php echo asset_url('img/cargando.gif'); ?>" alt="Cargando..."/>
+		</div>
 	</div>
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 page-header text-left">
 			<h3>Factores de riesgo relacionados con la actividad seleccionada</h3>
+		</div>
+		<div class='text-center'>
+			<img class="cargando_factores_de_riesgo" style="display: none;" src="<?php echo asset_url('img/grieeqcargando.gif'); ?>" alt="Cargando..."/>
+			<img class="cargando_factores_de_riesgo" style="display: none;" src="<?php echo asset_url('img/cargando.gif'); ?>" alt="Cargando..."/>
 		</div>
 	</div>
 	<div class="row">
@@ -73,6 +81,10 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 
 	$(".seleccion").change(function(e){
 		var id = $(this).attr('id');
+		$("#contendor_tipos_de_herida").html("");
+		$(".cargando_tipos_de_herida").show();
+		$("#contendor_factores_de_riesgo").html("");	
+		$(".cargando_factores_de_riesgo").show();
 		cargar_tipos_de_herida(id);
 		cargar_factores_de_riesgo(id);
 	});
@@ -90,6 +102,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 			type: "GET",
 			success: function(data){
 				$("#contendor_tipos_de_herida").html(data);
+				$(".cargando_tipos_de_herida").hide();
 			},
 			error: function(xhr, status){
 				console.log(status);
@@ -110,6 +123,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 			type: "GET",
 			success: function(data){
 				$("#contendor_factores_de_riesgo").html(data);
+				$(".cargando_factores_de_riesgo").hide();
 			},
 			error: function(xhr, status){
 				console.log(status);

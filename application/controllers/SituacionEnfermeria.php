@@ -433,56 +433,49 @@ class SituacionEnfermeria extends MY_ControladorGeneral {
 	 */
 	public function guardar_situacion_de_enfermeria(){
 		if($this->input->post('submit')){
-			$observaciones = $this->security->xss_clean($this->input->post('observaciones'));
-			if(trim($observaciones) == ""){
+			$observaciones  = $this->security->xss_clean($this->input->post('observaciones'));
+			$observaciones  = (trim($observaciones) == "") ? "NO SE PROPORCIONÓ UNA OBSERVACIÓN." : $observaciones;
+			$idPaciente     = $this->session->has_userdata('idPaciente');
+			$localizacion   = $this->session->has_userdata('localizacion');
+			$tipoHerida     = $this->session->has_userdata('tipo_herida');
+			$factoresRiesgo = $this->session->has_userdata('factores_riesgo');
+			$actividades    = $this->session->has_userdata('actividades');
+			if(!$idPaciente){
 				$mensaje['tipo']    = "error";
-                $mensaje['mensaje'] = "Debe proporcionar una observación.";
-                $url_actividad = self::SITUACIONENFERMERIA_URL.self::ACTIVIDAD_URL;
-				$this->session->set_flashdata('mensaje', $mensaje);
+                $mensaje['mensaje'] = "No existe ningún paciente para adicionarle la situación de enfermería.";
+                $url_actividad = self::SITUACIONENFERMERIA_URL;
                 redirect($url_actividad,'refresh');
+			}
+			if(!$localizacion){
+				$url_localizacion = self::SITUACIONENFERMERIA_URL.self::LOCALIZACION_URL;
+				redirect($url_localizacion);
+			}else if(!$tipoHerida){
+				$url_tipoherida = self::SITUACIONENFERMERIA_URL.self::TIPOHERIDA_URL;
+				redirect($url_tipoherida);
+			}else if(!$factoresRiesgo){
+				$url_factorriesgo = self::SITUACIONENFERMERIA_URL.self::FACTORRIESGO_URL;
+				redirect($url_factorriesgo);
+			}else if(!$actividades){
+				$url_actividad = self::SITUACIONENFERMERIA_URL.self::ACTIVIDAD_URL;
+				redirect($url_actividad);
+			}
+			$idPaciente     = $this->session->idPaciente;
+			$localizacion   = $this->session->localizacion;
+			$tipoHerida     = $this->session->tipo_herida;
+			$factoresRiesgo = $this->session->factores_riesgo;
+			$actividades    = $this->session->actividades;
+			$this->load->model('SituacionEnfermeria_model');
+			$resultado = $this->SituacionEnfermeria_model->crear_situacion_de_enfermeria($idPaciente, $localizacion, $tipoHerida, $observaciones, $factoresRiesgo, $actividades);
+			if($resultado) {
+				$mensaje['tipo']    = "success";
+                $mensaje['mensaje'] = "Se ha adicionado la situación de enfermería con éxito.";
+				$this->session->set_flashdata('mensaje', $mensaje);
+                redirect("Usuario/perfil",'refresh');
 			}else{
-				$idPaciente     = $this->session->has_userdata('idPaciente');
-				$localizacion   = $this->session->has_userdata('localizacion');
-				$tipoHerida     = $this->session->has_userdata('tipo_herida');
-				$factoresRiesgo = $this->session->has_userdata('factores_riesgo');
-				$actividades    = $this->session->has_userdata('actividades');
-				if(!$idPaciente){
-					$mensaje['tipo']    = "error";
-	                $mensaje['mensaje'] = "No existe ningún paciente para adicionarle la situación de enfermería.";
-	                $url_actividad = self::SITUACIONENFERMERIA_URL;
-	                redirect($url_actividad,'refresh');
-				}
-				if(!$localizacion){
-					$url_localizacion = self::SITUACIONENFERMERIA_URL.self::LOCALIZACION_URL;
-					redirect($url_localizacion);
-				}else if(!$tipoHerida){
-					$url_tipoherida = self::SITUACIONENFERMERIA_URL.self::TIPOHERIDA_URL;
-					redirect($url_tipoherida);
-				}else if(!$factoresRiesgo){
-					$url_factorriesgo = self::SITUACIONENFERMERIA_URL.self::FACTORRIESGO_URL;
-					redirect($url_factorriesgo);
-				}else if(!$actividades){
-					$url_actividad = self::SITUACIONENFERMERIA_URL.self::ACTIVIDAD_URL;
-					redirect($url_actividad);
-				}
-				$idPaciente     = $this->session->idPaciente;
-				$localizacion   = $this->session->localizacion;
-				$tipoHerida     = $this->session->tipo_herida;
-				$factoresRiesgo = $this->session->factores_riesgo;
-				$actividades    = $this->session->actividades;
-				$this->load->model('SituacionEnfermeria_model');
-				$resultado = $this->SituacionEnfermeria_model->crear_situacion_de_enfermeria($idPaciente, $localizacion, $tipoHerida, $observaciones, $factoresRiesgo, $actividades);
-				if($resultado) {
-					$mensaje['tipo']    = "success";
-	                $mensaje['mensaje'] = "Se ha adicionado la situación de enfermería con éxito.";
-					$this->session->set_flashdata('mensaje', $mensaje);
-	                redirect("Usuario/perfil",'refresh');
-				}else{
-					$mensaje['tipo']    = "error";
-	                $mensaje['mensaje'] = "Ha ocurrido un error al adicionar la situación de enfemería, por favor inténtelo de nuevo.";
-					$this->session->set_flashdata('mensaje', $mensaje);
-	                redirect("Usuario/perfil",'refresh');
-				}
+				$mensaje['tipo']    = "error";
+                $mensaje['mensaje'] = "Ha ocurrido un error al adicionar la situación de enfemería, por favor inténtelo de nuevo.";
+				$this->session->set_flashdata('mensaje', $mensaje);
+                redirect("Usuario/perfil",'refresh');
 			}
 		}else{
 			redirect('Usuario/perfil','refresh');

@@ -903,8 +903,8 @@ class Administrador extends MY_ControladorGeneral {
             $this->load->library('upload');
             //hacemos las comprobaciones que de nuestro formulario;
             $this->form_validation->set_rules('nombre','Nombre','trim|required|max_length[255]|min_length[5]');
-            $this->form_validation->set_rules('descripcion','Descripción','trim|max_length[500]|min_length[5]');
-            $this->form_validation->set_rules('ejemplo','Ejemplo','trim|max_length[255]|min_length[5]');
+            $this->form_validation->set_rules('descripcion','Descripción','trim|required|max_length[500]|min_length[5]');
+            $this->form_validation->set_rules('ejemplo','Ejemplo','trim|required|max_length[255]|min_length[5]');
             $this->form_validation->set_message('required', 'El campo %s es obligatorio');
             $this->form_validation->set_message('min_length', 'El campo %s debe tener al menos %s carácteres');
             $this->form_validation->set_message('max_length', 'El campo %s debe tener menos %s car&aacute;cteres');

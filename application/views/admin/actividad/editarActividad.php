@@ -73,7 +73,6 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 						        'id'            => 'precaucion',
 						        'maxlength'     => '500',
 						        'minlength'		=> '5',
-						        'required'		=> 'required',
 						        'class' 		=> 'form-control',
 						        'rows'			=> '4',
 						        'value' 		=> (isset($actividad->precaucion_actividad))? $actividad->precaucion_actividad: set_value('precaucion'),

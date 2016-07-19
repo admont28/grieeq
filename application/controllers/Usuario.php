@@ -94,7 +94,7 @@ class Usuario extends MY_ControladorGeneral {
 		if($this->input->post('submit')){
 			//hacemos las comprobaciones que deseemos en nuestro formulario
 			$this->form_validation->set_rules('captcha', 'Captcha', 'callback_validar_captcha');
-			$this->form_validation->set_rules('identificacion','Identificacion','trim|required|max_length[50]|min_length[8]|is_unique[Usuario.identificacion_usuario]');
+			$this->form_validation->set_rules('identificacion','Identificación','trim|required|max_length[50]|min_length[8]|is_unique[Usuario.identificacion_usuario]');
 			$this->form_validation->set_rules('password','Contraseña','trim|required|max_length[50]|min_length[8]');
 			$this->form_validation->set_rules('repetirpassword','Repetir contraseña','trim|required|max_length[50]|min_length[8]|callback_passwords_iguales['.$this->input->post('password').']');
 			$this->form_validation->set_rules('correo','Correo electrónico','trim|valid_email|required|is_unique[Usuario.correo_usuario]');
@@ -180,7 +180,7 @@ class Usuario extends MY_ControladorGeneral {
 	 */
 	public function inicio_de_sesion(){
 		if($this->input->post('submit')){
-			$this->form_validation->set_rules('identificacion','Identificacion','trim|required');
+			$this->form_validation->set_rules('identificacion','Identificación','trim|required');
 			$this->form_validation->set_rules('password','Contraseña','trim|required');
 			$this->form_validation->set_message('required', 'El campo %s es obligatorio');
 			if (!$this->form_validation->run()){
@@ -785,7 +785,8 @@ class Usuario extends MY_ControladorGeneral {
 		                $section->addTitle('Actividad: '.$i_actividad, 3);
 		                $section->addText("Nombre: ".$actividad->nombre_actividad, array('name' => 'Cambria'), $paragraphStyle);
 		                $section->addText("Descripción: ".$actividad->descripcion_actividad, array('name' => 'Cambria'), $paragraphStyle);
-		                $section->addText("Ejemplo: ".$actividad->precaucion_actividad, array('name' => 'Cambria'), $paragraphStyle);
+		                $texto_precaucion = ($actividad->precaucion_actividad == "") ? "Ninguna." : $actividad->precaucion_actividad;
+		                $section->addText("Precaución: ".$texto_precaucion, array('name' => 'Cambria'), $paragraphStyle);
 		                $i_actividad++;
 		            }
 		            $section->addTextBreak(1);
