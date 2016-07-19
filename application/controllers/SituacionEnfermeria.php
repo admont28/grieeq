@@ -318,7 +318,7 @@ class SituacionEnfermeria extends MY_ControladorGeneral {
 			$this->session->unset_userdata('actividades');
 		}
 		if($this->session->has_userdata('localizacion') && $this->session->has_userdata('tipo_herida')){
-			$datos_post = $this->input->post();
+			$datos_post = $this->session->factores_riesgo;
 			$this->load->model('Actividad_model');
 			$actividades_tipo_herida = $this->Actividad_model->obtenerActividadesTipoHerida($this->session->tipo_herida);
 			$actividades_factor_riesgo = array();
@@ -398,6 +398,7 @@ class SituacionEnfermeria extends MY_ControladorGeneral {
 		// Eliminar la localización, el tipo de herida y las actividades de la session.
 		$this->session->unset_userdata("localizacion");
 		$this->session->unset_userdata("tipo_herida");
+		$this->session->unset_userdata("factores_riesgo");
 		$this->session->unset_userdata("actividades");
 		// Redireccionar al inicio de la situación de enfermería.
 		redirect('/SituacionEnfermeria');
@@ -467,6 +468,7 @@ class SituacionEnfermeria extends MY_ControladorGeneral {
 			$this->load->model('SituacionEnfermeria_model');
 			$resultado = $this->SituacionEnfermeria_model->crear_situacion_de_enfermeria($idPaciente, $localizacion, $tipoHerida, $observaciones, $factoresRiesgo, $actividades);
 			if($resultado) {
+				$this->session->unset_userdata('idPaciente');
 				$mensaje['tipo']    = "success";
                 $mensaje['mensaje'] = "Se ha adicionado la situación de enfermería con éxito.";
 				$this->session->set_flashdata('mensaje', $mensaje);
