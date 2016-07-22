@@ -108,12 +108,13 @@ class SituacionEnfermeria_model extends CI_Model {
 	/**
 	 * Función contar_registros del modelo SituacionEnfermeria_model.
 	 *
-	 * Esta función se encarga de contar la cantidad de registros en la tabla SituacionEnfermeria.
+	 * Esta función se encarga de contar la cantidad de registros en la tabla SituacionEnfermeria, donde el paciente sea uno en específico, es decir, contará la cantidad de situaciones de enfermería asociadas a un paciente.
 	 *
 	 * @access public
+	 * @param integer $idPaciente Identificador único del paciente.
 	 * @return integer Retorna la cantidad de resultados obtenidos.
 	 */
-	public function contar_registros($idPaciente, $idUsuario){
+	public function contar_registros($idPaciente){
         $this->db->select('*');    
         $this->db->from(self::TABLE_NAME);
         $this->db->where(array('Paciente_idPaciente' => $idPaciente));

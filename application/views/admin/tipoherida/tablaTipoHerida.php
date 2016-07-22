@@ -1,5 +1,4 @@
-<?php 
-/**
+<?php /**
  * Vista tablaTipoHerida, es la encargada de mostrar los tipos de herida en forma de tabla bootstrap.
  *
  * @package aplication/views/admin/tipoherida
@@ -7,8 +6,7 @@
  * @link https://github.com/admont28 Perfil del autor.
  * @version 1.0 Versión inicial del fichero.
  */
-?>
-<?php if (isset($tipos_de_heridas) && sizeof($tipos_de_heridas) > 0 ): ?>
+if (isset($tipos_de_heridas) && sizeof($tipos_de_heridas) > 0 ): ?>
 	<div class='table table-responsive'>
 		<table class='table table-striped table-bordered table-hover'>
 			<thead>

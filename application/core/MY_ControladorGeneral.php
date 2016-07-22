@@ -80,9 +80,9 @@ class MY_ControladorGeneral extends CI_Controller {
 	 * Esta función solo puede ser accedida desde este mismo controlador (ControladorGeneral).
 	 * La función permite visualizar un array de forma más organizada, es una alternativa a la función de php print_r().
 	 * La función debe ser usada de la siguiente forma:
-	 * 1. Imprimir la etiqueta: <pre> antes del llamado de la función dump.
+	 * 1. Imprimir la etiqueta: "< pre >" antes del llamado de la función dump.
 	 * 2. Imprimir el string que retorna la función dump.
-	 * 3. Imprimir la etiqueta de cierre: </pre>.
+	 * 3. Imprimir la etiqueta de cierre: "</ pre >".
 	 * @param  array  $data   Arreglo a imprimir.
 	 * @param  integer $indent identación, solo es usada en la recursividad de la función.
 	 * 

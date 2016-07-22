@@ -1,5 +1,4 @@
-<?php 
-/**
+<?php /**
  * Vista tablaLocalizacion, es la encargada de mostrar una localización anatómica en forma de tabla bootstrap.
  *
  * @package aplication/views/admin/localizacion
@@ -7,8 +6,7 @@
  * @link https://github.com/admont28 Perfil del autor.
  * @version 1.0 Versión inicial del fichero.
  */
-?>
-<?php if (isset($localizaciones) && sizeof($localizaciones) > 0 ): ?>
+if (isset($localizaciones) && sizeof($localizaciones) > 0 ): ?>
 	<div class='table table-responsive'>
 		<table class='table table-striped table-bordered table-hover'>
 			<thead>

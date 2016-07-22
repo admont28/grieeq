@@ -621,7 +621,7 @@ class Usuario extends MY_ControladorGeneral {
 				// Adición del html de bootstrap a la variable de configuración
 				$config                     = $this->bs_paginacion($config);
 				$page_number                = intval(($page_number  == 1 || $page_number  == 0) ? 0 : ($page_number * $config['per_page']) - $config['per_page']);
-				$config['total_rows']       = $this->SituacionEnfermeria_model->contar_registros($idPaciente, $session['idUsuario']);
+				$config['total_rows']       = $this->SituacionEnfermeria_model->contar_registros($idPaciente);
 				$situacionesenfermeria      = $this->SituacionEnfermeria_model->obtener_resultados($idPaciente, $config["per_page"], $page_number);
 		        $this->pagination->initialize($config);      
 		        $data['pagination']         = $this->pagination->create_links();

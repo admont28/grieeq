@@ -1,5 +1,4 @@
-<?php 
-/**
+<?php /**
  * Vista tablaFactorRiesgo, es la encargada de mostrar los factores de riesgo en forma de tabla bootstrap.
  *
  * @package aplication/views/admin/factorriesgo
@@ -7,8 +6,7 @@
  * @link https://github.com/admont28 Perfil del autor.
  * @version 1.0 Versión inicial del fichero.
  */
-?>
-<?php if (isset($factores_de_riesgo) && sizeof($factores_de_riesgo) > 0 ): ?>
+if (isset($factores_de_riesgo) && sizeof($factores_de_riesgo) > 0 ): ?>
 	<div class='table table-responsive'>
 		<table class='table table-striped table-bordered table-hover'>
 			<thead>

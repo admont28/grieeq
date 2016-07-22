@@ -1,5 +1,4 @@
-<?php 
-/**
+<?php /**
  * Vista tablaActividad, es la encargada de mostrar las actividades en forma de tabla bootstrap.
  *
  * @package aplication/views/admin/actividad
@@ -7,8 +6,7 @@
  * @link https://github.com/admont28 Perfil del autor.
  * @version 1.0 Versión inicial del fichero.
  */
-?>
-<?php if (isset($actividades) && sizeof($actividades) > 0 ): ?>
+if (isset($actividades) && sizeof($actividades) > 0 ): ?>
 	<div class='table table-responsive'>
 		<table class='table table-striped table-bordered table-hover'>
 			<thead>
