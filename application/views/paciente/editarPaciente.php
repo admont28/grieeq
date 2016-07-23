@@ -56,7 +56,6 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 						        'minlength'		=> '5',
 						        'class' 		=> 'form-control',
 						        'required'		=> 'required',
-						        'autofocus'		=> 'autofocus',
 						        'value' 		=> (isset($paciente->identificacion_paciente))? $paciente->identificacion_paciente: set_value('identificacion'),
 							);	?>
 							<?php echo form_input($datos); ?>
@@ -75,7 +74,6 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 						        'min'			=> '0',
 						        'class' 		=> 'form-control',
 						        'required'		=> 'required',
-						        'autofocus'		=> 'autofocus',
 						        'value' 		=> (isset($paciente->edad_paciente))? $paciente->edad_paciente: set_value('edad'),
 						        'type'			=> 'number',
 							);	?>

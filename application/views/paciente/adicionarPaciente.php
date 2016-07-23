@@ -55,7 +55,6 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 						        'minlength'		=> '5',
 						        'class' 		=> 'form-control',
 						        'required'		=> 'required',
-						        'autofocus'		=> 'autofocus',
 						        'value' 		=> set_value('identificacion'),
 							);	?>
 							<?php echo form_input($datos); ?>
@@ -74,7 +73,6 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 						        'min'			=> '0',
 						        'class' 		=> 'form-control',
 						        'required'		=> 'required',
-						        'autofocus'		=> 'autofocus',
 						        'value' 		=> set_value('edad'),
 						        'type'			=> 'number',
 							);	?>
