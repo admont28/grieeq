@@ -171,7 +171,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 						<div class="col-lg-offset-5 col-lg-3">
 							<?php $datos = array(
 								'name' 			=> 'submit',
-								'value' 		=> 'Editar actividad',
+								'value' 		=> 'Actualizar actividad',
 								'class' 		=> 'btn btn-primary col-xs-12'
 										); ?>
 							<?php echo form_submit($datos); ?>

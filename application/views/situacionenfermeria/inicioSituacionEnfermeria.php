@@ -29,6 +29,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 				<li><strong>Actividades a Realizar: </strong>Se presenta una lista de actividades ordenadas lógicamente para que el usuario las siga de forma secuencial.</li>
 			</ol>
 		</div>
+		<div class="text-danger lead"><strong>Advertencia:</strong> La aplicación presenta imágenes con contenido sensible (heridas muy fuertes para un usuario convencional), si no es capaz de soportar imágenes con este tipo de contenido, abstengase de proseguir con la aplicación.</div>
 		<a class="btn btn-primary margin-bottom-2em col-lg-2 col-md-2 col-sm-4 col-xs-10 col-lg-offset-5 col-md-offset-5 col-sm-offset-4 col-xs-offset-1" href="<?php if(isset($url_localizacion)) echo $url_localizacion?>" title="Iniciar la aplicación">Iniciar la Aplicación</a>
 	</div>
 </div>
