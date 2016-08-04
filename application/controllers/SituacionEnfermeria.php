@@ -427,13 +427,14 @@ class SituacionEnfermeria extends MY_ControladorGeneral {
 	/**
 	 * Función guardar_situacion_de_enfermeria para el controlador SituacionEnfermeria.
 	 *
-	 * Esta función se encarga de almacenar la situación de enfermería contenida en las variables de sesión a un paciente también contenido allí.
+	 * Esta función se encarga de almacenar la situación de enfermería contenida en las variables de sesión a un paciente también contenido allí, adiciona también las observaciones y una imagen de la herida si es especificada, sino, queda vacío.
 	 *
 	 * @access public
 	 * @return void No retorna nada, solo redigire a Usuario/perfil mostrando mensajes de éxito o error.
 	 */
 	public function guardar_situacion_de_enfermeria(){
 		if($this->input->post('submit')){
+			$this->load->library('upload');
 			$observaciones  = $this->security->xss_clean($this->input->post('observaciones'));
 			$observaciones  = (trim($observaciones) == "") ? "NO SE PROPORCIONÓ UNA OBSERVACIÓN." : $observaciones;
 			$idPaciente     = $this->session->has_userdata('idPaciente');
@@ -460,25 +461,67 @@ class SituacionEnfermeria extends MY_ControladorGeneral {
 				$url_actividad = self::SITUACIONENFERMERIA_URL.self::ACTIVIDAD_URL;
 				redirect($url_actividad);
 			}
-			$idPaciente     = $this->session->idPaciente;
-			$localizacion   = $this->session->localizacion;
-			$tipoHerida     = $this->session->tipo_herida;
-			$factoresRiesgo = $this->session->factores_riesgo;
-			$actividades    = $this->session->actividades;
-			$this->load->model('SituacionEnfermeria_model');
-			$resultado = $this->SituacionEnfermeria_model->crear_situacion_de_enfermeria($idPaciente, $localizacion, $tipoHerida, $observaciones, $factoresRiesgo, $actividades);
-			if($resultado) {
-				$this->session->unset_userdata('idPaciente');
-				$mensaje['tipo']    = "success";
-                $mensaje['mensaje'] = "Se ha adicionado la situación de enfermería con éxito.";
-				$this->session->set_flashdata('mensaje', $mensaje);
-                redirect("Usuario/perfil",'refresh');
-			}else{
-				$mensaje['tipo']    = "error";
-                $mensaje['mensaje'] = "Ha ocurrido un error al adicionar la situación de enfemería, por favor inténtelo de nuevo.";
-				$this->session->set_flashdata('mensaje', $mensaje);
-                redirect("Usuario/perfil",'refresh');
-			}
+            $exito = true;
+            $bImagenCargada = false;
+			if (isset($_FILES) && !empty($_FILES) && $_FILES['imagen']['error'] != 4 ){
+				$config['upload_path']          = './assets/tmp/';
+		        $config['allowed_types']        = 'gif|jpg|png';
+		        $config['max_size']             = 2048;
+		        $config['max_width']            = 1300;
+		        $config['max_height']           = 800;
+		        $this->upload->initialize($config);
+				if(! $this->upload->do_upload('imagen')){
+					$exito = false;
+	                $mensaje['tipo']    = "error";
+	                $mensaje['mensaje'] = $this->upload->display_errors();
+	                $this->session->set_flashdata('mensaje', $mensaje);
+	                $this->actividades_sugeridas();
+				}else{
+					$bImagenCargada = true;
+				}
+            }
+            if($exito){
+            	$nombre_imagen = $this->upload->data();
+				$idPaciente     = $this->session->idPaciente;
+				$localizacion   = $this->session->localizacion;
+				$tipoHerida     = $this->session->tipo_herida;
+				$factoresRiesgo = $this->session->factores_riesgo;
+				$actividades    = $this->session->actividades;
+				$this->load->model('SituacionEnfermeria_model');
+				$idSituacionEnfermeria = $this->SituacionEnfermeria_model->crear_situacion_de_enfermeria($idPaciente, $localizacion, $tipoHerida, $observaciones, $factoresRiesgo, $actividades, $nombre_imagen['file_name']);
+				if($idSituacionEnfermeria) {
+					$errores = false;
+					if($bImagenCargada){
+						$creacion_directorio = mkdir("./assets/img/situacionenfermeria/".$idSituacionEnfermeria, 0755);
+	                    if($creacion_directorio){
+	                        $mover = rename("./assets/tmp/".$nombre_imagen['file_name'], "./assets/img/situacionenfermeria/".$idSituacionEnfermeria."/".$nombre_imagen['file_name']);
+	                        if($mover){
+	                        	$errores = false;
+	                        }else{
+	                            $errores = true;
+	                        }
+	                    }else{
+	                        $errores = true;
+	                    }
+					}
+					if($errores){
+						$mensaje['tipo']    = "error";
+                        $mensaje['mensaje'] = "Ha ocurrido un error inesperado al guardar la situación de enfermería, por favor inténtelo de nuevo.";
+                        $this->SituacionEnfermeria_model->eliminar_por_id($idSituacionEnfermeria, true);
+					}else{
+						$this->session->unset_userdata('idPaciente');
+                        $mensaje['tipo']    = "success";
+                        $mensaje['mensaje'] = "Se ha adicionado la situación de enfermería con éxito.";
+					}
+					$this->session->set_flashdata('mensaje', $mensaje);
+					redirect("Usuario/perfil",'refresh');
+				}else{
+					$mensaje['tipo']    = "error";
+	                $mensaje['mensaje'] = "Ha ocurrido un error al adicionar la situación de enfemería, por favor inténtelo de nuevo.";
+					$this->session->set_flashdata('mensaje', $mensaje);
+	                redirect("Usuario/perfil",'refresh');
+				}
+            }
 		}else{
 			redirect('Usuario/perfil','refresh');
 		}

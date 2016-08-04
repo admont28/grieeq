@@ -106,7 +106,7 @@ class TipoHerida_model extends CI_Model {
      * Función eliminar_por_id del modelo TipoHerida_model.
 	 *
 	 * Esta función se encarga de eliminar un tipo de herida dado su id.
-	 * La función recibe un parámetro para indicar si sebe eliminar la imagen asociada al tipo de herida del servidor o si solo debe ser eliminada de la base de datos.
+	 * La función recibe un parámetro para indicar si se debe eliminar la imagen asociada al tipo de herida del servidor o si solo debe ser eliminada de la base de datos.
 	 *
 	 * @access public
      * @param  integer $idTipoHerida Identificación única del tipo de herida.

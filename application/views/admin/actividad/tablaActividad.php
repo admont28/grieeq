@@ -23,7 +23,7 @@ if (isset($actividades) && sizeof($actividades) > 0 ): ?>
 						<td><?php echo $a->nombre_actividad ?></td>
 						<td><?php echo $a->descripcion_actividad ?></td>
 						<td><?php echo $a->precaucion_actividad ?></td>
-						<td><img src="<?php echo asset_url('img/'.$a->imagen_actividad); ?>" alt="<?php echo $a->nombre_actividad ?>" width="70px"></td>
+						<td><a href="<?php echo asset_url('img/'.$a->imagen_actividad); ?>" alt="<?php echo $a->nombre_actividad ?>""><img src="<?php echo asset_url('img/'.$a->imagen_actividad); ?>" alt="<?php echo $a->nombre_actividad ?>" width="70px"></a></td>
 					</tr>
 				<?php endforeach ?>
 			</tbody>

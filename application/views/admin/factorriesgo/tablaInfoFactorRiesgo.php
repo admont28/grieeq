@@ -23,7 +23,7 @@ if (isset($factores_de_riesgo) && sizeof($factores_de_riesgo) > 0 ): ?>
 						<td><?php echo $fr->nombre_factorriesgo ?></td>
 						<td><?php echo $fr->descripcion_factorriesgo ?></td>
 						<td><?php echo $fr->ejemplo_factorriesgo ?></td>
-						<td><img src="<?php echo asset_url('img/'.$fr->imagen_factorriesgo); ?>" alt="<?php echo $fr->nombre_factorriesgo ?>" width="70px"></td>
+						<td><a href="<?php echo asset_url('img/'.$fr->imagen_factorriesgo); ?>" alt="<?php echo $fr->nombre_factorriesgo ?>""><img src="<?php echo asset_url('img/'.$fr->imagen_factorriesgo); ?>" alt="<?php echo $fr->nombre_factorriesgo ?>" width="70px"></a></td>
 					</tr>
 				<?php endforeach ?>
 			</tbody>

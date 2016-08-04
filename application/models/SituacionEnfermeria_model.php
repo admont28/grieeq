@@ -51,16 +51,18 @@ class SituacionEnfermeria_model extends CI_Model {
 	 * @param  string  $observaciones  Observaciones del usuario.
 	 * @param  array   $factoresRiesgo Factores de riesgo que seleccionó el usuario.
 	 * @param  array   $actividades    Actividades finales sugeridas por la aplicación.
-	 * @return boolean                 Retorna true si se pudo insertar todo correctamente, de lo contrario retorna false.
+	 * @param  string  $imagen 		   Ruta de la imagen de la situación de enfermería.
+	 * @return mixed                   Retorna el id de la situación de enfermería insertada, correctamente, de lo contrario retorna false.
 	 */
-	public function crear_situacion_de_enfermeria($idPaciente, $idLocalizacion, $idTipoHerida, $observaciones, $factoresRiesgo, $actividades){
+	public function crear_situacion_de_enfermeria($idPaciente, $idLocalizacion, $idTipoHerida, $observaciones, $factoresRiesgo, $actividades, $imagen){
 		// INICIO DE LA TRANSACCIÓN
         $this->db->trans_begin();
 		$datos = array(
 			'Paciente_idPaciente'               => $idPaciente,
 			'Localizacion_idLocalizacion'       => $idLocalizacion,
 			'TipoHerida_idTipoHerida'           => $idTipoHerida,
-			'observaciones_situacionenfermeria' => $observaciones
+			'observaciones_situacionenfermeria' => $observaciones,
+			'imagen_situacionenfermeria'        => $imagen
 		);
 		$this->db->insert(self::TABLE_NAME, $datos);
 		$idSituacionEnfermeria = $this->db->insert_id();
@@ -78,13 +80,20 @@ class SituacionEnfermeria_model extends CI_Model {
 			);	
 			$this->db->insert("SituacionEnfermeriaActividad", $datos);
 		}
+		if(trim($imagen) != ""){
+			$datos = array(
+			'imagen_situacionenfermeria'        => "situacionenfermeria/".$idSituacionEnfermeria."/".$imagen
+			);
+			$this->db->where(self::TABLE_PK_NAME, $idSituacionEnfermeria);
+			$this->db->update(self::TABLE_NAME, $datos);
+		}
 		if($this->db->trans_status() === FALSE){
             $this->db->trans_rollback();
             return false;
         }
         else{
             $this->db->trans_commit();
-            return true;
+            return $idSituacionEnfermeria;
         }
 	}
 
@@ -194,6 +203,48 @@ class SituacionEnfermeria_model extends CI_Model {
 			return $query->result();
 		}
 		return array();
+	}
+
+	/**
+     * Función eliminar_por_id del modelo SituaciónEnfermería_model.
+	 *
+	 * Esta función se encarga de eliminar una situación de enfermería dado su id.
+	 * La función recibe un parámetro para indicar si se debe eliminar la imagen asociada a la situación de enfermería del servidor o si solo debe ser eliminada de la base de datos.
+	 *
+	 * @access public
+     * @param  integer $idSituacionEnfermeria Identificación única de la situación de enfermería.
+     * @param boolean $eliminar_imagen Valor booleano para indicar si se debe intentar eliminar la imagen asociada a la situación de enfermería o solo eliminar la situación de enfermería de la base de datos.
+     * @return boolean                 Retorna true si se pudo eliminar, sino retorna false.
+     */
+    public function eliminar_por_id($idSituacionEnfermeria, $eliminar_imagen = true){
+		$resultado = $this->db->delete(self::TABLE_NAME, array(self::TABLE_PK_NAME => $idSituacionEnfermeria));
+		if($eliminar_imagen){
+			$this->eliminar_directorio("./assets/img/situacionenfermeria/".$idSituacionEnfermeria);
+		}
+		return true;
+	}
+
+	/**
+     * Función eliminar_directorio del modelo SituacionEnfermeria_model.
+     *
+     * Esta función se encarga de eliminar un directorio y todo su contenido del servidor.
+     *
+     * @access private
+     * @param  string $dir Path del directorio que se desea eliminar, pj: ./assets/img
+     * @return void      No retorna nada, solo elimina el directorio y sus archivos.
+     */
+    private function eliminar_directorio($dir) {
+	    if(!$dh = @opendir($dir)) return;
+	    while (false !== ($current = readdir($dh))) {
+	        if($current != '.' && $current != '..') {
+	            //echo 'Se ha borrado el archivo '.$dir.'/'.$current.'<br/>';
+	            if (!@unlink($dir.'/'.$current)) 
+	                $this->eliminar_directorio($dir.'/'.$current);
+	        }       
+	    }
+	    closedir($dh);
+	    //echo 'Se ha borrado el directorio '.$dir.'<br/>';
+	    @rmdir($dir);
 	}
 }// Fin de la clase SituacionEnfermeria_model
 /* End of file SituacionEnfermeria_model.php */

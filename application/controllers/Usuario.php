@@ -478,10 +478,15 @@ class Usuario extends MY_ControladorGeneral {
     	if ($this->input->post('seleccion')) {
             $idPaciente          = $this->input->post('seleccion');
             $this->load->model('Paciente_model');
+            $this->load->model('SituacionEnfermeria_model');
             $paciente            = $this->Paciente_model->obtener_por_id($idPaciente);
+            $situaciones         = $this->SituacionEnfermeria_model->obtener_por_paciente($idPaciente);
     		if ($paciente != null) {
     			$respuesta = $this->Paciente_model->eliminar_por_id($paciente->idPaciente);
     			if($respuesta){
+    				foreach ($situaciones as $se) {
+    					$this->eliminar_directorio("./assets/img/situacionenfermeria/".$se->idSituacionEnfermeria);
+    				}
     				echo json_encode(array("state" => "success", "message" => "El paciente ha sido eliminado con éxito"));
     				die();
     			}else{
@@ -630,7 +635,8 @@ class Usuario extends MY_ControladorGeneral {
 		        $this->table->set_heading(
 		        	'Seleccionar',
 		            'Identificador',
-		            'Observaciones'
+		            'Observaciones',
+		            'Imagen asociada'
 		        );
 		        if(count($situacionesenfermeria)>0){
 		        	$i = 1;
@@ -643,10 +649,16 @@ class Usuario extends MY_ControladorGeneral {
 							'type'  => 'radio',
 			            );
 						$input = form_input($datos);
-		                $this->table->add_row(
+						if(trim($se->imagen_situacionenfermeria) != ""){
+							$imagen = "<div class='text-center'><a href='".asset_url('img/'.$se->imagen_situacionenfermeria)."' alt='".$se->observaciones_situacionenfermeria."'> <img width='70px' src='".asset_url('img/'.$se->imagen_situacionenfermeria)."' alt='".$se->observaciones_situacionenfermeria."' /></a></div>";
+						}else{
+							$imagen = "<div class='text-center'>No se proporcionó una imagen.</div>";
+						}
+ 		                $this->table->add_row(
 		                	array('data' => $input),
 		                    array('data' => $se->idSituacionEnfermeria),
-		                   	array('data' => $se->observaciones_situacionenfermeria)
+		                   	array('data' => $se->observaciones_situacionenfermeria),
+		                   	array('data' => $imagen)
 		                );
 		                $i++;
 		            }
@@ -734,8 +746,17 @@ class Usuario extends MY_ControladorGeneral {
 				$paragraphStyle = array('align' => 'both', 'indent' => 3);
 				$i = 1;
 				foreach ($situacionesEnfermeria as $se) {
+					/*
+					 * ADICIONO LA OBSERVACIÓN E IMAGEN QUE SE HAYAN GUARDADO DE LA SITUACIÓN DE ENFERMERÍA
+					 */
 					$section->addTitle('Situación de enfermería: '.$i, 2);
 					$section->addText("Observaciones: ".$se->observaciones_situacionenfermeria, array('name' => 'Cambria'), array('indent' => 2));
+					$section->addImage(
+					    asset_url('img/'.$se->imagen_situacionenfermeria),
+					    array(
+					        'width'         => 200
+					    )
+					);
 					$section->addTextBreak(1);
 					/*
 					 * ADICIONO LA INFORMACIÓN DE LA LOCALIZACIÓN ANATÓMICA DE LA HERIDA.

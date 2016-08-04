@@ -357,7 +357,7 @@ class Administrador extends MY_ControladorGeneral {
                     array('data' => $input),
                     array('data' => $tipoHerida->nombre_tipoherida),
                     array('data' => $tipoHerida->descripcion_tipoherida),          
-                    array('data' => "<div class='text-center'><img width='70px' src='".asset_url('img/'.$tipoHerida->imagen_tipoherida)."' alt='".$tipoHerida->nombre_tipoherida."' /></div>")
+                    array('data' => "<div class='text-center'><a href='".asset_url('img/'.$tipoHerida->imagen_tipoherida)."' alt='".$tipoHerida->nombre_tipoherida."'><img width='70px' src='".asset_url('img/'.$tipoHerida->imagen_tipoherida)."' alt='".$tipoHerida->nombre_tipoherida."' /> </a></div>")
                 );
             }
             $tmpl = array ( 'table_open'  => '<table class="table table-striped table-bordered table-hover">' );
@@ -468,7 +468,6 @@ class Administrador extends MY_ControladorGeneral {
                         $this->session->set_flashdata('mensaje', $mensaje);
                         $this->formulario_edicion_de_tipo_de_herida($idTipoHerida);
                     }
-
                 }
                 if($exito){
                     $nombre_imagen = $this->upload->data();
@@ -731,7 +730,7 @@ class Administrador extends MY_ControladorGeneral {
                     array('data' => $factorRiesgo->nombre_factorriesgo),
                     array('data' => $factorRiesgo->descripcion_factorriesgo), 
                     array('data' => $factorRiesgo->ejemplo_factorriesgo),          
-                    array('data' => "<div class='text-center'><img width='70px' src='".asset_url('img/'.$factorRiesgo->imagen_factorriesgo)."' alt='".$factorRiesgo->nombre_factorriesgo."' /></div>")
+                    array('data' => "<div class='text-center'><a href='".asset_url('img/'.$factorRiesgo->imagen_factorriesgo)."' alt='".$factorRiesgo->nombre_factorriesgo."'> <img width='70px' src='".asset_url('img/'.$factorRiesgo->imagen_factorriesgo)."' alt='".$factorRiesgo->nombre_factorriesgo."' /></a></div>")
                 );
             }
             $tmpl = array ( 'table_open'  => '<table class="table table-striped table-bordered table-hover">' );
@@ -1023,7 +1022,7 @@ class Administrador extends MY_ControladorGeneral {
                     array('data' => $actividad->nombre_actividad),
                     array('data' => $actividad->descripcion_actividad), 
                     array('data' => $actividad->precaucion_actividad),          
-                    array('data' => "<div class='text-center'><img width='70px' src='".asset_url('img/'.$actividad->imagen_actividad)."' alt='".$actividad->nombre_actividad."' /></div>")
+                    array('data' => "<div class='text-center'><a href='".asset_url('img/'.$actividad->imagen_actividad)."' alt='".$actividad->nombre_actividad."'> <img width='70px' src='".asset_url('img/'.$actividad->imagen_actividad)."' alt='".$actividad->nombre_actividad."' /></a></div>")
                 );
             }
             $tmpl = array ( 'table_open'  => '<table class="table table-striped table-bordered table-hover">' );

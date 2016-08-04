@@ -21,7 +21,7 @@ if (isset($tipos_de_heridas) && sizeof($tipos_de_heridas) > 0 ): ?>
 					<tr>
 						<td><?php echo $th->nombre_tipoherida ?></td>
 						<td><?php echo $th->descripcion_tipoherida ?></td>
-						<td><img src="<?php echo asset_url('img/'.$th->imagen_tipoherida); ?>" alt="<?php echo $th->nombre_tipoherida ?>" width="70px"></td>
+						<td><a href="<?php echo asset_url('img/'.$th->imagen_tipoherida); ?>" alt="<?php echo $th->nombre_tipoherida ?>""> <img src="<?php echo asset_url('img/'.$th->imagen_tipoherida); ?>" alt="<?php echo $th->nombre_tipoherida ?>" width="70px"> </a></td>
 					</tr>
 				<?php endforeach ?>
 			</tbody>

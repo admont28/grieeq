@@ -75,41 +75,59 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 		</div>
 		<div class="row">
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-justify margin-bottom-2em">
-				<p>Si lo desea, puede proporcionar una observación para almacenar la situación de enfermería del paciente en cuestión.</p>
+				<p>Si lo desea, puede proporcionar una observación para almacenar la situación de enfermería del paciente en cuestión y una imagen de la herida.</p>
 			</div>
+		</div>
+		<div class="row">
+			<?php echo validation_errors('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button>', '</div>'); ?>
 		</div>
 		<div class="row">
 			<div class="col-lg-12 col-md-12 col-sm-12  col-xs-12 ">
 				<?php $atributos = array('class' => 'form-horizontal', 'role' => 'form');?>
-				<?php echo form_open($url_guardarsituacionenfermeria,$atributos); ?>
+				<?php echo form_open_multipart($url_guardarsituacionenfermeria,$atributos); ?>
 				<div class="form-group">
 						<?php $atributos = array(
 								'class'			=> 'col-lg-2 control-label',
 						); ?>
-						<?php echo form_label('Observaciones:','observaciones', $atributos) ?>
+						<?php echo form_label('Imagen asociada','imagen',$atributos) ?>
 						<div class="col-lg-10">
 							<?php $datos = array(
-						        'name'          => 'observaciones',
-						        'id'            => 'observaciones',
-						        'max'     		=> '1000',
-						        'min'			=> '5',
-						        'class' 		=> 'form-control',
-						        'rows'			=> '4',
-						        'value' 		=> set_value('observaciones'),
+						        'name'          => 'imagen',
+						        'id'            => 'imagen',
+						        'value' 		=> set_value('imagen'),
 							);	?>
-							<?php echo form_textarea($datos); ?>
+							<?php echo form_upload($datos); ?>
+							<p style="color: green;">Peso máximo: 2MB, formatos: gif, png, jpg, ancho máximo: 1300, altura máxima: 800.</p>
 						</div>
 					</div>
-					<div class="form-group">
-						<div class="col-lg-offset-8 col-lg-4">
-							<?php $datos = array(
-								'name' 			=> 'submit',
-								'value' 		=> 'Guardar situación de enfermería',
-								'class' 		=> 'btn btn-primary col-xs-12'
-										); ?>
-							<?php echo form_submit($datos); ?>
-						</div>
+				<div class="form-group">
+					<?php $atributos = array(
+							'class'			=> 'col-lg-2 control-label',
+					); ?>
+					<?php echo form_label('Observaciones:','observaciones', $atributos) ?>
+					<div class="col-lg-10">
+						<?php $datos = array(
+					        'name'          => 'observaciones',
+					        'id'            => 'observaciones',
+					        'max'     		=> '1000',
+					        'min'			=> '5',
+					        'class' 		=> 'form-control',
+					        'rows'			=> '4',
+					        'value' 		=> set_value('observaciones'),
+						);	?>
+						<?php echo form_textarea($datos); ?>
 					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-lg-offset-8 col-lg-4">
+						<?php $datos = array(
+							'name' 			=> 'submit',
+							'value' 		=> 'Guardar situación de enfermería',
+							'class' 		=> 'btn btn-primary col-xs-12'
+									); ?>
+						<?php echo form_submit($datos); ?>
+					</div>
+				</div>
 				<?php echo form_close(); ?>
 			</div>
 		</div>

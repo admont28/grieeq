@@ -143,6 +143,29 @@ class MY_ControladorGeneral extends CI_Controller {
 		$config['last_tagl_close']  = "</li>";
         return $config;
     }
+
+    /**
+     * Función eliminar_directorio del controlador MY_ControladorGeneral.
+     *
+     * Esta función se encarga de eliminar un directorio y todo su contenido del servidor.
+     *
+     * @access private
+     * @param  string $dir Path del directorio que se desea eliminar, pj: ./assets/img
+     * @return void      No retorna nada, solo elimina el directorio y sus archivos.
+     */
+    protected function eliminar_directorio($dir) {
+	    if(!$dh = @opendir($dir)) return;
+	    while (false !== ($current = readdir($dh))) {
+	        if($current != '.' && $current != '..') {
+	            //echo 'Se ha borrado el archivo '.$dir.'/'.$current.'<br/>';
+	            if (!@unlink($dir.'/'.$current)) 
+	                $this->eliminar_directorio($dir.'/'.$current);
+	        }       
+	    }
+	    closedir($dh);
+	    //echo 'Se ha borrado el directorio '.$dir.'<br/>';
+	    @rmdir($dir);
+	}
 }// Fin de la clase MY_ControladorGeneral
 /* End of file MY_ControladorGeneral.php */
 /* Location: ./application/core/MY_ControladorGeneral.php */
