@@ -1,0 +1,128 @@
+<?php 
+/**
+ * Vista ordenarActividades, es la encargada de mostrar las actividades de un tipo de herida dado, para que el usuario las pueda ordenar.
+ *
+ * @package aplication/views/admin/tipoherida
+ * @author Andrés David Montoya Aguirre <admont28@gmail.com>
+ * @link https://github.com/admont28 Perfil del autor.
+ * @version 1.0 Versión inicial del fichero.
+ */
+
+defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+<div class="container">
+	<div class="row">
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 page-header text-left">
+			<h1><?php echo (isset($titulo))? $titulo: "Administración - Ordenar actividades del tipo de herida"; ?></h1>
+		</div>
+	</div>
+	<?php if(isset($url_ordenaractividades, $tipoHerida, $actividades)): ?>
+		<div class="row">
+			<?php echo validation_errors('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button>', '</div>'); ?>
+		</div>
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-11 col-xs-12 ">
+				<?php if (sizeof($actividades) == 0): ?>
+					<p class="text-danger">No se encontraron actividades relacionadas con el tipo de herida en cuestión.</p>
+				<?php else: ?>
+					<?php $atributos = array('class' => 'form-horizontal', 'role' => 'form', 'id' => 'form_ordenar_actividades');?>
+					<?php echo form_open_multipart($url_ordenaractividades,$atributos); ?>
+					<?php echo form_hidden('idTipoHerida', $tipoHerida->idTipoHerida); ?>
+						<div class="form-group">
+								<?php $atributos = array(
+									'class'			=> 'col-lg-3 control-label',
+								); ?>
+								<?php echo form_label('Ordenar actividades:', 'ordenar', $atributos); ?>
+								<div class="col-lg-8">
+									<ul class="ordenable list-group" >
+										<?php foreach ($actividades as $a): ?>
+											<li class="list-group-item" style="cursor: pointer;" data-idactividad='<?php echo $a->Actividad_idActividad; ?>'><span class="glyphicon glyphicon-sort" aria-hidden="true"></span> <?php echo $a->nombre_actividad; ?></li>
+										<?php endforeach ?>
+										
+									</ul>
+								</div>
+						</div>
+						
+						<div class="form-group">
+							<div class="col-lg-offset-5 col-lg-3">
+								<?php $datos = array(
+									'name' 			=> 'submit',
+									'value' 		=> 'Guardar orden',
+									'class' 		=> 'btn btn-primary col-xs-12'
+											); ?>
+								<?php echo form_submit($datos); ?>
+							</div>
+						</div>
+					<?php echo form_close(); ?>
+				<?php endif ?>
+			</div>
+		</div>
+	<?php endif; ?>
+</div>
+<script type="text/javascript">
+	sortable('.ordenable', {
+		forcePlaceholderSize: true,
+		placeholder: '<div style="border: 2px solid;"></div>',
+		hoverClass: 'is-hovered'
+	});
+	var peticion = null;
+	$("#form_ordenar_actividades").submit(function(e) {
+		e.preventDefault();
+		var lista       = $('.ordenable li');
+		var lista_envio = new Array();
+		$.each( lista, function( index, value ) {
+			var item             = {};
+			item['id_actividad'] = $(value).data('idactividad');
+			item['orden']        = index+1;
+			lista_envio.push(item);
+		});
+		var idTipoHerida = $("input[name=idTipoHerida]").val();
+		lista_envio = JSON.stringify(lista_envio);
+		if(peticion != null)
+			peticion.abort();
+		peticion = $.ajax({
+			url: "../ordenar-actividades-post",
+			dataType: "JSON",
+			type: "POST",
+			data:{
+				'<?php echo $this->security->get_csrf_token_name(); ?>': '<?php echo $this->security->get_csrf_hash(); ?>',
+				'idTipoHerida' : idTipoHerida,
+				'actividades'  : lista_envio
+			},
+			success: function (data) {
+				if(data.state == "success"){
+  					swal({
+			    		title: data.title,
+			      		text: data.message,
+			      		type: 'success'
+			    	}).then(function(isConfirm) {
+			    		location.reload();
+			    	});
+  				}else if(data.state == "error"){
+  					swal({
+						title: "Oops... ¡Ha ocurrido un error!",
+						text: data.message,
+						type: "error"
+					}).then(function(isConfirm) {
+			    		location.reload();
+			    	});
+  				}
+			}
+		});
+	});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>

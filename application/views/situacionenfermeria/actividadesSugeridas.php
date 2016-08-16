@@ -49,7 +49,7 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 					<div class="row margin-bottom-2em">
 				<?php endif; ?>
 						<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center margin-bottom-2em">
-							<legend><?php echo ($impreso) ? "" : ($cont-1)."." ?> Actividad <?php echo $row->nombre_actividad ?></legend>
+							<legend><?php echo ($impreso) ? "" : ($cont-1)."." ?> Actividad - <?php echo $row->nombre_actividad ?></legend>
 							<p class="text-justify">
 								<?php echo $row->descripcion_actividad ?>
 							</p>

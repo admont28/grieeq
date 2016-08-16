@@ -28,10 +28,10 @@ defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 		</div>
 		<div class="row">
 			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center">
-				<img class="img-responsive" src="<?php echo asset_url('img/miembro_superior.jpg'); ?>" alt="Miembro superior del cuerpo humano.">
+				<img class="img-responsive" src="<?php echo asset_url('img/localizacion-1.png'); ?>" alt="Localización anatómica 1.">
 			</div>
 			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center">
-				<img class="img-responsive" src="<?php echo asset_url('img/miembro_inferior.jpg'); ?>" alt="Miembro inferior del cuerpo humano.">
+				<img class="img-responsive" src="<?php echo asset_url('img/localizacion-2.png'); ?>" alt="Localización anatómica 2.">
 			</div>
 		</div>
 		<div class="row">

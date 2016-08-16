@@ -1,0 +1,1999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>Documentación de la aplicación web de apoyo para el profesional de la salud en el cuidado de las personas con heridas</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">Documentación de la aplicación web de apoyo para el profesional de la salud en el cuidado de las personas con heridas</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown">
+                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
+                            API Documentation <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                                                        <li><a href="../namespaces/PhpOffice.html">\PhpOffice</a></li>
+                                                    </ul>
+                    </li>
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">229</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">28</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">54</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1959536676"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-1959536676" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-680363738"></a>
+                                <a href="../namespaces/PhpOffice.html" style="margin-left: 30px; padding-left: 0">PhpOffice</a>
+            </div>
+            <div id="namespace-680363738" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-25661209"></a>
+                                <a href="../namespaces/PhpOffice.PhpWord.html" style="margin-left: 30px; padding-left: 0">PhpWord</a>
+            </div>
+            <div id="namespace-25661209" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1511440800"></a>
+                                <a href="../namespaces/PhpOffice.PhpWord.Collection.html" style="margin-left: 30px; padding-left: 0">Collection</a>
+            </div>
+            <div id="namespace-1511440800" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Collection.AbstractCollection.html">AbstractCollection</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Collection.Bookmarks.html">Bookmarks</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Collection.Charts.html">Charts</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Collection.Endnotes.html">Endnotes</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Collection.Footnotes.html">Footnotes</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Collection.Titles.html">Titles</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-2114066764"></a>
+                                <a href="../namespaces/PhpOffice.PhpWord.Element.html" style="margin-left: 30px; padding-left: 0">Element</a>
+            </div>
+            <div id="namespace-2114066764" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Element.AbstractContainer.html">AbstractContainer</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Element.AbstractElement.html">AbstractElement</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Element.Bookmark.html">Bookmark</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Element.Cell.html">Cell</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Element.Chart.html">Chart</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Element.CheckBox.html">CheckBox</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Element.Endnote.html">Endnote</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Element.Field.html">Field</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Element.Footer.html">Footer</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Element.Footnote.html">Footnote</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Element.FormField.html">FormField</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Element.Header.html">Header</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Element.Image.html">Image</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Element.Line.html">Line</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Element.Link.html">Link</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Element.ListItem.html">ListItem</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Element.ListItemRun.html">ListItemRun</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Element.Object.html">Object</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Element.PageBreak.html">PageBreak</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Element.PreserveText.html">PreserveText</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Element.Row.html">Row</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Element.SDT.html">SDT</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Element.Section.html">Section</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Element.Shape.html">Shape</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Element.Table.html">Table</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Element.Text.html">Text</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Element.TextBox.html">TextBox</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Element.TextBreak.html">TextBreak</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Element.TextRun.html">TextRun</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Element.Title.html">Title</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Element.TOC.html">TOC</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1917500064"></a>
+                                <a href="../namespaces/PhpOffice.PhpWord.Exception.html" style="margin-left: 30px; padding-left: 0">Exception</a>
+            </div>
+            <div id="namespace-1917500064" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Exception.CopyFileException.html">CopyFileException</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Exception.CreateTemporaryFileException.html">CreateTemporaryFileException</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Exception.Exception.html">Exception</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Exception.InvalidImageException.html">InvalidImageException</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Exception.InvalidObjectException.html">InvalidObjectException</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Exception.InvalidStyleException.html">InvalidStyleException</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Exception.UnsupportedImageTypeException.html">UnsupportedImageTypeException</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-437431292"></a>
+                                <a href="../namespaces/PhpOffice.PhpWord.Metadata.html" style="margin-left: 30px; padding-left: 0">Metadata</a>
+            </div>
+            <div id="namespace-437431292" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Metadata.Compatibility.html">Compatibility</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Metadata.DocInfo.html">DocInfo</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Metadata.Protection.html">Protection</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-547579909"></a>
+                                <a href="../namespaces/PhpOffice.PhpWord.Reader.html" style="margin-left: 30px; padding-left: 0">Reader</a>
+            </div>
+            <div id="namespace-547579909" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-2004072316"></a>
+                                <a href="../namespaces/PhpOffice.PhpWord.Reader.ODText.html" style="margin-left: 30px; padding-left: 0">ODText</a>
+            </div>
+            <div id="namespace-2004072316" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Reader.ODText.AbstractPart.html">AbstractPart</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Reader.ODText.Content.html">Content</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Reader.ODText.Meta.html">Meta</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-266472287"></a>
+                                <a href="../namespaces/PhpOffice.PhpWord.Reader.RTF.html" style="margin-left: 30px; padding-left: 0">RTF</a>
+            </div>
+            <div id="namespace-266472287" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Reader.RTF.Document.html">Document</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1783451865"></a>
+                                <a href="../namespaces/PhpOffice.PhpWord.Reader.Word2007.html" style="margin-left: 30px; padding-left: 0">Word2007</a>
+            </div>
+            <div id="namespace-1783451865" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Reader.Word2007.AbstractPart.html">AbstractPart</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Reader.Word2007.DocPropsApp.html">DocPropsApp</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Reader.Word2007.DocPropsCore.html">DocPropsCore</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Reader.Word2007.DocPropsCustom.html">DocPropsCustom</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Reader.Word2007.Document.html">Document</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Reader.Word2007.Endnotes.html">Endnotes</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Reader.Word2007.Footnotes.html">Footnotes</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Reader.Word2007.Numbering.html">Numbering</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Reader.Word2007.Styles.html">Styles</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/PhpOffice.PhpWord.Reader.ReaderInterface.html">ReaderInterface</a></li>
+                                                                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Reader.AbstractReader.html">AbstractReader</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Reader.HTML.html">HTML</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Reader.MsDoc.html">MsDoc</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Reader.ODText.html">ODText</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Reader.RTF.html">RTF</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Reader.Word2007.html">Word2007</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-532653862"></a>
+                                <a href="../namespaces/PhpOffice.PhpWord.Shared.html" style="margin-left: 30px; padding-left: 0">Shared</a>
+            </div>
+            <div id="namespace-532653862" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Shared.Converter.html">Converter</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Shared.Drawing.html">Drawing</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Shared.Font.html">Font</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Shared.Html.html">Html</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Shared.OLERead.html">OLERead</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Shared.String.html">String</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Shared.XMLReader.html">XMLReader</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Shared.XMLWriter.html">XMLWriter</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Shared.ZipArchive.html">ZipArchive</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1230302284"></a>
+                                <a href="../namespaces/PhpOffice.PhpWord.Style.html" style="margin-left: 30px; padding-left: 0">Style</a>
+            </div>
+            <div id="namespace-1230302284" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Style.AbstractStyle.html">AbstractStyle</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Style.Alignment.html">Alignment</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Style.Border.html">Border</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Style.Cell.html">Cell</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Style.Chart.html">Chart</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Style.Extrusion.html">Extrusion</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Style.Fill.html">Fill</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Style.Font.html">Font</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Style.Frame.html">Frame</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Style.Image.html">Image</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Style.Indentation.html">Indentation</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Style.Line.html">Line</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Style.LineNumbering.html">LineNumbering</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Style.ListItem.html">ListItem</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Style.Numbering.html">Numbering</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Style.NumberingLevel.html">NumberingLevel</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Style.Outline.html">Outline</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Style.Paper.html">Paper</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Style.Paragraph.html">Paragraph</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Style.Row.html">Row</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Style.Section.html">Section</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Style.Shading.html">Shading</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Style.Shadow.html">Shadow</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Style.Shape.html">Shape</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Style.Spacing.html">Spacing</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Style.Tab.html">Tab</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Style.Table.html">Table</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Style.TextBox.html">TextBox</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Style.TOC.html">TOC</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-25080345"></a>
+                                <a href="../namespaces/PhpOffice.PhpWord.Writer.html" style="margin-left: 30px; padding-left: 0">Writer</a>
+            </div>
+            <div id="namespace-25080345" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1733919782"></a>
+                                <a href="../namespaces/PhpOffice.PhpWord.Writer.HTML.html" style="margin-left: 30px; padding-left: 0">HTML</a>
+            </div>
+            <div id="namespace-1733919782" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1996500838"></a>
+                                <a href="../namespaces/PhpOffice.PhpWord.Writer.HTML.Element.html" style="margin-left: 30px; padding-left: 0">Element</a>
+            </div>
+            <div id="namespace-1996500838" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.HTML.Element.AbstractElement.html">AbstractElement</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.HTML.Element.Container.html">Container</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.HTML.Element.Endnote.html">Endnote</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.HTML.Element.Footnote.html">Footnote</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.HTML.Element.Image.html">Image</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.HTML.Element.Link.html">Link</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.HTML.Element.ListItem.html">ListItem</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.HTML.Element.PageBreak.html">PageBreak</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.HTML.Element.Table.html">Table</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.HTML.Element.Text.html">Text</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.HTML.Element.TextBreak.html">TextBreak</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.HTML.Element.TextRun.html">TextRun</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.HTML.Element.Title.html">Title</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1758407153"></a>
+                                <a href="../namespaces/PhpOffice.PhpWord.Writer.HTML.Part.html" style="margin-left: 30px; padding-left: 0">Part</a>
+            </div>
+            <div id="namespace-1758407153" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.HTML.Part.AbstractPart.html">AbstractPart</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.HTML.Part.Body.html">Body</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.HTML.Part.Head.html">Head</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-712100939"></a>
+                                <a href="../namespaces/PhpOffice.PhpWord.Writer.HTML.Style.html" style="margin-left: 30px; padding-left: 0">Style</a>
+            </div>
+            <div id="namespace-712100939" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.HTML.Style.AbstractStyle.html">AbstractStyle</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.HTML.Style.Font.html">Font</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.HTML.Style.Generic.html">Generic</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.HTML.Style.Image.html">Image</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.HTML.Style.Paragraph.html">Paragraph</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1152462762"></a>
+                                <a href="../namespaces/PhpOffice.PhpWord.Writer.ODText.html" style="margin-left: 30px; padding-left: 0">ODText</a>
+            </div>
+            <div id="namespace-1152462762" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1546653889"></a>
+                                <a href="../namespaces/PhpOffice.PhpWord.Writer.ODText.Element.html" style="margin-left: 30px; padding-left: 0">Element</a>
+            </div>
+            <div id="namespace-1546653889" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.ODText.Element.AbstractElement.html">AbstractElement</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.ODText.Element.Container.html">Container</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.ODText.Element.Image.html">Image</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.ODText.Element.Link.html">Link</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.ODText.Element.Table.html">Table</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.ODText.Element.Text.html">Text</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.ODText.Element.TextBreak.html">TextBreak</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.ODText.Element.TextRun.html">TextRun</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.ODText.Element.Title.html">Title</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-2123758691"></a>
+                                <a href="../namespaces/PhpOffice.PhpWord.Writer.ODText.Part.html" style="margin-left: 30px; padding-left: 0">Part</a>
+            </div>
+            <div id="namespace-2123758691" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.ODText.Part.AbstractPart.html">AbstractPart</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.ODText.Part.Content.html">Content</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.ODText.Part.Manifest.html">Manifest</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.ODText.Part.Meta.html">Meta</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.ODText.Part.Mimetype.html">Mimetype</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.ODText.Part.Styles.html">Styles</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1194479102"></a>
+                                <a href="../namespaces/PhpOffice.PhpWord.Writer.ODText.Style.html" style="margin-left: 30px; padding-left: 0">Style</a>
+            </div>
+            <div id="namespace-1194479102" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.ODText.Style.AbstractStyle.html">AbstractStyle</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.ODText.Style.Font.html">Font</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.ODText.Style.Image.html">Image</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.ODText.Style.Paragraph.html">Paragraph</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.ODText.Style.Section.html">Section</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.ODText.Style.Table.html">Table</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1605564444"></a>
+                                <a href="../namespaces/PhpOffice.PhpWord.Writer.PDF.html" style="margin-left: 30px; padding-left: 0">PDF</a>
+            </div>
+            <div id="namespace-1605564444" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.PDF.AbstractRenderer.html">AbstractRenderer</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.PDF.DomPDF.html">DomPDF</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.PDF.MPDF.html">MPDF</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.PDF.TCPDF.html">TCPDF</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1404923796"></a>
+                                <a href="../namespaces/PhpOffice.PhpWord.Writer.RTF.html" style="margin-left: 30px; padding-left: 0">RTF</a>
+            </div>
+            <div id="namespace-1404923796" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1553111095"></a>
+                                <a href="../namespaces/PhpOffice.PhpWord.Writer.RTF.Element.html" style="margin-left: 30px; padding-left: 0">Element</a>
+            </div>
+            <div id="namespace-1553111095" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.RTF.Element.AbstractElement.html">AbstractElement</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.RTF.Element.Container.html">Container</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.RTF.Element.Image.html">Image</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.RTF.Element.Link.html">Link</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.RTF.Element.ListItem.html">ListItem</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.RTF.Element.PageBreak.html">PageBreak</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.RTF.Element.Table.html">Table</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.RTF.Element.Text.html">Text</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.RTF.Element.TextBreak.html">TextBreak</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.RTF.Element.TextRun.html">TextRun</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.RTF.Element.Title.html">Title</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1868412681"></a>
+                                <a href="../namespaces/PhpOffice.PhpWord.Writer.RTF.Part.html" style="margin-left: 30px; padding-left: 0">Part</a>
+            </div>
+            <div id="namespace-1868412681" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.RTF.Part.AbstractPart.html">AbstractPart</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.RTF.Part.Document.html">Document</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.RTF.Part.Header.html">Header</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-103591717"></a>
+                                <a href="../namespaces/PhpOffice.PhpWord.Writer.RTF.Style.html" style="margin-left: 30px; padding-left: 0">Style</a>
+            </div>
+            <div id="namespace-103591717" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.RTF.Style.AbstractStyle.html">AbstractStyle</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.RTF.Style.Border.html">Border</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.RTF.Style.Font.html">Font</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.RTF.Style.Paragraph.html">Paragraph</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.RTF.Style.Section.html">Section</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-916858577"></a>
+                                <a href="../namespaces/PhpOffice.PhpWord.Writer.Word2007.html" style="margin-left: 30px; padding-left: 0">Word2007</a>
+            </div>
+            <div id="namespace-916858577" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1945904039"></a>
+                                <a href="../namespaces/PhpOffice.PhpWord.Writer.Word2007.Element.html" style="margin-left: 30px; padding-left: 0">Element</a>
+            </div>
+            <div id="namespace-1945904039" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Element.AbstractElement.html">AbstractElement</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Element.Bookmark.html">Bookmark</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Element.Chart.html">Chart</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Element.CheckBox.html">CheckBox</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Element.Container.html">Container</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Element.Endnote.html">Endnote</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Element.Field.html">Field</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Element.Footnote.html">Footnote</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Element.FormField.html">FormField</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Element.Image.html">Image</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Element.Line.html">Line</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Element.Link.html">Link</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Element.ListItem.html">ListItem</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Element.ListItemRun.html">ListItemRun</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Element.Object.html">Object</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Element.PageBreak.html">PageBreak</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Element.PreserveText.html">PreserveText</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Element.SDT.html">SDT</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Element.Shape.html">Shape</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Element.Table.html">Table</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Element.Text.html">Text</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Element.TextBox.html">TextBox</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Element.TextBreak.html">TextBreak</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Element.TextRun.html">TextRun</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Element.Title.html">Title</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Element.TOC.html">TOC</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1536686765"></a>
+                                <a href="../namespaces/PhpOffice.PhpWord.Writer.Word2007.Part.html" style="margin-left: 30px; padding-left: 0">Part</a>
+            </div>
+            <div id="namespace-1536686765" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Part.AbstractPart.html">AbstractPart</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Part.Chart.html">Chart</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Part.ContentTypes.html">ContentTypes</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Part.DocPropsApp.html">DocPropsApp</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Part.DocPropsCore.html">DocPropsCore</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Part.DocPropsCustom.html">DocPropsCustom</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Part.Document.html">Document</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Part.Endnotes.html">Endnotes</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Part.FontTable.html">FontTable</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Part.Footer.html">Footer</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Part.Footnotes.html">Footnotes</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Part.Header.html">Header</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Part.Numbering.html">Numbering</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Part.Rels.html">Rels</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Part.RelsDocument.html">RelsDocument</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Part.RelsPart.html">RelsPart</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Part.Settings.html">Settings</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Part.Styles.html">Styles</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Part.Theme.html">Theme</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Part.WebSettings.html">WebSettings</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1468749702"></a>
+                                <a href="../namespaces/PhpOffice.PhpWord.Writer.Word2007.Style.html" style="margin-left: 30px; padding-left: 0">Style</a>
+            </div>
+            <div id="namespace-1468749702" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Style.AbstractStyle.html">AbstractStyle</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Style.Alignment.html">Alignment</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Style.Cell.html">Cell</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Style.Extrusion.html">Extrusion</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Style.Fill.html">Fill</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Style.Font.html">Font</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Style.Frame.html">Frame</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Style.Image.html">Image</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Style.Indentation.html">Indentation</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Style.Line.html">Line</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Style.LineNumbering.html">LineNumbering</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Style.MarginBorder.html">MarginBorder</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Style.Outline.html">Outline</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Style.Paragraph.html">Paragraph</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Style.Row.html">Row</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Style.Section.html">Section</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Style.Shading.html">Shading</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Style.Shadow.html">Shadow</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Style.Shape.html">Shape</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Style.Spacing.html">Spacing</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Style.Tab.html">Tab</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Style.Table.html">Table</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.Style.TextBox.html">TextBox</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/PhpOffice.PhpWord.Writer.WriterInterface.html">WriterInterface</a></li>
+                                                                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.AbstractWriter.html">AbstractWriter</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.HTML.html">HTML</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.ODText.html">ODText</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.PDF.html">PDF</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.RTF.html">RTF</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Writer.Word2007.html">Word2007</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Autoloader.html">Autoloader</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.IOFactory.html">IOFactory</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Media.html">Media</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.PhpWord.html">PhpWord</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Settings.html">Settings</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Style.html">Style</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.Template.html">Template</a></li>
+                                                    <li class="class"><a href="../classes/PhpOffice.PhpWord.TemplateProcessor.html">TemplateProcessor</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Actividad_model.html">Actividad_model</a></li>
+                                                    <li class="class"><a href="../classes/Administrador.html">Administrador</a></li>
+                                                    <li class="class"><a href="../classes/Breadcrumb.html">Breadcrumb</a></li>
+                                                    <li class="class"><a href="../classes/Captcha_model.html">Captcha_model</a></li>
+                                                    <li class="class"><a href="../classes/Error_404.html">Error_404</a></li>
+                                                    <li class="class"><a href="../classes/FactorRiesgo_model.html">FactorRiesgo_model</a></li>
+                                                    <li class="class"><a href="../classes/FactorRiesgoActividad_model.html">FactorRiesgoActividad_model</a></li>
+                                                    <li class="class"><a href="../classes/Inicio.html">Inicio</a></li>
+                                                    <li class="class"><a href="../classes/Localizacion_model.html">Localizacion_model</a></li>
+                                                    <li class="class"><a href="../classes/MY_ControladorGeneral.html">MY_ControladorGeneral</a></li>
+                                                    <li class="class"><a href="../classes/Paciente_model.html">Paciente_model</a></li>
+                                                    <li class="class"><a href="../classes/PclZip.html">PclZip</a></li>
+                                                    <li class="class"><a href="../classes/SituacionEnfermeria.html">SituacionEnfermeria</a></li>
+                                                    <li class="class"><a href="../classes/SituacionEnfermeria_model.html">SituacionEnfermeria_model</a></li>
+                                                    <li class="class"><a href="../classes/TipoHerida_model.html">TipoHerida_model</a></li>
+                                                    <li class="class"><a href="../classes/TipoHeridaActividad_model.html">TipoHeridaActividad_model</a></li>
+                                                    <li class="class"><a href="../classes/Usuario.html">Usuario</a></li>
+                                                    <li class="class"><a href="../classes/Usuario_model.html">Usuario_model</a></li>
+                                                    <li class="class"><a href="../classes/UsuarioAutenticado.html">UsuarioAutenticado</a></li>
+                                                    <li class="class"><a href="../classes/UsuarioNoAutenticado.html">UsuarioNoAutenticado</a></li>
+                                                    <li class="class"><a href="../classes/Word.html">Word</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/PhpOffice.PhpWord.Reader.RTF.html">\PhpOffice\PhpWord\Reader\RTF</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\PhpOffice\PhpWord\Reader\RTF</small>Document</h1>
+                    <p><em>RTF document reader</em></p>
+                    <p>References:</p>
+<ul>
+<li>How to Write an RTF Reader <a href="http://latex2rtf.sourceforge.net/rtfspec_45.html">http://latex2rtf.sourceforge.net/rtfspec_45.html</a></li>
+<li>PHP rtfclass by Markus Fischer <a href="https://github.com/mfn/rtfclass">https://github.com/mfn/rtfclass</a></li>
+<li>JavaScript RTF-parser by LazyGyu <a href="https://github.com/lazygyu/RTF-parser">https://github.com/lazygyu/RTF-parser</a></li>
+</ul>
+                    
+                                        
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/PhpOffice.PhpWord.Reader.RTF.Document.html#method_read" class="">read()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/PhpOffice.PhpWord.Reader.RTF.Document.html#property_rtf" class="">$rtf</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/PhpOffice.PhpWord.Reader.RTF.Document.html#constant_PARA" class="">PARA</a><br />
+                                                                    <a href="../classes/PhpOffice.PhpWord.Reader.RTF.Document.html#constant_STYL" class="">STYL</a><br />
+                                                                    <a href="../classes/PhpOffice.PhpWord.Reader.RTF.Document.html#constant_SKIP" class="">SKIP</a><br />
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <em>No protected methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No protected properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <a href="../classes/PhpOffice.PhpWord.Reader.RTF.Document.html#method_markOpening" class="">markOpening()</a><br />
+                                                                    <a href="../classes/PhpOffice.PhpWord.Reader.RTF.Document.html#method_markClosing" class="">markClosing()</a><br />
+                                                                    <a href="../classes/PhpOffice.PhpWord.Reader.RTF.Document.html#method_markBackslash" class="">markBackslash()</a><br />
+                                                                    <a href="../classes/PhpOffice.PhpWord.Reader.RTF.Document.html#method_markNewline" class="">markNewline()</a><br />
+                                                                    <a href="../classes/PhpOffice.PhpWord.Reader.RTF.Document.html#method_flush" class="">flush()</a><br />
+                                                                    <a href="../classes/PhpOffice.PhpWord.Reader.RTF.Document.html#method_flushControl" class="">flushControl()</a><br />
+                                                                    <a href="../classes/PhpOffice.PhpWord.Reader.RTF.Document.html#method_flushText" class="">flushText()</a><br />
+                                                                    <a href="../classes/PhpOffice.PhpWord.Reader.RTF.Document.html#method_setControl" class="">setControl()</a><br />
+                                                                    <a href="../classes/PhpOffice.PhpWord.Reader.RTF.Document.html#method_pushText" class="">pushText()</a><br />
+                                                                    <a href="../classes/PhpOffice.PhpWord.Reader.RTF.Document.html#method_parseControl" class="">parseControl()</a><br />
+                                                                    <a href="../classes/PhpOffice.PhpWord.Reader.RTF.Document.html#method_readParagraph" class="">readParagraph()</a><br />
+                                                                    <a href="../classes/PhpOffice.PhpWord.Reader.RTF.Document.html#method_readStyle" class="">readStyle()</a><br />
+                                                                    <a href="../classes/PhpOffice.PhpWord.Reader.RTF.Document.html#method_readSkip" class="">readSkip()</a><br />
+                                                                    <a href="../classes/PhpOffice.PhpWord.Reader.RTF.Document.html#method_readText" class="">readText()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/PhpOffice.PhpWord.Reader.RTF.Document.html#property_phpWord" class="">$phpWord</a><br />
+                                                                    <a href="../classes/PhpOffice.PhpWord.Reader.RTF.Document.html#property_section" class="">$section</a><br />
+                                                                    <a href="../classes/PhpOffice.PhpWord.Reader.RTF.Document.html#property_textrun" class="">$textrun</a><br />
+                                                                    <a href="../classes/PhpOffice.PhpWord.Reader.RTF.Document.html#property_length" class="">$length</a><br />
+                                                                    <a href="../classes/PhpOffice.PhpWord.Reader.RTF.Document.html#property_offset" class="">$offset</a><br />
+                                                                    <a href="../classes/PhpOffice.PhpWord.Reader.RTF.Document.html#property_control" class="">$control</a><br />
+                                                                    <a href="../classes/PhpOffice.PhpWord.Reader.RTF.Document.html#property_text" class="">$text</a><br />
+                                                                    <a href="../classes/PhpOffice.PhpWord.Reader.RTF.Document.html#property_isControl" class="">$isControl</a><br />
+                                                                    <a href="../classes/PhpOffice.PhpWord.Reader.RTF.Document.html#property_isFirst" class="">$isFirst</a><br />
+                                                                    <a href="../classes/PhpOffice.PhpWord.Reader.RTF.Document.html#property_groups" class="">$groups</a><br />
+                                                                    <a href="../classes/PhpOffice.PhpWord.Reader.RTF.Document.html#property_flags" class="">$flags</a><br />
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/third_party.PhpOffice.PhpWord.Reader.RTF.Document.html"><div class="path-wrapper">third_party/PhpOffice/PhpWord/Reader/RTF/Document.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">Aplicación</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                    <div class="namespace-wrapper">\PhpOffice\PhpWord\Reader\RTF\Document</div>
+                            </dd>
+
+                        
+                        
+                        
+                        
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr>
+                            <th>
+                                since
+                            </th>
+                            <td>
+                                                                    
+                                                            </td>
+                        </tr>
+                                            <tr>
+                            <th>
+                                SuppressWarnings
+                            </th>
+                            <td>
+                                                                    <p>(PHPMD.UnusedPrivateMethod)</p>
+                                                            </td>
+                        </tr>
+                                        </table>
+                </aside>
+            </div>
+
+                                    <a id="constants" name="constants"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Constants</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_PARA" name="constant_PARA" class="anchor"></a>
+            <article id="constant_PARA" class="constant">
+                <h3 class="">PARA</h3>
+                <pre class="signature">PARA</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            const
+                        </th>
+                        <td>
+                                                            <p>int</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_STYL" name="constant_STYL" class="anchor"></a>
+            <article id="constant_STYL" class="constant">
+                <h3 class="">STYL</h3>
+                <pre class="signature">STYL</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_SKIP" name="constant_SKIP" class="anchor"></a>
+            <article id="constant_SKIP" class="constant">
+                <h3 class="">SKIP</h3>
+                <pre class="signature">SKIP</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                            
+                                    <a id="properties" name="properties"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Properties</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_rtf" name="property_rtf" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$rtf</h3>
+                <pre class="signature">$rtf : string</pre>
+                <p><em>RTF content</em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_phpWord" name="property_phpWord" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$phpWord</h3>
+                <pre class="signature">$phpWord : \PhpOffice\PhpWord\PhpWord</pre>
+                <p><em>PhpWord object</em></p>
+                
+
+                                <h4>Type</h4>
+                <a href="../classes/PhpOffice.PhpWord.PhpWord.html">\PhpOffice\PhpWord\PhpWord</a>
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_section" name="property_section" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$section</h3>
+                <pre class="signature">$section : \PhpOffice\PhpWord\Element\Section</pre>
+                <p><em>Section object</em></p>
+                
+
+                                <h4>Type</h4>
+                <a href="../classes/PhpOffice.PhpWord.Element.Section.html">\PhpOffice\PhpWord\Element\Section</a>
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_textrun" name="property_textrun" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$textrun</h3>
+                <pre class="signature">$textrun : \PhpOffice\PhpWord\Element\TextRun</pre>
+                <p><em>Textrun object</em></p>
+                
+
+                                <h4>Type</h4>
+                <a href="../classes/PhpOffice.PhpWord.Element.TextRun.html">\PhpOffice\PhpWord\Element\TextRun</a>
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_length" name="property_length" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$length</h3>
+                <pre class="signature">$length : integer</pre>
+                <p><em>Content length</em></p>
+                
+
+                                <h4>Type</h4>
+                integer
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_offset" name="property_offset" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$offset</h3>
+                <pre class="signature">$offset : integer</pre>
+                <p><em>Character index</em></p>
+                
+
+                                <h4>Type</h4>
+                integer
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_control" name="property_control" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$control</h3>
+                <pre class="signature">$control : string</pre>
+                <p><em>Current control word</em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_text" name="property_text" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$text</h3>
+                <pre class="signature">$text : string</pre>
+                <p><em>Text content</em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_isControl" name="property_isControl" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$isControl</h3>
+                <pre class="signature">$isControl : boolean</pre>
+                <p><em>Parsing a control word flag</em></p>
+                
+
+                                <h4>Type</h4>
+                boolean
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_isFirst" name="property_isFirst" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$isFirst</h3>
+                <pre class="signature">$isFirst : boolean</pre>
+                <p><em>First character flag: watch out for control symbols</em></p>
+                
+
+                                <h4>Type</h4>
+                boolean
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_groups" name="property_groups" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$groups</h3>
+                <pre class="signature">$groups : array</pre>
+                <p><em>Group groups</em></p>
+                
+
+                                <h4>Type</h4>
+                array
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_flags" name="property_flags" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$flags</h3>
+                <pre class="signature">$flags : array</pre>
+                <p><em>Parser flags; not used</em></p>
+                
+
+                                <h4>Type</h4>
+                array
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                            
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_read" name="method_read" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">read()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">read(\PhpOffice\PhpWord\PhpWord  <span class="argument">$phpWord</span>) : void</pre>
+                <p><em>Parse RTF content</em></p>
+                <ul>
+<li>Marks controlling characters <code>{</code>, <code>}</code>, and <code>\</code></li>
+<li>Removes line endings</li>
+<li>Builds control words and control symbols</li>
+<li>Pushes every other character into the text queue</li>
+</ul>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/PhpOffice.PhpWord.PhpWord.html">\PhpOffice\PhpWord\PhpWord</a></td>
+                                <td>$phpWord </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                                                            <p>Use <code>fread</code> stream for scalability</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_markOpening" name="method_markOpening" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">markOpening()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">markOpening() : void</pre>
+                <p><em>Mark opening braket `{` character.</em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_markClosing" name="method_markClosing" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">markClosing()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">markClosing() : void</pre>
+                <p><em>Mark closing braket `}` character.</em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_markBackslash" name="method_markBackslash" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">markBackslash()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">markBackslash() : void</pre>
+                <p><em>Mark backslash `\` character.</em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_markNewline" name="method_markNewline" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">markNewline()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">markNewline() : void</pre>
+                <p><em>Mark newline character: Flush control word because it&#039;s not possible to span multiline.</em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_flush" name="method_flush" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">flush()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">flush(boolean  <span class="argument">$isControl = false</span>) : void</pre>
+                <p><em>Flush control word or text.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$isControl </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_flushControl" name="method_flushControl" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">flushControl()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">flushControl(boolean  <span class="argument">$isControl = false</span>) : void</pre>
+                <p><em>Flush control word.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$isControl </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_flushText" name="method_flushText" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">flushText()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">flushText() : void</pre>
+                <p><em>Flush text in queue.</em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setControl" name="method_setControl" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">setControl()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setControl(boolean  <span class="argument">$value</span>) : void</pre>
+                <p><em>Reset control word and first char state.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$value </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_pushText" name="method_pushText" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">pushText()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">pushText(string  <span class="argument">$char</span>) : void</pre>
+                <p><em>Push text into queue.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$char </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_parseControl" name="method_parseControl" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">parseControl()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">parseControl(string  <span class="argument">$control</span>, string  <span class="argument">$parameter</span>) : void</pre>
+                <p><em>Parse control.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$control </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$parameter </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_readParagraph" name="method_readParagraph" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">readParagraph()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">readParagraph(array  <span class="argument">$directives</span>) : void</pre>
+                <p><em>Read paragraph.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$directives </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_readStyle" name="method_readStyle" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">readStyle()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">readStyle(array  <span class="argument">$directives</span>) : void</pre>
+                <p><em>Read style.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$directives </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_readSkip" name="method_readSkip" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">readSkip()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">readSkip(array  <span class="argument">$directives</span>) : void</pre>
+                <p><em>Read skip.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$directives </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_readText" name="method_readText" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">readText()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">readText() : void</pre>
+                <p><em>Read text.</em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">Document.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/third_party/PhpOffice/PhpWord/Reader/RTF/Document.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                            <li><a href="../namespaces/PhpOffice.html">\PhpOffice</a></li>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on August 15th, 2016 at 21:30.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>
